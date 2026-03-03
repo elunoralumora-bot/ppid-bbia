@@ -5,7 +5,6 @@
     <div class="page-header">
         <h1>Prosedur Pengajuan Keberatan</h1>
         <div class="breadcrumb">
-            <a href="{{ url('/ppid') }}">Beranda</a> / <a href="{{ url('/standar-layanan') }}">Standar Layanan</a> / Prosedur Pengajuan Keberatan
         </div>
     </div>
     

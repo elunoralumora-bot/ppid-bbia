@@ -5,7 +5,6 @@
     <div class="page-header-content">
         <h1>Tentang PPID</h1>
         <div class="breadcrumb">
-            <a href="{{ url('/ppid') }}">Beranda</a> / Tentang PPID
         </div>
     </div>
 </div>

@@ -5,7 +5,6 @@
     <div class="page-header">
         <h1>Prosedur Permohonan Informasi</h1>
         <div class="breadcrumb">
-            <a href="{{ url('/ppid') }}">Beranda</a> / <a href="{{ url('/standar-layanan') }}">Standar Layanan</a> / Prosedur Permohonan Informasi
         </div>
     </div>
     

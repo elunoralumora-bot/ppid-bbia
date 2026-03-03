@@ -14,9 +14,6 @@
 <!-- Breadcrumb -->
 <nav class="breadcrumb">
     <div class="container">
-        <a href="{{ url('/ppid') }}">Beranda</a>
-        <span>›</span>
-        <span>Berita PPID</span>
     </div>
 </nav>
 

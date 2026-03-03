@@ -1,18 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="page-header">
+<div class="page-header">
+    <div class="page-header-content">
         <h1>Daftar Informasi Publik Online</h1>
         <div class="breadcrumb">
-            <a href="{{ url('/ppid') }}">Beranda</a> / <a href="{{ url('/informasi-publik') }}">Informasi Publik</a> / Daftar Informasi Publik Online
         </div>
     </div>
-    
-    <div class="content-section">
-        <div class="content-card">
-            <h2>Daftar Informasi Publik PPID BBIA</h2>
-            <p>Berikut adalah daftar lengkap informasi publik yang tersedia secara online di PPID BBIA.</p>
+</div>
+
+<div class="content-section">
+    <div class="content-full">
+        <h2>Daftar Informasi Publik PPID BBIA</h2>
+        <p>Berikut adalah daftar lengkap informasi publik yang tersedia secara online di PPID BBIA.</p>
             
             <div class="search-section">
                 <div class="search-box">
@@ -145,10 +145,22 @@
 
 <style>
 .page-header {
-    background: linear-gradient(135deg, #1a3a5f, #2c5282);
+    background: linear-gradient(135deg, #0f2338 0%, #2c5282 35%, #1a3a5f 100%);
     color: white;
     padding: 40px 0;
-    margin-bottom: 40px;
+    margin: 0;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.page-header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 60px;
 }
 
 .page-header h1 {
@@ -160,6 +172,47 @@
 .breadcrumb {
     font-size: 14px;
     opacity: 0.8;
+}
+
+.breadcrumb a {
+    color: white;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.content-section {
+    width: 100%;
+    padding: 0 20px;
+    min-height: 60vh;
+}
+
+.content-full {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    background: transparent;
+}
+
+.content-full h2 {
+    color: #1a3a5f;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    margin-top: 40px;
+}
+
+.content-full h2:first-child {
+    margin-top: 0;
+}
+
+.content-full p {
+    color: #333;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 16px;
 }
 
 .breadcrumb a {

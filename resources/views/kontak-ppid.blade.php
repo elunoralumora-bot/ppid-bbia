@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="page-header">
+<div class="page-header">
+    <div class="page-header-content">
         <h1>Kontak PPID</h1>
         <div class="breadcrumb">
-            <a href="{{ url('/ppid') }}">Beranda</a> / <a href="{{ url('/tentang-ppid') }}">Tentang PPID</a> / Kontak PPID
         </div>
     </div>
-    
-    <div class="content-section">
-        <div class="content-card">
+</div>
+
+<div class="content-section">
+    <div class="content-full">
             <h2>Hubungi PPID BBIA</h2>
             <p>PPID BBIA siap melayani kebutuhan informasi publik Anda. Silakan hubungi kami melalui berbagai kanal yang tersedia.</p>
             
@@ -55,6 +55,28 @@
                     </div>
                     
                     <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telepon">Nomor Telepon</label>
+                        <input type="tel" id="telepon" name="telepon">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subjek">Subjek Permohonan *</label>
+                        <input type="text" id="subjek" name="subjek" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pesan">Rincian Informasi yang Dibutuhkan *</label>
+                        <textarea id="pesan" name="pesan" rows="5" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Kirim Permohonan</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -64,10 +86,13 @@
     background: linear-gradient(135deg, #0f2338 0%, #2c5282 35%, #1a3a5f 100%);
     color: white;
     padding: 40px 0;
-    margin: 0 0 40px 0;
-    width: 100%;
-    left: 0;
-    right: 0;
+    margin: 0;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
 }
 
 .page-header-content {
@@ -161,14 +186,14 @@
     border: 3px solid #1a3a5f;
 }
 
-.contact-info h3 {
+.contact-card h3 {
     color: #1a3a5f;
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 15px;
 }
 
-.contact-info p {
+.contact-card p {
     color: #333;
     font-size: 16px;
     line-height: 1.5;

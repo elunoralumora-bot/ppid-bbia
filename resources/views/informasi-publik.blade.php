@@ -5,9 +5,6 @@
     <div class="page-header-content">
         <h1>Informasi Publik</h1>
         <div class="breadcrumb">
-            <a href="{{ url('/ppid') }}">Beranda</a>
-            <span>›</span>
-            <span>Informasi Publik</span>
         </div>
     </div>
 </div>

@@ -5,7 +5,6 @@
     <div class="page-header">
         <h1>SOP PPID</h1>
         <div class="breadcrumb">
-            <a href="{{ url('/ppid') }}">Beranda</a> / <a href="{{ url('/standar-layanan') }}">Standar Layanan</a> / SOP PPID
         </div>
     </div>
     

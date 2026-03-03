@@ -5,24 +5,14 @@
     <div class="page-header-content">
         <h1>PPID Pelaksana UPT</h1>
         <div class="breadcrumb">
-            <a href="{{ url('/ppid') }}">Beranda</a>
-            <span>›</span>
-            <span>PPID Pelaksana UPT</span>
         </div>
     </div>
 </div>
 
 <div class="content-section">
     <div class="content-full">
-        <div class="service-detail">
-            <div class="service-icon-large">
-                <img src="{{ asset('images/upt.png') }}" alt="PPID Pelaksana UPT">
-            </div>
-        </div>
-        
-        <div class="service-content">
-            <h2>PPID Pelaksana UPT di Lingkungan BBIA</h2>
-            <p>PPID Pelaksana Unit Pelaksana Teknis (UPT) di lingkungan Balai Besar Industri Agro (BBIA) bertanggung jawab atas pelaksanaan tugas PPID di unit-unit kerja yang ada di bawah koordinasi BBIA.</p>
+        <h2>PPID Pelaksana UPT di Lingkungan BBIA</h2>
+        <p>PPID Pelaksana Unit Pelaksana Teknis (UPT) di lingkungan Balai Besar Industri Agro (BBIA) bertanggung jawab atas pelaksanaan tugas PPID di unit-unit kerja yang ada di bawah koordinasi BBIA.</p>
             
             <div class="upt-grid">
                 <div class="upt-item">
@@ -183,14 +173,25 @@
             </div>
         </div>
     </div>
-</div>
 
 <style>
 .page-header {
-    background: linear-gradient(135deg, #1a3a5f, #2c5282);
+    background: linear-gradient(135deg, #0f2338 0%, #2c5282 35%, #1a3a5f 100%);
     color: white;
     padding: 40px 0;
-    margin-bottom: 40px;
+    margin: 0;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.page-header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 60px;
 }
 
 .page-header h1 {
@@ -214,44 +215,35 @@
 }
 
 .content-section {
-    max-width: 1000px;
+    width: 100%;
+    padding: 0 20px;
+    min-height: 60vh;
+}
+
+.content-full {
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 60px 40px;
+    background: transparent;
 }
 
-.content-card {
-    background: white;
-    border-radius: 10px;
-    padding: 40px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.content-card h2 {
+.content-full h2 {
     color: #1a3a5f;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 600;
-    margin-bottom: 15px;
-    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-top: 40px;
 }
 
-.content-card h2:first-child {
+.content-full h2:first-child {
     margin-top: 0;
 }
 
-.content-card p {
+.content-full p {
     color: #333;
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-
-.content-card ul {
-    color: #333;
-    line-height: 1.6;
-    margin-bottom: 15px;
-    padding-left: 20px;
-}
-
-.content-card li {
-    margin-bottom: 8px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 16px;
 }
 
 .upt-grid {

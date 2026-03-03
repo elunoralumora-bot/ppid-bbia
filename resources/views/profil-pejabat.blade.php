@@ -5,7 +5,6 @@
     <div class="page-header-content">
         <h1>Profil Pejabat</h1>
         <div class="breadcrumb">
-            <a href="{{ url('/ppid') }}">Beranda</a> / <a href="{{ url('/tentang-ppid') }}">Tentang PPID</a> / Profil Pejabat
         </div>
     </div>
 </div>

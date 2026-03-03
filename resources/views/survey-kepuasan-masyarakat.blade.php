@@ -5,7 +5,6 @@
     <div class="page-header">
         <h1>Laporan Survey Kepuasan Masyarakat</h1>
         <div class="breadcrumb">
-            <a href="{{ url('/ppid') }}">Beranda</a> / <a href="{{ url('/laporan') }}">Laporan</a> / Laporan Survey Kepuasan Masyarakat
         </div>
     </div>
     

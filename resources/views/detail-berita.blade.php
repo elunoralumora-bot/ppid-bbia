@@ -14,11 +14,6 @@
 <!-- Breadcrumb -->
 <nav class="breadcrumb">
     <div class="container">
-        <a href="{{ url('/ppid') }}">Beranda</a>
-        <span>›</span>
-        <a href="{{ url('/berita') }}">Berita</a>
-        <span>›</span>
-        <span>Detail Berita</span>
     </div>
 </nav>
 

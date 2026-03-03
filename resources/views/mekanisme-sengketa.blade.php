@@ -5,7 +5,6 @@
     <div class="page-header">
         <h1>Mekanisme Penanganan Sengketa Informasi</h1>
         <div class="breadcrumb">
-            <a href="{{ url('/ppid') }}">Beranda</a> / <a href="{{ url('/standar-layanan') }}">Standar Layanan</a> / Mekanisme Penanganan Sengketa Informasi
         </div>
     </div>
     

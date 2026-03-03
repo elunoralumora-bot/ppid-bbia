@@ -5,7 +5,6 @@
     <div class="page-header">
         <h1>Kanal Layanan Informasi</h1>
         <div class="breadcrumb">
-            <a href="{{ url('/ppid') }}">Beranda</a> / <a href="{{ url('/standar-layanan') }}">Standar Layanan</a> / Kanal Layanan Informasi
         </div>
     </div>
     
