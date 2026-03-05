@@ -1,17 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="page-header">
+<div class="page-header">
+    <div class="page-header-content">
         <h1>Kanal Layanan Informasi</h1>
         <div class="breadcrumb">
         </div>
     </div>
-    
-    <div class="content-section">
-        <div class="content-card">
-            <h2>Kanal Layanan Informasi Publik PPID BBIA</h2>
-            <p>PPID BBIA menyediakan berbagai kanal layanan informasi publik untuk memudahkan masyarakat mengakses informasi yang dibutuhkan.</p>
+</div>
+
+<div class="content-section">
+    <div class="content-full">
+        <h2>Kanal Layanan Informasi Publik PPID BBIA</h2>
+        <p>PPID BBIA menyediakan berbagai kanal layanan informasi publik untuk memudahkan masyarakat mengakses informasi yang dibutuhkan.</p>
             
             <div class="channel-grid">
                 <div class="channel-item">
@@ -196,10 +197,22 @@
 
 <style>
 .page-header {
-    background: linear-gradient(135deg, #1a3a5f, #2c5282);
+    background: linear-gradient(135deg, #0f2338 0%, #2c5282 35%, #1a3a5f 100%);
     color: white;
     padding: 40px 0;
-    margin-bottom: 40px;
+    margin: 0;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.page-header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 60px;
 }
 
 .page-header h1 {
@@ -223,27 +236,35 @@
 }
 
 .content-section {
-    max-width: 1000px;
+    width: 100%;
+    padding: 0 20px;
+    min-height: 60vh;
+}
+
+.content-full {
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 60px 40px;
+    background: transparent;
 }
 
-.content-card {
-    background: white;
-    border-radius: 10px;
-    padding: 40px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.content-card h2 {
+.content-full h2 {
     color: #1a3a5f;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 600;
-    margin-bottom: 15px;
-    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-top: 40px;
 }
 
-.content-card h2:first-child {
+.content-full h2:first-child {
     margin-top: 0;
+}
+
+.content-full p {
+    color: #333;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 16px;
 }
 
 .content-card p {

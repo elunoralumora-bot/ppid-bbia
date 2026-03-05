@@ -67,7 +67,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="{{ url('/laporan-tahunan') }}">Laporan Tahunan PPID</a></li>
                             <li><a href="{{ url('/survey-kepuasan-masyarakat') }}">Laporan Survey Kepuasan Masyarakat</a></li>
-                            <li><a href="#">Statistik Layanan Informasi Publik</a></li>
+                            <li><a href="{{ url('/statistik-layanan') }}">Statistik Layanan Informasi Publik</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
