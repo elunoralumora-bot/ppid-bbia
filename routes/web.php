@@ -193,10 +193,6 @@ Route::get('/statistik-layanan', function () {
     return view('statistik-layanan');
 });
 
-Route::get('/open-data', function () {
-    return view('open-data');
-});
-
 Route::get('/kanal-pengaduan', function () {
     return view('kanal-pengaduan');
 });

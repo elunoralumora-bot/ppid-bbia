@@ -166,14 +166,6 @@
                         </a>
                     </div>
                     <div class="service-icon-item">
-                        <a href="{{ url('/open-data') }}">
-                            <div class="icon-box">
-                                <img src="{{ asset('images/open data.png') }}" alt="Open Data">
-                            </div>
-                            <span>Open Data</span>
-                        </a>
-                    </div>
-                    <div class="service-icon-item">
                         <a href="{{ url('/kanal-pengaduan') }}">
                             <div class="icon-box">
                                 <img src="{{ asset('images/kanal pengaduan.png') }}" alt="Kanal Pengaduan">
