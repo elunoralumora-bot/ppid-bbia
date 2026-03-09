@@ -7,18 +7,21 @@ use App\Http\Controllers\BeritaController;
 
 // Guest Routes
 Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/login', function () {
-    return redirect()->route('admin.login');
-});
-
-Route::get('/ppid', function () {
     return view('ppid');
 });
 
-// Admin Authentication Routes
+// User Authentication Routes
+Route::get('/login', [AuthController::class, 'showUserLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'userLogin'])->name('login.submit');
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+Route::post('/logout', [AuthController::class, 'userLogout'])->name('logout');
+
+Route::get('/ppid', function () {
+    return redirect('/');
+});
+
+// Admin Authentication Routes  
 Route::prefix('admin')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [AuthController::class, 'login'])->name('admin.login.submit');
@@ -41,7 +44,24 @@ Route::prefix('admin')->group(function () {
         Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
         Route::get('/settings', [AdminController::class, 'settings'])->name('admin.settings');
         Route::get('/reports', [AdminController::class, 'reports'])->name('admin.reports');
+        
+        // Additional Admin Routes
+        Route::get('/profil', [AdminController::class, 'profil'])->name('admin.profil');
+        Route::get('/informasi-publik', [AdminController::class, 'informasiPublik'])->name('admin.informasi-publik');
+        Route::get('/standar-layanan', [AdminController::class, 'standarLayanan'])->name('admin.standar-layanan');
+        Route::get('/laporan-publik', [AdminController::class, 'laporanPublik'])->name('admin.laporan-publik');
     });
+});
+
+// User Protected Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/user/dashboard', [AuthController::class, 'showUserDashboard'])->name('user.dashboard');
+    Route::get('/ajukan-permohonan', function () {
+        return view('ajukan-permohonan');
+    })->middleware('auth');
+    Route::get('/ajukan-keberatan', function () {
+        return view('ajukan-keberatan');
+    })->middleware('auth');
 });
 
 // Profil Menu Routes
@@ -151,11 +171,11 @@ Route::get('/survey-kepuasan-masyarakat', function () {
 // Service Pages
 Route::get('/ajukan-permohonan', function () {
     return view('ajukan-permohonan');
-});
+})->middleware('auth');
 
 Route::get('/ajukan-keberatan', function () {
     return view('ajukan-keberatan');
-});
+})->middleware('auth');
 
 Route::get('/informasi-publik', function () {
     return view('informasi-publik');
@@ -206,4 +226,15 @@ Route::get('/berita/detail/{slug}', function ($slug) {
 // Form Keberatan
 Route::get('/form-keberatan', function () {
     return view('form-keberatan');
+});
+
+// User Protected Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/user/dashboard', [AuthController::class, 'showUserDashboard'])->name('user.dashboard');
+    Route::get('/ajukan-permohonan', function () {
+        return view('ajukan-permohonan');
+    })->middleware('auth');
+    Route::get('/ajukan-keberatan', function () {
+        return view('ajukan-keberatan');
+    })->middleware('auth');
 });

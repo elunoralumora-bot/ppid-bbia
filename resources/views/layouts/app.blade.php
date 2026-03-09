@@ -71,7 +71,11 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="btn btn-primary">Permohonan Informasi</a>
+                        @guest
+                            <a href="{{ url('/login') }}" class="btn btn-primary">Permohonan Informasi</a>
+                        @else
+                            <a href="{{ url('/user/dashboard') }}" class="btn btn-primary">Dashboard User</a>
+                        @endguest
                     </li>
                 </ul>
             </div>

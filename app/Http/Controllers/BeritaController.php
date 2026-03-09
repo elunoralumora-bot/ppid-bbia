@@ -95,4 +95,10 @@ class BeritaController extends Controller
         $berita->delete();
         return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil dihapus');
     }
+
+    public function showPublic(string $slug)
+    {
+        $berita = Berita::where('slug', $slug)->where('status', 'published')->firstOrFail();
+        return view('detail-berita', compact('berita'));
+    }
 }

@@ -68,7 +68,11 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/form-permohonan') }}" class="btn btn-primary">Permohonan Informasi</a>
+                        @guest
+                            <a href="{{ url('/login') }}" class="btn btn-primary">Permohonan Informasi</a>
+                        @else
+                            <a href="{{ url('/user/dashboard') }}" class="btn btn-primary">Dashboard User</a>
+                        @endguest
                     </li>
                 </ul>
             </div>
@@ -103,12 +107,20 @@
                     <div class="service-box">
                         <h3>AJUKAN</h3>
                         <p>Ajukan permohonan informasi publik</p>
-                        <a href="{{ url('/ajukan') }}" class="service-link">Form Permohonan →</a>
+                        @guest
+                            <a href="{{ url('/login') }}" class="service-link">Form Permohonan →</a>
+                        @else
+                            <a href="{{ url('/ajukan-permohonan') }}" class="service-link">Form Permohonan →</a>
+                        @endguest
                     </div>
                     <div class="service-box">
                         <h3>KEBERATAN</h3>
                         <p>Ajukan keberatan atas layanan informasi</p>
-                        <a href="{{ url('/keberatan') }}" class="service-link">Form Keberatan →</a>
+                        @guest
+                            <a href="{{ url('/login') }}" class="service-link">Form Keberatan →</a>
+                        @else
+                            <a href="{{ url('/ajukan-keberatan') }}" class="service-link">Form Keberatan →</a>
+                        @endguest
                     </div>
                 </div>
                 
