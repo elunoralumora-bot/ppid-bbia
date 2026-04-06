@@ -16,6 +16,10 @@
         <h2>Prosedur Pengajuan Keberatan Atas Layanan Informasi Publik</h2>
         <p>Berikut adalah prosedur lengkap untuk mengajukan keberatan atas layanan informasi publik PPID BBIA sesuai dengan Peraturan Komisi Informasi Nomor 1 Tahun 2013.</p>
         
+        <div class="infografis-container">
+            <img src="{{ asset('images/pengajuan keberatan.png') }}" alt="Prosedur Pengajuan Keberatan" class="infografis-img">
+        </div>
+        
         <div class="procedure-flow">
             <div class="flow-step">
                 <div class="step-number">1</div>
@@ -314,6 +318,35 @@
     line-height: 1.8;
     margin-bottom: 20px;
     font-size: 16px;
+}
+
+.infografis-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 30px auto;
+    padding: 20px;
+    background: transparent;
+    border-radius: 15px;
+    box-shadow: none;
+    border: none;
+    text-align: center;
+}
+
+.infografis-img {
+    max-width: 100%;
+    max-height: 600px;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.infografis-img:hover {
+    transform: scale(1.02);
 }
 
 .procedure-flow {
@@ -639,13 +672,13 @@
         justify-content: center;
     }
     
-    .btn-action {
-        width: 100%;
-        max-width: 200px;
-        padding: 12px 20px;
-        font-size: 14px;
-        min-width: 150px;
-        height: 45px;
+    .infografis-container {
+        padding: 10px;
+        margin: 30px auto;
+    }
+    
+    .infografis-img {
+        border-radius: 8px;
     }
 }
 </style>

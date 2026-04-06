@@ -243,18 +243,17 @@
 }
 
 .infografis-container {
-    display: inline-flex;
+    display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
-    text-align: center;
-    margin: 40px auto;
-    padding: 15px;
-    background: rgba(26, 58, 95, 0.02);
-    border: 1px solid rgba(26, 58, 95, 0.1);
+    width: 100%;
+    margin: 30px auto;
+    padding: 20px;
+    background: transparent;
     border-radius: 15px;
-    min-height: auto;
-    max-width: fit-content;
+    box-shadow: none;
+    border: none;
+    text-align: center;
 }
 
 .infografis-img {
