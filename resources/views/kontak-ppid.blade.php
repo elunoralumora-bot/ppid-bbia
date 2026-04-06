@@ -44,55 +44,15 @@
                 </div>
             </div>
             
-            <h2>Formulir Permohonan Informasi</h2>
-            <p>Untuk permohonan informasi publik, Anda dapat mengisi formulir online atau datang langsung ke kantor PPID BBIA.</p>
-            
-            <div class="form-section">
-                <form class="contact-form">
-                    <div class="form-group">
-                        <label for="nama">Nama Lengkap *</label>
-                        <input type="text" id="nama" name="nama" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="telepon">Nomor Telepon</label>
-                        <input type="tel" id="telepon" name="telepon">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="subjek">Subjek Permohonan *</label>
-                        <input type="text" id="subjek" name="subjek" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="pesan">Rincian Informasi yang Dibutuhkan *</label>
-                        <textarea id="pesan" name="pesan" rows="5" required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">Kirim Permohonan</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <style>
 .page-header {
     background: linear-gradient(135deg, #0f2338 0%, #2c5282 35%, #1a3a5f 100%);
     color: white;
     padding: 40px 0;
-    margin: 0;
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    margin: 0 0 40px 0;
+    width: 100%;
+    left: 0;
+    right: 0;
 }
 
 .page-header-content {

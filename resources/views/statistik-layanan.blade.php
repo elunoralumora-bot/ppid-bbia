@@ -132,13 +132,10 @@
     background: linear-gradient(135deg, #0f2338 0%, #2c5282 35%, #1a3a5f 100%);
     color: white;
     padding: 40px 0;
-    margin: 0;
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    margin: 0 0 40px 0;
+    width: 100%;
+    left: 0;
+    right: 0;
 }
 
 .page-header-content {

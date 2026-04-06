@@ -192,7 +192,7 @@
                             <ul>
                                 <li><a href="{{ url('/permohonan-informasi') }}">Informasi Permohonan</a></li>
                                 <li><a href="{{ url('/form-keberatan') }}">Form Keberatan</a></li>
-                                <li><a href="{{ url('/pemeriksaan-permohonan') }}">Cek Status Permohonan</a></li>
+                                <li><a href="{{ url('/periksa-permohonan') }}">Cek Status Permohonan</a></li>
                                 <li><a href="{{ url('/mekanisme-sengketa') }}">Mekanisme Sengketa</a></li>
                             </ul>
                         </div>

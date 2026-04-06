@@ -134,7 +134,7 @@
                         <li><a href="{{ url('/mekanisme-sengketa') }}">Mekanisme Sengketa</a></li>
                         <li><a href="{{ url('/prosedur-keberatan') }}">Prosedur Keberatan</a></li>
                         <li><a href="{{ url('/standar-layanan') }}">Standar Layanan</a></li>
-                        <li><a href="{{ url('/pemeriksaan-keberatan') }}">Cek Status Keberatan</a></li>
+                        <li><a href="{{ url('/periksa-keberatan') }}">Cek Status Keberatan</a></li>
                     </ul>
                 </div>
             </div>
