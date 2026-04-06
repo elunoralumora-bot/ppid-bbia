@@ -10,13 +10,6 @@ Route::get('/', function () {
     return view('ppid');
 });
 
-// User Authentication Routes
-Route::get('/login', [AuthController::class, 'showUserLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'userLogin'])->name('login.submit');
-Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
-Route::post('/logout', [AuthController::class, 'userLogout'])->name('logout');
-
 Route::get('/ppid', function () {
     return redirect('/');
 });
@@ -53,16 +46,6 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-// User Protected Routes
-Route::middleware('auth')->group(function () {
-    Route::get('/user/dashboard', [AuthController::class, 'showUserDashboard'])->name('user.dashboard');
-    Route::get('/ajukan-permohonan', function () {
-        return view('ajukan-permohonan');
-    })->middleware('auth');
-    Route::get('/ajukan-keberatan', function () {
-        return view('ajukan-keberatan');
-    })->middleware('auth');
-});
 
 // Profil Menu Routes
 Route::get('/tentang-ppid', function () {
@@ -171,22 +154,14 @@ Route::get('/survey-kepuasan-masyarakat', function () {
 // Service Pages
 Route::get('/ajukan-permohonan', function () {
     return view('ajukan-permohonan');
-})->middleware('auth');
+});
 
 Route::get('/ajukan-keberatan', function () {
     return view('ajukan-keberatan');
-})->middleware('auth');
+});
 
 Route::get('/informasi-publik', function () {
     return view('informasi-publik');
-});
-
-Route::get('/pemeriksaan-permohonan', function () {
-    return view('pemeriksaan-permohonan');
-});
-
-Route::get('/pemeriksaan-keberatan', function () {
-    return view('pemeriksaan-keberatan');
 });
 
 Route::get('/statistik-layanan', function () {
@@ -201,22 +176,14 @@ Route::get('/berita', function () {
     return view('berita');
 });
 
-Route::get('/form-permohonan', function () {
-    return view('form-permohonan');
-});
-
-// Additional Service Pages
-Route::get('/ajukan', function () {
-    return view('ajukan');
-});
-
-Route::get('/keberatan', function () {
-    return view('keberatan');
-});
-
 // Detail Berita
 Route::get('/berita/detail/{slug}', function ($slug) {
     return view('detail-berita');
+});
+
+// Form Permohonan
+Route::get('/form-permohonan', function () {
+    return view('form-permohonan');
 });
 
 // Form Keberatan
@@ -224,13 +191,13 @@ Route::get('/form-keberatan', function () {
     return view('form-keberatan');
 });
 
-// User Protected Routes
-Route::middleware('auth')->group(function () {
-    Route::get('/user/dashboard', [AuthController::class, 'showUserDashboard'])->name('user.dashboard');
-    Route::get('/ajukan-permohonan', function () {
-        return view('ajukan-permohonan');
-    })->middleware('auth');
-    Route::get('/ajukan-keberatan', function () {
-        return view('ajukan-keberatan');
-    })->middleware('auth');
+// Periksa Permohonan
+Route::get('/periksa-permohonan', function () {
+    return view('periksa-permohonan');
 });
+
+// Periksa Keberatan
+Route::get('/periksa-keberatan', function () {
+    return view('periksa-keberatan');
+});
+

@@ -70,13 +70,6 @@
                             <li><a href="{{ url('/statistik-layanan') }}">Statistik Layanan Informasi Publik</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        @guest
-                            <a href="{{ url('/login') }}" class="btn btn-primary">Permohonan Informasi</a>
-                        @else
-                            <a href="{{ url('/user/dashboard') }}" class="btn btn-primary">Dashboard User</a>
-                        @endguest
-                    </li>
                 </ul>
             </div>
         </div>

@@ -67,13 +67,6 @@
                             <li><a href="{{ url('/statistik-layanan') }}">Statistik Layanan Informasi Publik</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        @guest
-                            <a href="{{ url('/login') }}" class="btn btn-primary">Permohonan Informasi</a>
-                        @else
-                            <a href="{{ url('/user/dashboard') }}" class="btn btn-primary">Dashboard User</a>
-                        @endguest
-                    </li>
                 </ul>
             </div>
         </div>
@@ -107,20 +100,12 @@
                     <div class="service-box">
                         <h3>AJUKAN</h3>
                         <p>Ajukan permohonan informasi publik</p>
-                        @guest
-                            <a href="{{ url('/login') }}" class="service-link">Form Permohonan →</a>
-                        @else
-                            <a href="{{ url('/ajukan-permohonan') }}" class="service-link">Form Permohonan →</a>
-                        @endguest
+                        <a href="{{ url('/form-permohonan') }}" class="service-link">Form Permohonan →</a>
                     </div>
                     <div class="service-box">
                         <h3>KEBERATAN</h3>
                         <p>Ajukan keberatan atas layanan informasi</p>
-                        @guest
-                            <a href="{{ url('/login') }}" class="service-link">Form Keberatan →</a>
-                        @else
-                            <a href="{{ url('/ajukan-keberatan') }}" class="service-link">Form Keberatan →</a>
-                        @endguest
+                        <a href="{{ url('/form-keberatan') }}" class="service-link">Form Keberatan →</a>
                     </div>
                 </div>
                 
@@ -142,7 +127,7 @@
                         </a>
                     </div>
                     <div class="service-icon-item">
-                        <a href="{{ url('/pemeriksaan-permohonan') }}">
+                        <a href="{{ url('/periksa-permohonan') }}">
                             <div class="icon-box">
                                 <img src="{{ asset('images/periksa permohonan.png') }}" alt="Periksa Permohonan">
                             </div>
@@ -150,7 +135,7 @@
                         </a>
                     </div>
                     <div class="service-icon-item">
-                        <a href="{{ url('/pemeriksaan-keberatan') }}">
+                        <a href="{{ url('/periksa-keberatan') }}">
                             <div class="icon-box">
                                 <img src="{{ asset('images/periksa keberatan.png') }}" alt="Periksa Keberatan">
                             </div>

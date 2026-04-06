@@ -7,7 +7,7 @@
     <div class="page-header-content">
         <h1>Informasi Publik</h1>
         <div class="breadcrumb">
-        </div>
+</div>
     </div>
 </div>
 

@@ -16,7 +16,6 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
-    overflow: visible;
 }
 
 /* Navigation */
@@ -27,6 +26,20 @@ body {
     z-index: 9999;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid #e9ecef;
+}
+
+/* Hide all scrollbars in navigation */
+.main-nav::-webkit-scrollbar,
+.nav-content::-webkit-scrollbar,
+.nav-menu::-webkit-scrollbar {
+    display: none;
+}
+
+.main-nav,
+.nav-content,
+.nav-menu {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .nav-content {
@@ -118,17 +131,42 @@ body {
 .dropdown-menu {
     position: absolute;
     top: 100%;
-    left: 0;
+    right: 0;
     background-color: white;
     min-width: 250px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
-    z-index: 10001;
+    z-index: 10002;
     display: block;
+    overflow: hidden;
+}
+
+/* Hide scrollbars for dropdown menu */
+.dropdown-menu::-webkit-scrollbar {
+    display: none;
+}
+
+.dropdown-menu {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Special positioning for dropdowns that might get cut off */
+.nav-item:nth-child(3) .dropdown-menu,
+.nav-item:last-child .dropdown-menu {
+    right: 0;
+    left: auto;
+}
+
+/* For first two dropdowns, keep left alignment */
+.nav-item:nth-child(1) .dropdown-menu,
+.nav-item:nth-child(2) .dropdown-menu {
+    left: 0;
+    right: auto;
 }
 
 .dropdown:hover .dropdown-menu,
@@ -223,9 +261,9 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     color: white;
-    padding: 150px 0;
+    padding: 120px 0 150px 0;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .hero-banner::before {
@@ -241,10 +279,12 @@ body {
 
 .hero-content-centered {
     text-align: center;
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
     position: relative;
     z-index: 1;
+    width: 100%;
+    overflow: visible;
 }
 
 .hero-content {
@@ -258,7 +298,8 @@ body {
 
 .hero-text {
     flex: 1;
-    margin-top: -20px;
+    margin-top: 0;
+    padding-top: 20px;
 }
 
 .hero-text h2 {
@@ -266,6 +307,10 @@ body {
     font-weight: 600;
     margin-bottom: 10px;
     opacity: 0.9;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+    width: 100%;
 }
 
 .hero-text h1 {
@@ -1248,7 +1293,104 @@ body {
     color: #0d9488;
 }
 
-/* Footer */
+/* Service Section */
+.top-services {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    justify-items: center;
+}
+
+.service-box {
+    background: rgba(26, 58, 95, 0.02);
+    border: 1px solid rgba(26, 58, 95, 0.1);
+    border-radius: 10px;
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.service-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.service-box h3 {
+    color: #1a3a5f;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.service-box p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.service-link {
+    display: inline-block;
+    background: #2c5282;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.service-link:hover {
+    background: #1a365d;
+    transform: translateY(-2px);
+}
+
+/* Responsive design for service boxes */
+@media (max-width: 768px) {
+    .top-services {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .service-box {
+        min-height: 180px;
+        padding: 20px;
+    }
+    
+    .service-box h3 {
+        font-size: 18px;
+    }
+    
+    .service-box p {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-services {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .service-box {
+        min-height: 160px;
+        padding: 15px;
+    }
+}
 .footer {
     background-color: #1a3a5f;
     color: white;
@@ -1409,6 +1551,12 @@ body {
 
     .hero-text h1 {
         font-size: 36px;
+    }
+
+    .hero-text h2 {
+        font-size: 18px;
+        white-space: normal;
+        line-height: 1.3;
     }
 
     .dropdown-menu {
