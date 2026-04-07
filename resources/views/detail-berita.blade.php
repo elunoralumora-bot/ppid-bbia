@@ -181,16 +181,6 @@
             <a href="{{ url('/berita') }}" class="btn btn-primary">Kembali ke Berita</a>
         </div>
         @endif
-        
-        <div class="action-section">
-            <h2>Akses Layanan Informasi</h2>
-            <p>Silakan akses layanan informasi publik melalui link berikut:</p>
-            <div class="action-links">
-                <a href="{{ url('/berita') }}" class="btn btn-outline">Kembali ke Berita</a>
-                <a href="{{ url('/informasi-publik') }}" class="btn btn-outline">Informasi Publik</a>
-                <a href="{{ url('/form-permohonan') }}" class="btn btn-outline">Ajukan Permohonan</a>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -593,35 +583,6 @@
     color: #1a3a5f;
     font-size: 28px;
     margin-bottom: 20px;
-}
-
-.action-section {
-    margin-top: 60px;
-    padding: 30px;
-    background: rgba(26, 58, 95, 0.05);
-    border-radius: 15px;
-    border: 2px solid rgba(26, 58, 95, 0.1);
-}
-
-.action-section h2 {
-    margin-top: 0;
-    color: #1a3a5f;
-}
-
-.action-section p {
-    margin-bottom: 25px;
-}
-
-.action-links {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.action-links .btn {
-    flex: 1;
-    min-width: 200px;
-    text-align: center;
 }
 
 .btn {
