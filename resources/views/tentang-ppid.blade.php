@@ -14,24 +14,40 @@
         <h2>Apa itu PPID?</h2>
         <p>Pejabat Pengelola Informasi dan Dokumentasi (PPID) adalah pejabat yang bertanggung jawab atas penyediaan layanan dan informasi publik di lingkungan Balai Besar Industri Agro (BBIA). PPID BBIA berfungsi sebagai jembatan antara institusi dengan masyarakat dalam hal akses informasi publik.</p>
         
-        <h2>Tugas dan Fungsi</h2>
-        <p>Berdasarkan Undang-Undang Nomor 14 Tahun 2008 tentang Keterbukaan Informasi Publik, PPID BBIA memiliki tugas dan fungsi:</p>
-        <ul>
-            <li>Menyediakan akses informasi publik secara cepat, tepat, dan akuntabel</li>
-            <li>Melakukan verifikasi dan konfirmasi informasi publik</li>
-            <li>Menetapkan standar layanan informasi publik</li>
-            <li>Melakukan pemutakhiran informasi publik secara berkala</li>
-            <li>Menyediakan mekanisme penanganan sengketa informasi</li>
-        </ul>
+        <h2>Tugas dan Tanggung Jawab</h2>
+        <p>Sesuai Peraturan Pemerintah No. 61 Tahun 2010 Tentang Pelaksanaan Undang-Undang No. 14 Tahun 2008, tugas dan tanggung jawab PPID adalah:</p>
         
-        <h2>Dasar Hukum</h2>
-        <p>Pelaksanaan tugas PPID BBIA didasarkan pada:</p>
-        <ul>
-            <li>Undang-Undang Nomor 14 Tahun 2008 tentang Keterbukaan Informasi Publik</li>
-            <li>Peraturan Pemerintah Nomor 61 Tahun 2010 tentang Pelaksanaan UU Keterbukaan Informasi Publik</li>
-            <li>Peraturan Komisi Informasi Nomor 1 Tahun 2010 tentang Standar Layanan Informasi Publik</li>
-            <li>Peraturan internal Kementerian Perindustrian terkait PPID</li>
-        </ul>
+        <ol>
+            <li>Penyediaan, penyimpanan, pendokumentasian dan pengamanan informasi;</li>
+            <li>Pelayanan Informasi Publik sesuai aturan yang berlaku;</li>
+            <li>Pelayanan Informasi Publik yang cepat, tepat, sederhana;</li>
+            <li>Penetapan prosedur operasional dalam penyebarluasan Informasi Publik;</li>
+            <li>Pengujian konsekuensi;</li>
+            <li>Pengklasifikasian informasi dan/atau pengubahannya;</li>
+            <li>Penetapan informasi yang dikecualikan yang telah habis jangka waktu pengecualiannya sebagai Informasi Publik yang dapat diakses; dan</li>
+            <li>Penetapan pertimbangan tertulis atas setiap kebijakan yang diambil untuk memenuhi hak setiap orang atas Informasi Publik.</li>
+        </ol>
+        
+        <h2>Operasional PPID</h2>
+        
+        <p>Pemohon informasi publik dapat memperoleh informasi publik secara langsung maupun melalui media, yaitu sebagai berikut:</p>
+        
+        <h3>Layanan Informasi Langsung</h3>
+        
+        <p>Untuk layanan langsung, pemohon Informasi Publik dapat datang langsung ke Desk Layanan Informasi Balai Besar Industri Agro di Ruang CSO (Customer Service Officer) Jl. Ir. H. Juanda No. 11, Bogor.</p>
+        
+        <h3>Layanan Informasi Melalui Media</h3>
+        
+        <p>Untuk Layanan Informasi melalui media, Pemohon Informasi Publik dapat menghubungi:</p>
+        
+        <div class="contact-info">
+            <p><strong>WA :</strong> 0812 1390 0044</p>
+            <p><strong>Telp. :</strong> (0251) 8324068</p>
+            <p><strong>Fax. :</strong> (0251) 8323339</p>
+            <p><strong>Email :</strong> cabi@bbia.go.id</p>
+            <p><strong>Website :</strong> http://www.bbia.go.id</p>
+        </div>
+        
     </div>
 </div>
 

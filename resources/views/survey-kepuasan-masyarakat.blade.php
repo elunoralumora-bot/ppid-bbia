@@ -269,14 +269,14 @@
     background: #f8f9fa;
     border: 2px solid #1a3a5f;
     border-radius: 10px;
-    padding: 25px;
+    padding: 20px;
 }
 
 .survey-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .survey-header h3 {
@@ -289,35 +289,35 @@
 .survey-period {
     background: #1a3a5f;
     color: white;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 14px;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 12px;
     font-weight: 600;
 }
 
 .survey-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 .stat-item {
     background: #1a3a5f;
     color: white;
-    border-radius: 10px;
-    padding: 20px;
+    border-radius: 8px;
+    padding: 12px 8px;
     text-align: center;
 }
 
 .stat-number {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 700;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 .stat-label {
-    font-size: 14px;
+    font-size: 11px;
     opacity: 0.8;
 }
 

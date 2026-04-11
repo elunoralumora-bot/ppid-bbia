@@ -14,77 +14,79 @@
         <h2>Waktu dan Biaya Layanan Informasi Publik</h2>
         <p>Berikut adalah informasi lengkap mengenai waktu dan biaya layanan informasi publik PPID BBIA sesuai dengan Peraturan Komisi Informasi Nomor 1 Tahun 2010.</p>
             
-            <div class="time-cost-grid">
-                <div class="info-card">
-                    <h3>⏰ Waktu Layanan</h3>
-                    <div class="time-list">
-                        <div class="time-item">
-                            <strong>Penerimaan Permohonan:</strong>
-                            <ul>
-                                <li>Senin - Kamis: 08:00 - 16:00 WIB</li>
-                                <li>Jumat: 08:00 - 15:30 WIB</li>
-                                <li>Sabtu - Minggu: Tutup</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="time-item">
-                            <strong>Proses Permohonan:</strong>
-                            <ul>
-                                <li>Maksimal: 10 hari kerja</li>
-                                <li>Perpanjangan: Maksimal 7 hari kerja</li>
-                                <li>Penyelesaian: Sesuai kesepakatan</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="time-item">
-                            <strong>Keberatan:</strong>
-                            <ul>
-                                <li>Biasa: 20 hari kerja</li>
-                                <li>Sederhana: 10 hari kerja</li>
-                                <li>Cepat: 5 hari kerja</li>
-                            </ul>
-                        </div>
+        <div class="time-cost-grid">
+            <div class="info-card">
+                <h3>Waktu Layanan</h3>
+                <div class="time-list">
+                    <div class="time-item">
+                        <strong>Penerimaan Permohonan:</strong>
+                        <ul>
+                            <li>Senin - Kamis: 08:00 - 16:00 WIB</li>
+                            <li>Jumat: 08:00 - 15:30 WIB</li>
+                            <li>Sabtu - Minggu: Tutup</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="time-item">
+                        <strong>Proses Permohonan:</strong>
+                        <ul>
+                            <li>Maksimal: 10 hari kerja</li>
+                            <li>Perpanjangan: Maksimal 7 hari kerja</li>
+                            <li>Penyelesaian: Sesuai kesepakatan</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="time-item">
+                        <strong>Keberatan:</strong>
+                        <ul>
+                            <li>Biasa: 20 hari kerja</li>
+                            <li>Sederhana: 10 hari kerja</li>
+                            <li>Cepat: 5 hari kerja</li>
+                        </ul>
                     </div>
                 </div>
-                
-                <div class="info-card">
-                    <h3>💰 Biaya Layanan</h3>
-                    <div class="cost-list">
-                        <div class="cost-item">
-                            <strong>Permohonan Informasi:</strong>
-                            <ul>
-                                <li><strong>Gratis</strong> - Tidak dipungut biaya</li>
-                                <li><strong>Salinan Informasi:</strong> Rp 200/halaman</li>
-                                <li><strong>Penyimpanan Digital:</strong> Rp 5.000/MB</li>
-                                <li><strong>Penyiriman:</strong> Sesuai tarif jasa</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="cost-item">
-                            <strong>Penggandaan:</strong>
-                            <ul>
-                                <li><strong>Gratis</strong> - Tidak dipungut biaya</li>
-                                <li><strong>Salinan Informasi:</strong> Rp 200/halaman</li>
-                                <li><strong>Penyimpanan Digital:</strong> Rp 5.000/MB</li>
-                                <li><strong>Penyiriman:</strong> Sesuai tarif jasa</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="cost-item">
-                            <strong>Keberatan:</strong>
-                            <ul>
-                                <li><strong>Gratis</strong> - Tidak dipungut biaya</li>
-                                <li><strong>Salinan Informasi:</strong> Rp 200/halaman</li>
-                                <li><strong>Penyimpanan Digital:</strong> Rp 5.000/MB</li>
-                                <li><strong>Penyiriman:</strong> Sesuai tarif jasa</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+            </div>
             
+            <div class="info-card">
+                <h3>Biaya Layanan</h3>
+                <div class="cost-list">
+                    <div class="cost-item">
+                        <strong>Permohonan Informasi:</strong>
+                        <ul>
+                            <li><strong>Gratis</strong> - Tidak dipungut biaya</li>
+                            <li><strong>Salinan Informasi:</strong> Rp 200/halaman</li>
+                            <li><strong>Penyimpanan Digital:</strong> Rp 5.000/MB</li>
+                            <li><strong>Penyiriman:</strong> Sesuai tarif jasa</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="cost-item">
+                        <strong>Penggandaan:</strong>
+                        <ul>
+                            <li><strong>Gratis</strong> - Tidak dipungut biaya</li>
+                            <li><strong>Salinan Informasi:</strong> Rp 200/halaman</li>
+                            <li><strong>Penyimpanan Digital:</strong> Rp 5.000/MB</li>
+                            <li><strong>Penyiriman:</strong> Sesuai tarif jasa</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="cost-item">
+                        <strong>Keberatan:</strong>
+                        <ul>
+                            <li><strong>Gratis</strong> - Tidak dipungut biaya</li>
+                            <li><strong>Salinan Informasi:</strong> Rp 200/halaman</li>
+                            <li><strong>Penyimpanan Digital:</strong> Rp 5.000/MB</li>
+                            <li><strong>Penyiriman:</strong> Sesuai tarif jasa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-sections">
             <h2>Informasi Tambahan</h2>
             <div class="info-box">
-                <h3>📖 Keterangan</h3>
+                <h3>Keterangan</h3>
                 <ul>
                     <li>Biaya sewaktu-waktu dapat berubah sesuai dengan peraturan yang berlaku</li>
                     <li>Biaya penyimpanan digital tidak termasuk biaya media penyimpanan</li>
@@ -250,6 +252,10 @@
     border-radius: 10px;
     padding: 25px;
     margin: 20px 0;
+}
+
+.info-sections {
+    margin-top: 40px;
 }
 
 .info-box h3 {

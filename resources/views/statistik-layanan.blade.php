@@ -122,7 +122,7 @@
         
         <div class="action-buttons">
             <a href="{{ url('/laporan-tahunan') }}" class="btn btn-primary">Laporan Tahunan</a>
-            <a href="{{ url('/survey-kepuasan-masyarakat') }}" class="btn btn-outline">Survey Kepuasan</a>
+            <a href="{{ url('/survey-kepuasan-masyarakat') }}" class="btn btn-primary">Survey Kepuasan</a>
         </div>
     </div>
 </div>

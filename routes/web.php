@@ -52,9 +52,6 @@ Route::get('/tentang-ppid', function () {
     return view('tentang-ppid');
 });
 
-Route::get('/tugas-dan-fungsi', function () {
-    return view('tugas-dan-fungsi');
-});
 
 Route::get('/struktur-organisasi', function () {
     return view('struktur-organisasi');

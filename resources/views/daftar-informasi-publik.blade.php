@@ -100,19 +100,19 @@
             <div class="format-section">
                 <h2>Format Informasi</h2>
                 <div class="format-grid">
-                    <div class="format-item">
+                    <div class="format-item cardbox">
                         <h3>📄 PDF</h3>
                         <p>Dokumen dalam format PDF untuk diunduh</p>
                     </div>
-                    <div class="format-item">
+                    <div class="format-item cardbox">
                         <h3>📊 Excel</h3>
                         <p>Data dalam format Excel untuk analisis</p>
                     </div>
-                    <div class="format-item">
+                    <div class="format-item cardbox">
                         <h3>🌐 HTML</h3>
                         <p>Informasi dalam format web untuk dibaca online</p>
                     </div>
-                    <div class="format-item">
+                    <div class="format-item cardbox">
                         <h3>📱 Mobile</h3>
                         <p>Tampilan mobile-friendly untuk akses mudah</p>
                     </div>
@@ -357,6 +357,19 @@
 .format-item {
     text-align: center;
     padding: 20px;
+}
+
+.format-item.cardbox {
+    background: white;
+    border: 2px solid rgba(26, 58, 95, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.format-item.cardbox:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .format-item h3 {

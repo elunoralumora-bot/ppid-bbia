@@ -1351,7 +1351,8 @@ body {
 }
 
 .service-link:hover {
-    background: #1a365d;
+    background: #000000;
+    color: white;
     transform: translateY(-2px);
 }
 

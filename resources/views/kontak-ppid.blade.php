@@ -11,38 +11,40 @@
 
 <div class="content-section">
     <div class="content-full">
-            <h2>Hubungi PPID BBIA</h2>
-            <p>PPID BBIA siap melayani kebutuhan informasi publik Anda. Silakan hubungi kami melalui berbagai kanal yang tersedia.</p>
-            
-            <div class="contact-grid">
-                <div class="contact-card">
-                    <div class="contact-icon">
-                        <img src="{{ asset('images/phone.jpg') }}" alt="Phone">
-                    </div>
-                    <h3>Telepon</h3>
-                    <p>(0251) 8324068</p>
-                    <p>Senin - Jumat, 08:00 - 16:00 WIB</p>
+        <h2>Hubungi PPID BBIA</h2>
+        <p>PPID BBIA siap melayani kebutuhan informasi publik Anda. Silakan hubungi kami melalui berbagai kanal yang tersedia.</p>
+        
+        <div class="contact-grid">
+            <div class="contact-card">
+                <div class="contact-icon">
+                    <img src="{{ asset('images/phone.jpg') }}" alt="Phone">
                 </div>
-                
-                <div class="contact-card">
-                    <div class="contact-icon">
-                        <img src="{{ asset('images/email.jpg') }}" alt="Email">
-                    </div>
-                    <h3>Email</h3>
-                    <p>cabi@bbia.go.id</p>
-                    <p>ppid@bbia.go.id</p>
-                </div>
-                
-                <div class="contact-card">
-                    <div class="contact-icon">
-                        <img src="{{ asset('images/location.jpg') }}" alt="Location">
-                    </div>
-                    <h3>Alamat</h3>
-                    <p>Jl. Ir. H. Juanda No. 11</p>
-                    <p>Bogor 16122</p>
-                    <p>Jawa Barat, Indonesia</p>
-                </div>
+                <h3>Telepon</h3>
+                <p>(0251) 8324068</p>
+                <p>Senin - Jumat, 08:00 - 16:00 WIB</p>
             </div>
+            
+            <div class="contact-card">
+                <div class="contact-icon">
+                    <img src="{{ asset('images/email.jpg') }}" alt="Email">
+                </div>
+                <h3>Email</h3>
+                <p>cabi@bbia.go.id</p>
+                <p>ppid@bbia.go.id</p>
+            </div>
+            
+            <div class="contact-card">
+                <div class="contact-icon">
+                    <img src="{{ asset('images/location.jpg') }}" alt="Location">
+                </div>
+                <h3>Alamat</h3>
+                <p>Jl. Ir. H. Juanda No. 11</p>
+                <p>Bogor 16122</p>
+                <p>Jawa Barat, Indonesia</p>
+            </div>
+        </div>
+    </div>
+</div>
             
 <style>
 .page-header {

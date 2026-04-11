@@ -31,13 +31,11 @@
                         <a href="#" class="nav-link dropdown-toggle">Profil</a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ url('/tentang-ppid') }}">Tentang PPID</a></li>
-                            <li><a href="{{ url('/tugas-dan-fungsi') }}">Tugas dan Fungsi</a></li>
                             <li><a href="{{ url('/struktur-organisasi') }}">Struktur Organisasi</a></li>
                             <li><a href="{{ url('/profil-pejabat') }}">Profil Pejabat</a></li>
                             <li><a href="{{ url('/visi-misi') }}">Visi Misi</a></li>
                             <li><a href="{{ url('/kontak-ppid') }}">Kontak PPID</a></li>
                             <li><a href="{{ url('/galeri-foto') }}">Galeri Foto</a></li>
-                            <li><a href="{{ url('/ppid-pelaksana-upt') }}">PPID Pelaksana UPT</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
