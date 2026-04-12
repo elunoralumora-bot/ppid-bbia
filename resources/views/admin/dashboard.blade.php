@@ -8,39 +8,34 @@
     <div class="dashboard-stats">
         <div class="stat-card">
             <h3>Total Berita</h3>
-            <div class="number">{{ @class_exists('App\Models\Berita') ? \App\Models\Berita::count() : 0 }}</div>
+            <div class="number">{{ App\Models\Berita::count() }}</div>
             <div class="stat-detail">
-                <span class="published">{{ @class_exists('App\Models\Berita') ? \App\Models\Berita::where('status', 'published')->count() : 0 }} Dipublikasikan</span>
-                <span class="draft">{{ @class_exists('App\Models\Berita') ? \App\Models\Berita::where('status', 'draft')->count() : 0 }} Draft</span>
+                <span class="published">{{ App\Models\Berita::where('status', 'published')->count() }} Dipublikasikan</span>
+                <span class="draft">{{ App\Models\Berita::where('status', 'draft')->count() }} Draft</span>
             </div>
         </div>
         <div class="stat-card">
             <h3>Permohonan</h3>
-            <div class="number">{{ @class_exists('App\Models\Permohonan') ? \App\Models\Permohonan::count() : 0 }}</div>
+            <div class="number">{{ App\Models\Permohonan::count() }}</div>
             <div class="stat-detail">
-                <span class="baru">{{ @class_exists('App\Models\Permohonan') ? \App\Models\Permohonan::where('status', 'baru')->count() : 0 }} Baru</span>
-                <span class="proses">{{ @class_exists('App\Models\Permohonan') ? \App\Models\Permohonan::where('status', 'diproses')->count() : 0 }} Diproses</span>
+                <span class="baru">{{ App\Models\Permohonan::where('status', 'baru')->count() }} Baru</span>
+                <span class="proses">{{ App\Models\Permohonan::where('status', 'diproses')->count() }} Diproses</span>
             </div>
         </div>
         <div class="stat-card">
             <h3>Keberatan</h3>
-            <div class="number">{{ @class_exists('App\Models\Keberatan') ? \App\Models\Keberatan::count() : 0 }}</div>
+            <div class="number">{{ App\Models\Keberatan::count() }}</div>
             <div class="stat-detail">
-                <span class="baru">{{ @class_exists('App\Models\Keberatan') ? \App\Models\Keberatan::where('status', 'baru')->count() : 0 }} Baru</span>
-                <span class="proses">{{ @class_exists('App\Models\Keberatan') ? \App\Models\Keberatan::where('status', 'diproses')->count() : 0 }} Diproses</span>
+                <span class="baru">{{ App\Models\Keberatan::where('status', 'baru')->count() }} Baru</span>
+                <span class="proses">{{ App\Models\Keberatan::where('status', 'diproses')->count() }} Diproses</span>
             </div>
         </div>
         <div class="stat-card">
             <h3>Total Konten</h3>
-            <div class="number">{{ 
-                (@class_exists('App\Models\Profil') ? \App\Models\Profil::count() : 0) + 
-                (@class_exists('App\Models\InformasiPublik') ? \App\Models\InformasiPublik::count() : 0) + 
-                (@class_exists('App\Models\StandarLayanan') ? \App\Models\StandarLayanan::count() : 0) + 
-                (@class_exists('App\Models\LaporanPublik') ? \App\Models\LaporanPublik::count() : 0) 
-            }}</div>
+            <div class="number">{{ App\Models\Profil::count() + App\Models\InformasiPublik::count() + App\Models\StandarLayanan::count() + App\Models\LaporanPublik::count() }}</div>
             <div class="stat-detail">
-                <span>{{ @class_exists('App\Models\Profil') ? \App\Models\Profil::count() : 0 }} Profil</span>
-                <span>{{ @class_exists('App\Models\InformasiPublik') ? \App\Models\InformasiPublik::count() : 0 }} Informasi</span>
+                <span>{{ App\Models\Profil::count() }} Profil</span>
+                <span>{{ App\Models\InformasiPublik::count() }} Informasi</span>
             </div>
         </div>
     </div>
@@ -50,54 +45,48 @@
         <h2>Aktivitas Terkini</h2>
         <ul class="activity-list">
             <!-- Permohonan Terbaru -->
-            @if(@class_exists('App\Models\Permohonan'))
-                @php
-                    $permohonanTerbaru = \App\Models\Permohonan::latest()->first();
-                @endphp
-                @if($permohonanTerbaru)
-                    <li>
-                        <div class="activity-item">
-                            <span class="activity-title">Permohonan baru dari {{ $permohonanTerbaru->nama_pemohon }}</span>
-                            <span class="activity-date">{{ $permohonanTerbaru->created_at->diffForHumans() }}</span>
-                        </div>
-                    </li>
-                @endif
+            @php
+                $permohonanTerbaru = App\Models\Permohonan::latest()->first();
+            @endphp
+            @if($permohonanTerbaru)
+                <li>
+                    <div class="activity-item">
+                        <span class="activity-title">Permohonan baru dari {{ $permohonanTerbaru->nama_pemohon }}</span>
+                        <span class="activity-date">{{ $permohonanTerbaru->created_at->diffForHumans() }}</span>
+                    </div>
+                </li>
             @endif
             
             <!-- Berita Terbaru -->
-            @if(@class_exists('App\Models\Berita'))
-                @php
-                    $beritaTerbaru = \App\Models\Berita::latest()->first();
-                @endphp
-                @if($beritaTerbaru)
-                    <li>
-                        <div class="activity-item">
-                            <span class="activity-title">Berita "{{ $beritaTerbaru->judul }}" {{ $beritaTerbaru->status == 'published' ? 'dipublikasikan' : 'dibuat' }}</span>
-                            <span class="activity-date">{{ $beritaTerbaru->created_at->diffForHumans() }}</span>
-                        </div>
-                    </li>
-                @endif
+            @php
+                $beritaTerbaru = App\Models\Berita::latest()->first();
+            @endphp
+            @if($beritaTerbaru)
+                <li>
+                    <div class="activity-item">
+                        <span class="activity-title">Berita "{{ $beritaTerbaru->judul }}" {{ $beritaTerbaru->status == 'published' ? 'dipublikasikan' : 'dibuat' }}</span>
+                        <span class="activity-date">{{ $beritaTerbaru->created_at->diffForHumans() }}</span>
+                    </div>
+                </li>
             @endif
             
             <!-- Keberatan Terbaru -->
-            @if(@class_exists('App\Models\Keberatan'))
-                @php
-                    $keberatanTerbaru = \App\Models\Keberatan::latest()->first();
-                @endphp
-                @if($keberatanTerbaru)
-                    <li>
-                        <div class="activity-item">
-                            <span class="activity-title">Keberatan dari {{ $keberatanTerbaru->nama_pemohon }}</span>
-                            <span class="activity-date">{{ $keberatanTerbaru->created_at->diffForHumans() }}</span>
-                        </div>
-                    </li>
-                @endif
+            @php
+                $keberatanTerbaru = App\Models\Keberatan::latest()->first();
+            @endphp
+            @if($keberatanTerbaru)
+                <li>
+                    <div class="activity-item">
+                        <span class="activity-title">Keberatan dari {{ $keberatanTerbaru->nama_pemohon }}</span>
+                        <span class="activity-date">{{ $keberatanTerbaru->created_at->diffForHumans() }}</span>
+                    </div>
+                </li>
             @endif
             
             <!-- Statistik Quick Info -->
             <li>
                 <div class="activity-item">
-                    <span class="activity-title">Total {{ @class_exists('App\Models\LaporanPublik') ? \App\Models\LaporanPublik::count() : 0 }} Laporan Publik & {{ @class_exists('App\Models\StandarLayanan') ? \App\Models\StandarLayanan::count() : 0 }} Standar Layanan tersedia</span>
+                    <span class="activity-title">Total {{ App\Models\LaporanPublik::count() }} Laporan Publik & {{ App\Models\StandarLayanan::count() }} Standar Layanan tersedia</span>
                     <span class="activity-date">Sekarang</span>
                 </div>
             </li>
@@ -111,7 +100,7 @@
             <a href="{{ route('admin.berita.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Berita</a>
             <a href="{{ route('admin.permohonan') }}" class="btn btn-info"><i class="fas fa-eye"></i> Lihat Permohonan</a>
             <a href="{{ route('admin.keberatan') }}" class="btn btn-warning"><i class="fas fa-eye"></i> Lihat Keberatan</a>
-            <a href="#" class="btn btn-success"><i class="fas fa-upload"></i> Upload Laporan</a>
+            <a href="{{ route('admin.laporan-publik.create') }}" class="btn btn-success"><i class="fas fa-upload"></i> Upload Laporan</a>
         </div>
     </div>
     

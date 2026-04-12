@@ -26,4 +26,14 @@ class Permohonan extends Model
         'tanggal_proses' => 'date',
         'tanggal_selesai' => 'date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'email', 'email');
+    }
+
+    public function keberatan()
+    {
+        return $this->hasMany(Keberatan::class);
+    }
 }

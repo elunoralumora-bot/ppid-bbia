@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Login Admin - PPID BBIA</title>
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <style>
         body {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -31,7 +32,7 @@
         }
         
         .login-header h1 {
-            color: #e74c3c;
+            color: #333;
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
         }
@@ -63,12 +64,12 @@
         
         .form-group input:focus {
             outline: none;
-            border-color: #e74c3c;
+            border-color: #667eea;
         }
         
         .btn-login {
             width: 100%;
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 0.75rem;
             border: none;
@@ -98,26 +99,11 @@
         }
         
         .back-link a {
-            color: #e74c3c;
+            color: #667eea;
             text-decoration: none;
         }
         
         .back-link a:hover {
-            text-decoration: underline;
-        }
-        
-        .user-link {
-            text-align: center;
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-        }
-        
-        .user-link a {
-            color: #3498db;
-            text-decoration: none;
-        }
-        
-        .user-link a:hover {
             text-decoration: underline;
         }
     </style>
@@ -125,8 +111,8 @@
 <body>
     <div class="login-container">
         <div class="login-header">
-            <h1>🔐 Admin PPID BBIA</h1>
-            <p>Login untuk mengakses dashboard admin</p>
+            <h1>Admin PPID BBIA</h1>
+            <p>Silakan login untuk mengakses dashboard</p>
         </div>
         
         @if ($errors->any())
@@ -138,24 +124,20 @@
         <form action="{{ route('admin.login.submit') }}" method="POST">
             @csrf
             <div class="form-group">
-                <label for="email">Email Admin</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ old('email') }}" required autocomplete="email">
             </div>
             
             <div class="form-group">
-                <label for="password">Password Admin</label>
-                <input type="password" id="password" name="password" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
             </div>
             
-            <button type="submit" class="btn-login">Login sebagai Admin</button>
+            <button type="submit" class="btn-login">Login</button>
         </form>
         
         <div class="back-link">
             <a href="{{ url('/ppid') }}">← Kembali ke Halaman Utama</a>
-        </div>
-        
-        <div class="user-link">
-            <small>Bukan admin? <a href="{{ url('/login') }}">Login sebagai User</a></small>
         </div>
     </div>
 </body>

@@ -25,4 +25,14 @@ class Keberatan extends Model
         'tanggal_proses' => 'date',
         'tanggal_selesai' => 'date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'email', 'email');
+    }
+
+    public function permohonan()
+    {
+        return $this->belongsTo(Permohonan::class);
+    }
 }

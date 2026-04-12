@@ -7,10 +7,16 @@ use App\Models\InformasiPublik;
 
 class InformasiPublikController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $informasis = InformasiPublik::orderBy('kategori')->orderBy('urutan')->get();
-        return view('admin.informasi-publik', compact('informasis'));
+        $kategori = $request->query('kategori');
+        $query = InformasiPublik::orderBy('kategori')->orderBy('urutan');
+        if ($kategori) {
+            $query->where('kategori', $kategori);
+        }
+        $informasis = $query->get();
+        $activeKategori = $kategori;
+        return view('admin.informasi-publik', compact('informasis', 'activeKategori'));
     }
 
     public function create()
