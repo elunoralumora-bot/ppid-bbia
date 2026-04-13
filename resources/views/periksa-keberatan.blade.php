@@ -13,6 +13,12 @@
 
 <div class="content-section">
     <div class="content-full">
+        @if(session('error'))
+            <div style="background: #fee; color: #c00; padding: 1rem; border-radius: 5px; margin-bottom: 1rem; border-left: 4px solid #c00;">
+                {{ session('error') }}
+            </div>
+        @endif
+        
         <p>Untuk memeriksa status keberatan atas layanan informasi publik yang telah Anda ajukan, silakan masukkan nomor tiket atau nomor registrasi keberatan Anda.</p>
         
         <form class="permohonan-form" method="POST" action="{{ url('/cek-status-keberatan') }}">
@@ -20,12 +26,12 @@
                         
             <!-- Data Pemeriksaan -->
             <div class="form-section">
-                <h3>🔍 Data Pemeriksaan</h3>
+                <h3> Data Pemeriksaan</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="nomor_tiket_keberatan">Nomor Tiket Keberatan *</label>
-                        <input type="text" id="nomor_tiket_keberatan" name="nomor_tiket_keberatan" required placeholder="Masukkan nomor tiket keberatan">
-                        <small class="form-help">Contoh: KEB-2024-00123</small>
+                        <input type="text" id="nomor_tiket_keberatan" name="nomor_tiket_keberatan" required placeholder="Masukkan nomor tiket keberatan (ID)">
+                        <small class="form-help">Contoh: 1, 2, 3 (sesuai ID keberatan)</small>
                     </div>
                     
                     <div class="form-group">
@@ -51,73 +57,126 @@
 
         
         <!-- Hasil Pencarian -->
-        <div class="hasil-pencarian" id="hasil-pencarian" style="display: none;">
-            <h2>📋 Hasil Pencarian</h2>
+        @if(session('keberatan'))
+        <div class="hasil-pencarian" id="hasil-pencarian" style="display: block;">
+            <h2> Hasil Pencarian</h2>
             
             <div class="status-card">
                 <div class="status-header">
                     <h3>Informasi Keberatan</h3>
-                    <span class="status-badge status-proses">Dalam Proses</span>
+                    <span class="status-badge status-{{ session('keberatan')->status }}">
+                        {{ ucfirst(session('keberatan')->status) }}
+                    </span>
                 </div>
                 
                 <div class="status-content">
                     <div class="status-row">
                         <strong>Nomor Tiket:</strong>
-                        <span>KEB-2024-00123</span>
+                        <span>{{ session('keberatan')->id }}</span>
+                    </div>
+                    <div class="status-row">
+                        <strong>Nama Pemohon:</strong>
+                        <span>{{ session('keberatan')->nama_pemohon }}</span>
+                    </div>
+                    <div class="status-row">
+                        <strong>Email:</strong>
+                        <span>{{ session('keberatan')->email }}</span>
+                    </div>
+                    <div class="status-row">
+                        <strong>Telepon:</strong>
+                        <span>{{ session('keberatan')->telepon }}</span>
                     </div>
                     <div class="status-row">
                         <strong>Tanggal Pengajuan:</strong>
-                        <span>18 Maret 2024, 10:30 WIB</span>
+                        <span>{{ session('keberatan')->tanggal_keberatan->format('d F Y, H:i') }}</span>
                     </div>
                     <div class="status-row">
                         <strong>Alasan Keberatan:</strong>
-                        <span>Tidak Mendapatkan Tanggapan Permohonan</span>
+                        <span>{{ session('keberatan')->alasan_keberatan }}</span>
                     </div>
                     <div class="status-row">
                         <strong>Status Saat Ini:</strong>
-                        <span class="status-proses">Sedang Diproses</span>
+                        <span class="status-{{ session('keberatan')->status }}">
+                            @switch(session('keberatan')->status)
+                                @case('pending')
+                                    Pending
+                                    @break
+                                @case('proses')
+                                    Sedang Diproses
+                                    @break
+                                @case('selesai')
+                                    Selesai
+                                    @break
+                                @case('ditolak')
+                                    Ditolak
+                                    @break
+                                @default
+                                    {{ session('keberatan')->status }}
+                            @endswitch
+                        </span>
                     </div>
+                    @if(session('keberatan')->tanggal_proses)
                     <div class="status-row">
-                        <strong>Estimasi Selesai:</strong>
-                        <span>28 Maret 2024</span>
+                        <strong>Tanggal Proses:</strong>
+                        <span>{{ session('keberatan')->tanggal_proses->format('d F Y, H:i') }}</span>
                     </div>
+                    @endif
+                    @if(session('keberatan')->tanggal_selesai)
+                    <div class="status-row">
+                        <strong>Tanggal Selesai:</strong>
+                        <span>{{ session('keberatan')->tanggal_selesai->format('d F Y, H:i') }}</span>
+                    </div>
+                    @endif
+                    @if(session('keberatan')->catatan)
+                    <div class="status-row">
+                        <strong>Catatan:</strong>
+                        <span>{{ session('keberatan')->catatan }}</span>
+                    </div>
+                    @endif
                 </div>
             </div>
 
             <div class="timeline-section">
-                <h3>📅 Timeline Proses</h3>
-                            <div class="timeline">
-                                <div class="timeline-item completed">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <strong>Keberatan Diterima</strong>
-                                        <p>18 Maret 2024, 10:30 WIB</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-item completed">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <strong>Verifikasi Data</strong>
-                                        <p>19 Maret 2024, 09:00 WIB</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-item active">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <strong>Proses Keberatan</strong>
-                                        <p>20 Maret 2024, 10:00 WIB</p>
-                                    </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <strong>Keputusan</strong>
-                                        <p>Estimasi 28 Maret 2024</p>
-                                    </div>
-                                </div>
-                            </div>
+                <h3> Timeline Proses</h3>
+                <div class="timeline">
+                    <div class="timeline-item completed">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>Keberatan Diterima</strong>
+                            <p>{{ session('keberatan')->tanggal_keberatan->format('d F Y, H:i') }}</p>
+                        </div>
+                    </div>
+                    @if(session('keberatan')->tanggal_proses)
+                    <div class="timeline-item completed">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>Proses Keberatan</strong>
+                            <p>{{ session('keberatan')->tanggal_proses->format('d F Y, H:i') }}</p>
+                        </div>
+                    </div>
+                    @endif
+                    @if(session('keberatan')->tanggal_selesai)
+                    <div class="timeline-item completed">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>Keberatan {{ ucfirst(session('keberatan')->status) }}</strong>
+                            <p>{{ session('keberatan')->tanggal_selesai->format('d F Y, H:i') }}</p>
+                        </div>
+                    </div>
+                    @endif
+                    @if(!session('keberatan')->tanggal_selesai && session('keberatan')->status != 'pending')
+                    <div class="timeline-item active">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <strong>Sedang Diproses</strong>
+                            <p>Status: {{ ucfirst(session('keberatan')->status) }}</p>
+                        </div>
+                    </div>
+                    @endif
+                </div>
             </div>
         </div>
+        @endif
 
         
         <!-- Informasi Tambahan -->
@@ -376,6 +435,16 @@
     color: #065f46;
 }
 
+.status-pending {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.status-ditolak {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
 .status-row {
     display: flex;
     justify-content: space-between;
@@ -543,20 +612,12 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Simulasi hasil pencarian
-    const form = document.querySelector('.permohonan-form');
+    // Auto scroll ke hasil jika ada session data
     const hasilPencarian = document.getElementById('hasil-pencarian');
-    
-    if (form && hasilPencarian) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Tampilkan hasil pencarian
-            hasilPencarian.style.display = 'block';
-            
-            // Scroll ke hasil
+    if (hasilPencarian && hasilPencarian.style.display !== 'none') {
+        setTimeout(() => {
             hasilPencarian.scrollIntoView({ behavior: 'smooth' });
-        });
+        }, 500);
     }
 });
 </script>

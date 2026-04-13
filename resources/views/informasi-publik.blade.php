@@ -13,79 +13,84 @@
 
 <div class="content-section">
     <div class="content-full">
-        <h2>Apa itu Informasi Publik?</h2>
-        <p>Informasi publik adalah semua informasi yang dihasilkan, disimpan, dikelola, dan/atau dimiliki oleh lembaga publik yang berkaitan dengan penyelenggara dan/atau kegiatan penyelenggara negara dan/atau lembaga publik lainnya sesuai dengan Undang-Undang No. 14 Tahun 2008 tentang Keterbukaan Informasi Publik.</p>
-        
-        <h2>Hak Pemohon Informasi</h2>
-        <p>Setiap pemohon informasi publik memiliki hak untuk:</p>
-        <ul>
-            <li>Memperoleh informasi publik yang tersedia</li>
-            <li>Mengajukan permohonan informasi secara tertulis</li>
-            <li>Memperoleh informasi tanpa biaya (untuk informasi dasar)</li>
-            <li>Memperoleh salinan informasi dalam bentuk hard copy atau soft copy</li>
-            <li>Mengajukan keberatan atas pelayanan informasi</li>
-        </ul>
-        
-        <h2>Kewajiban PPID</h2>
-        <p>PPID BBIA memiliki kewajiban untuk:</p>
-        <ul>
-            <li>Menyediakan dan memberikan akses informasi publik</li>
-            <li>Melakukan pemutakhiran informasi secara berkala</li>
-            <li>Memberikan pelayanan prima kepada pemohon</li>
-            <li>Menjaga keamanan dan kerahasiaan informasi tertentu</li>
-            <li>Membuat laporan tahunan tentang pelayanan informasi</li>
-        </ul>
-        
-        <h2>Jenis Informasi Publik</h2>
-        <p>Berdasarkan UU Keterbukaan Informasi Publik, informasi publik diklasifikasikan menjadi:</p>
-        
-        <h3>Informasi Berkala</h3>
-        <p>Informasi yang wajib tersedia setiap saat dan diumumkan secara berkala. Contoh: program kerja tahunan, laporan keuangan, daftar informasi publik, dan lain-lain.</p>
-        
-        <h3>Informasi Serta Merta</h3>
-        <p>Informasi yang dapat mengancam hajat hidup orang banyak dan kepentingan umum. Contoh: informasi bencana alam, wabah penyakit, dan informasi darurat lainnya.</p>
-        
-        <h3>Informasi Setiap Saat</h3>
-        <p>Informasi yang wajib tersedia setiap saat dan dapat diakses publik. Contoh: informasi tentang prosedur pelayanan, struktur organisasi, dan informasi lain yang relevan.</p>
-        
-        <h2>Informasi yang Dikecualikan</h2>
-        <p>Berdasarkan UU No. 14 Tahun 2008, beberapa informasi tidak dapat diakses publik, yaitu:</p>
-        <ul>
-            <li>Informasi yang dapat membahayakan pertahanan dan keamanan negara</li>
-            <li>Informasi yang mengungkap rahasia pribadi</li>
-            <li>Informasi yang dapat menghambat proses penegakan hukum</li>
-            <li>Informasi keuangan pemerintah yang belum diumumkan secara resmi</li>
-            <li>Informasi yang diatur dalam undang-undang sebagai rahasia dagang</li>
-        </ul>
-        
-        <h2>Prosedur Permohonan Informasi</h2>
-        <p>Untuk memperoleh informasi publik dari PPID BBIA, pemohon dapat:</p>
-        <ul>
-            <li>Mengajukan permohonan secara tertulis melalui form permohonan online</li>
-            <li>Mengisi formulir permohonan dengan data yang lengkap dan jelas</li>
-            <li>Menyertakan tujuan penggunaan informasi yang diminta</li>
-            <li>Menunggu proses verifikasi dan penyiapan informasi</li>
-            <li>Menerima informasi dalam bentuk yang disepakati</li>
-        </ul>
-        
-        <h2>Waktu dan Biaya Layanan</h2>
-        <p>PPID BBIA memberikan layanan informasi publik dengan:</p>
-        <ul>
-            <li>Waktu penyelesaian: 10 hari kerja untuk permohonan informasi biasa</li>
-            <li>Waktu penyelesaian: 20 hari kerja untuk permohonan informasi kompleks</li>
-            <li>Biaya: Gratis untuk informasi dasar, biaya fotokopi untuk salinan fisik</li>
-            <li>Biaya penggandaian: Rp. 100 per halaman untuk hitam putih</li>
-        </ul>
-        
-        <div class="action-section">
-            <h2>Akses Informasi Publik</h2>
-            <p>Silakan akses informasi publik yang tersedia melalui link berikut:</p>
-            <div class="action-links">
-                <a href="{{ url('/daftar-informasi-publik') }}" class="btn btn-outline">Daftar Informasi Lengkap</a>
-                <a href="{{ url('/form-permohonan') }}" class="btn btn-outline">Ajukan Permohonan</a>
-                <a href="{{ url('/prosedur-permohonan') }}" class="btn btn-outline">Prosedur Lengkap</a>
+        @if($konten)
+            {!! $konten->konten !!}
+        @else
+            <!-- Fallback content jika tidak ada data di database -->
+            <h2>Apa itu Informasi Publik?</h2>
+            <p>Informasi publik adalah semua informasi yang dihasilkan, disimpan, dikelola, dan/atau dimiliki oleh lembaga publik yang berkaitan dengan penyelenggara dan/atau kegiatan penyelenggara negara dan/atau lembaga publik lainnya sesuai dengan Undang-Undang No. 14 Tahun 2008 tentang Keterbukaan Informasi Publik.</p>
+            
+            <h2>Hak Pemohon Informasi</h2>
+            <p>Setiap pemohon informasi publik memiliki hak untuk:</p>
+            <ul>
+                <li>Memperoleh informasi publik yang tersedia</li>
+                <li>Mengajukan permohonan informasi secara tertulis</li>
+                <li>Memperoleh informasi tanpa biaya (untuk informasi dasar)</li>
+                <li>Memperoleh salinan informasi dalam bentuk hard copy atau soft copy</li>
+                <li>Mengajukan keberatan atas pelayanan informasi</li>
+            </ul>
+            
+            <h2>Kewajiban PPID</h2>
+            <p>PPID BBIA memiliki kewajiban untuk:</p>
+            <ul>
+                <li>Menyediakan dan memberikan akses informasi publik</li>
+                <li>Melakukan pemutakhiran informasi secara berkala</li>
+                <li>Memberikan pelayanan prima kepada pemohon</li>
+                <li>Menjaga keamanan dan kerahasiaan informasi tertentu</li>
+                <li>Membuat laporan tahunan tentang pelayanan informasi</li>
+            </ul>
+            
+            <h2>Jenis Informasi Publik</h2>
+            <p>Berdasarkan UU Keterbukaan Informasi Publik, informasi publik diklasifikasikan menjadi:</p>
+            
+            <h3>Informasi Berkala</h3>
+            <p>Informasi yang wajib tersedia setiap saat dan diumumkan secara berkala. Contoh: program kerja tahunan, laporan keuangan, daftar informasi publik, dan lain-lain.</p>
+            
+            <h3>Informasi Serta Merta</h3>
+            <p>Informasi yang dapat mengancam hajat hidup orang banyak dan kepentingan umum. Contoh: informasi bencana alam, wabah penyakit, dan informasi darurat lainnya.</p>
+            
+            <h3>Informasi Setiap Saat</h3>
+            <p>Informasi yang wajib tersedia setiap saat dan dapat diakses publik. Contoh: informasi tentang prosedur pelayanan, struktur organisasi, dan informasi lain yang relevan.</p>
+            
+            <h2>Informasi yang Dikecualikan</h2>
+            <p>Berdasarkan UU No. 14 Tahun 2008, beberapa informasi tidak dapat diakses publik, yaitu:</p>
+            <ul>
+                <li>Informasi yang dapat membahayakan pertahanan dan keamanan negara</li>
+                <li>Informasi yang mengungkap rahasia pribadi</li>
+                <li>Informasi yang dapat menghambat proses penegakan hukum</li>
+                <li>Informasi keuangan pemerintah yang belum diumumkan secara resmi</li>
+                <li>Informasi yang diatur dalam undang-undang sebagai rahasia dagang</li>
+            </ul>
+            
+            <h2>Prosedur Permohonan Informasi</h2>
+            <p>Untuk memperoleh informasi publik dari PPID BBIA, pemohon dapat:</p>
+            <ul>
+                <li>Mengajukan permohonan secara tertulis melalui form permohonan online</li>
+                <li>Mengisi formulir permohonan dengan data yang lengkap dan jelas</li>
+                <li>Menyertakan tujuan penggunaan informasi yang diminta</li>
+                <li>Menunggu proses verifikasi dan penyiapan informasi</li>
+                <li>Menerima informasi dalam bentuk yang disepakati</li>
+            </ul>
+            
+            <h2>Waktu dan Biaya Layanan</h2>
+            <p>PPID BBIA memberikan layanan informasi publik dengan:</p>
+            <ul>
+                <li>Waktu penyelesaian: 10 hari kerja untuk permohonan informasi biasa</li>
+                <li>Waktu penyelesaian: 20 hari kerja untuk permohonan informasi kompleks</li>
+                <li>Biaya: Gratis untuk informasi dasar, biaya fotokopi untuk salinan fisik</li>
+                <li>Biaya penggandaian: Rp. 100 per halaman untuk hitam putih</li>
+            </ul>
+            
+            <div class="action-section">
+                <h2>Akses Informasi Publik</h2>
+                <p>Silakan akses informasi publik yang tersedia melalui link berikut:</p>
+                <div class="action-links">
+                    <a href="{{ url('/daftar-informasi-publik') }}" class="btn btn-outline">Daftar Informasi Lengkap</a>
+                    <a href="{{ url('/form-permohonan') }}" class="btn btn-outline">Ajukan Permohonan</a>
+                    <a href="{{ url('/prosedur-permohonan') }}" class="btn btn-outline">Prosedur Lengkap</a>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 </div>
 

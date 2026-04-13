@@ -11,169 +11,174 @@
 
 <div class="content-section">
     <div class="content-full">
-        <h2>Laporan Tahunan PPID BBIA</h2>
-        <p>Berikut adalah laporan tahunan PPID BBIA yang berisi ringkasan kegiatan dan pencapaian kinerja dalam penyediaan layanan informasi publik.</p>
-            
-            <div class="report-grid">
-                <div class="report-item">
-                    <div class="report-header">
-                        <h3>Laporan Tahunan 2025</h3>
-                        <span class="report-year">2025</span>
-                    </div>
-                    <div class="report-stats">
-                        <div class="stat">
-                            <span class="stat-number">1,234</span>
-                            <span class="stat-label">Total Permohonan</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">1,189</span>
-                            <span class="stat-label">Diproses</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">98.5%</span>
-                            <span class="stat-label">Tingkat Kepuasan</span>
-                        </div>
-                    </div>
-                    <div class="report-actions">
-                        <a href="#" class="btn-link">Download PDF</a>
-                        <a href="#" class="btn-link">Ringkasan</a>
-                    </div>
-                </div>
+        @if($konten)
+            {!! $konten->konten !!}
+        @else
+            <!-- Fallback content jika tidak ada data di database -->
+            <h2>Laporan Tahunan PPID BBIA</h2>
+            <p>Berikut adalah laporan tahunan PPID BBIA yang berisi ringkasan kegiatan dan pencapaian kinerja dalam penyediaan layanan informasi publik.</p>
                 
-                <div class="report-item">
-                    <div class="report-header">
-                        <h3>Laporan Tahunan 2024</h3>
-                        <span class="report-year">2024</span>
-                    </div>
-                    <div class="report-stats">
-                        <div class="stat">
-                            <span class="stat-number">1,156</span>
-                            <span class="stat-label">Total Permohonan</span>
+                <div class="report-grid">
+                    <div class="report-item">
+                        <div class="report-header">
+                            <h3>Laporan Tahunan 2025</h3>
+                            <span class="report-year">2025</span>
                         </div>
-                        <div class="stat">
-                            <span class="stat-number">1,123</span>
-                            <span class="stat-label">Diproses</span>
+                        <div class="report-stats">
+                            <div class="stat">
+                                <span class="stat-number">1,234</span>
+                                <span class="stat-label">Total Permohonan</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">1,189</span>
+                                <span class="stat-label">Diproses</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">98.5%</span>
+                                <span class="stat-label">Tingkat Kepuasan</span>
+                            </div>
                         </div>
-                        <div class="stat">
-                            <span class="stat-number">97.2%</span>
-                            <span class="stat-label">Tingkat Kepuasan</span>
-                        </div>
-                    </div>
-                    <div class="report-actions">
-                        <a href="#" class="btn-link">Download PDF</a>
-                        <a href="#" class="btn-link">Ringkasan</a>
-                    </div>
-                </div>
-                
-                <div class="report-item">
-                    <div class="report-header">
-                        <h3>Laporan Tahunan 2023</h3>
-                        <span class="report-year">2023</span>
-                    </div>
-                    <div class="report-stats">
-                        <div class="stat">
-                            <span class="stat-number">1,089</span>
-                            <span class="stat-label">Total Permohonan</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">1,067</span>
-                            <span class="stat-label">Diproses</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">96.8%</span>
-                            <span class="stat-label">Tingkat Kepuasan</span>
+                        <div class="report-actions">
+                            <a href="#" class="btn-link">Download PDF</a>
+                            <a href="#" class="btn-link">Ringkasan</a>
                         </div>
                     </div>
-                    <div class="report-actions">
-                        <a href="#" class="btn-link">Download PDF</a>
-                        <a href="#" class="btn-link">Ringkasan</a>
+                    
+                    <div class="report-item">
+                        <div class="report-header">
+                            <h3>Laporan Tahunan 2024</h3>
+                            <span class="report-year">2024</span>
+                        </div>
+                        <div class="report-stats">
+                            <div class="stat">
+                                <span class="stat-number">1,156</span>
+                                <span class="stat-label">Total Permohonan</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">1,123</span>
+                                <span class="stat-label">Diproses</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">97.2%</span>
+                                <span class="stat-label">Tingkat Kepuasan</span>
+                            </div>
+                        </div>
+                        <div class="report-actions">
+                            <a href="#" class="btn-link">Download PDF</a>
+                            <a href="#" class="btn-link">Ringkasan</a>
+                        </div>
                     </div>
-                </div>
-            </div>
-            
-            <h2>Statistik Perbandingan</h2>
-            <div class="comparison-chart">
-                <div class="chart-item">
-                    <h3>Trend Permohonan</h3>
-                    <div class="chart-bars">
-                        <div class="bar-item">
-                            <div class="bar" style="height: 80%"></div>
-                            <span>2023</span>
-                            <span class="value">1,089</span>
+                    
+                    <div class="report-item">
+                        <div class="report-header">
+                            <h3>Laporan Tahunan 2023</h3>
+                            <span class="report-year">2023</span>
                         </div>
-                        <div class="bar-item">
-                            <div class="bar" style="height: 85%"></div>
-                            <span>2024</span>
-                            <span class="value">1,156</span>
+                        <div class="report-stats">
+                            <div class="stat">
+                                <span class="stat-number">1,089</span>
+                                <span class="stat-label">Total Permohonan</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">1,067</span>
+                                <span class="stat-label">Diproses</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number">96.8%</span>
+                                <span class="stat-label">Tingkat Kepuasan</span>
+                            </div>
                         </div>
-                        <div class="bar-item">
-                            <div class="bar" style="height: 100%"></div>
-                            <span>2025</span>
-                            <span class="value">1,234</span>
+                        <div class="report-actions">
+                            <a href="#" class="btn-link">Download PDF</a>
+                            <a href="#" class="btn-link">Ringkasan</a>
                         </div>
                     </div>
                 </div>
                 
-                <div class="chart-item">
-                    <h3>Tingkat Kepuasan</h3>
-                    <div class="chart-bars">
-                        <div class="bar-item">
-                            <div class="bar" style="height: 96.8%"></div>
-                            <span>2023</span>
-                            <span class="value">96.8%</span>
+                <h2>Statistik Perbandingan</h2>
+                <div class="comparison-chart">
+                    <div class="chart-item">
+                        <h3>Trend Permohonan</h3>
+                        <div class="chart-bars">
+                            <div class="bar-item">
+                                <div class="bar" style="height: 80%"></div>
+                                <span>2023</span>
+                                <span class="value">1,089</span>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar" style="height: 85%"></div>
+                                <span>2024</span>
+                                <span class="value">1,156</span>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar" style="height: 100%"></div>
+                                <span>2025</span>
+                                <span class="value">1,234</span>
+                            </div>
                         </div>
-                        <div class="bar-item">
-                            <div class="bar" style="height: 97.2%"></div>
-                            <span>2024</span>
-                            <span class="value">97.2%</span>
-                        </div>
-                        <div class="bar-item">
-                            <div class="bar" style="height: 98.5%"></div>
-                            <span>2025</span>
-                            <span class="value">98.5%</span>
+                    </div>
+                    
+                    <div class="chart-item">
+                        <h3>Tingkat Kepuasan</h3>
+                        <div class="chart-bars">
+                            <div class="bar-item">
+                                <div class="bar" style="height: 96.8%"></div>
+                                <span>2023</span>
+                                <span class="value">96.8%</span>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar" style="height: 97.2%"></div>
+                                <span>2024</span>
+                                <span class="value">97.2%</span>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar" style="height: 98.5%"></div>
+                                <span>2025</span>
+                                <span class="value">98.5%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <h2>Indikator Kinerja</h2>
-            <div class="indicators-grid">
-                <div class="indicator-item">
-                    <h3>📊 Waktu Respon</h3>
-                    <div class="indicator-value">8.2 hari</div>
-                    <div class="indicator-desc">Rata-rata waktu penyelesaian permohonan</div>
+                
+                <h2>Indikator Kinerja</h2>
+                <div class="indicators-grid">
+                    <div class="indicator-item">
+                        <h3> Waktu Respon</h3>
+                        <div class="indicator-value">8.2 hari</div>
+                        <div class="indicator-desc">Rata-rata waktu penyelesaian permohonan</div>
+                    </div>
+                    
+                    <div class="indicator-item">
+                        <h3> Tingkat Keberhasilan</h3>
+                        <div class="indicator-value">96.4%</div>
+                        <div class="indicator-desc">Permohonan yang berhasil diproses</div>
+                    </div>
+                    
+                    <div class="indicator-item">
+                        <h3> Pengguna Layanan</h3>
+                        <div class="indicator-value">2,456</div>
+                        <div class="indicator-desc">Total pengguna layanan informasi</div>
+                    </div>
+                    
+                    <div class="indicator-item">
+                        <h3> Kepuasan Pelanggan</h3>
+                        <div class="indicator-value">4.6/5</div>
+                        <div class="indicator-desc">Skor kepuasan pelanggan</div>
+                    </div>
                 </div>
                 
-                <div class="indicator-item">
-                    <h3>📈 Tingkat Keberhasilan</h3>
-                    <div class="indicator-value">96.4%</div>
-                    <div class="indicator-desc">Permohonan yang berhasil diproses</div>
+                <h2>Informasi Tambahan</h2>
+                <div class="info-box">
+                    <h3> Catatan Laporan</h3>
+                    <ul>
+                        <li>Laporan tahunan dibuat sesuai dengan Peraturan Komisi Informasi Nomor 1 Tahun 2010</li>
+                        <li>Data dikumpulkan dari sistem informasi PPID BBIA</li>
+                        <li>Laporan diverifikasi oleh internal audit BBIA</li>
+                        <li>Laporan disetujui oleh Kepala BBIA</li>
+                        <li>Laporan tersedia untuk umum sesuai prinsip keterbukaan informasi</li>
+                    </ul>
                 </div>
-                
-                <div class="indicator-item">
-                    <h3>👥 Pengguna Layanan</h3>
-                    <div class="indicator-value">2,456</div>
-                    <div class="indicator-desc">Total pengguna layanan informasi</div>
-                </div>
-                
-                <div class="indicator-item">
-                    <h3>💬 Kepuasan Pelanggan</h3>
-                    <div class="indicator-value">4.6/5</div>
-                    <div class="indicator-desc">Skor kepuasan pelanggan</div>
-                </div>
-            </div>
-            
-            <h2>Informasi Tambahan</h2>
-            <div class="info-box">
-                <h3>📖 Catatan Laporan</h3>
-                <ul>
-                    <li>Laporan tahunan dibuat sesuai dengan Peraturan Komisi Informasi Nomor 1 Tahun 2010</li>
-                    <li>Data dikumpulkan dari sistem informasi PPID BBIA</li>
-                    <li>Laporan diverifikasi oleh internal audit BBIA</li>
-                    <li>Laporan disetujui oleh Kepala BBIA</li>
-                    <li>Laporan tersedia untuk umum sesuai prinsip keterbukaan informasi</li>
-                </ul>
-            </div>
+            @endif
         </div>
     </div>
 </div>

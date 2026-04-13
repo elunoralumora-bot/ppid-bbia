@@ -11,67 +11,72 @@
 
 <div class="content-section">
     <div class="content-full">
-        <div class="service-detail">
-            <div class="service-icon-large">
-                <img src="{{ asset('images/standar-layanan.png') }}" alt="Standar Layanan">
+        @if($konten)
+            {!! $konten->konten !!}
+        @else
+            <!-- Fallback content jika tidak ada data di database -->
+            <div class="service-detail">
+                <div class="service-icon-large">
+                    <img src="{{ asset('images/standar-layanan.png') }}" alt="Standar Layanan">
+                </div>
             </div>
-        </div>
-        
-        <div class="service-content">
-            <h2>Standar Layanan PPID BBIA</h2>
-            <p>PPID BBIA menetapkan standar layanan informasi publik yang harus dipatuhi oleh seluruh unit kerja di lingkungan Balai Besar Industri Agro sesuai dengan peraturan perundang-undangan.</p>
             
-            <div class="info-grid">
-                <div class="info-box">
-                    <h3>Dasar Hukum</h3>
-                    <ul>
-                        <li>Undang-Undang Nomor 14 Tahun 2008 tentang Keterbukaan Informasi Publik</li>
-                        <li>Peraturan Pemerintah Nomor 61 Tahun 2010 tentang Pelaksanaan UU KIP</li>
-                        <li>Peraturan Komisi Informasi Nomor 1 Tahun 2010 tentang Standar Layanan Informasi Publik</li>
-                        <li>Peraturan internal Kementerian Perindustrian terkait PPID</li>
-                    </ul>
-                </div>
+            <div class="service-content">
+                <h2>Standar Layanan PPID BBIA</h2>
+                <p>PPID BBIA menetapkan standar layanan informasi publik yang harus dipatuhi oleh seluruh unit kerja di lingkungan Balai Besar Industri Agro sesuai dengan peraturan perundang-undangan.</p>
                 
-                <div class="info-box">
-                    <h3>Jangka Waktu Pelayanan</h3>
-                    <ul>
-                        <li><strong>Pemohonan Informasi:</strong> Maksimal 10 hari kerja sejak permohonan diterima</li>
-                        <li><strong>Keberatan:</strong> Maksimal 14 hari kerja sejak permohonan keberatan diterima</li>
-                        <li><strong>Sengketa Informasi:</strong> Maksimal 100 hari kerja sejak pengajuan sengketa informasi ke Komisi Informasi</li>
-                        <li><strong>Biaya:</strong> Tidak dipungut biaya untuk pemohonan informasi publik</li>
-                    </ul>
-                </div>
-                
-                <div class="info-box">
-                    <h3>Jam Pelayanan</h3>
-                    <ul>
-                        <li>Senin - Kamis: 08:00 - 16:00 WIB</li>
-                        <li>Senin - Jumat: Libur</li>
-                    </ul>
-                </div>
-                
-                <div class="info-box">
-                    <h3>Sarana dan Cara Pelayanan</h3>
-                    <ul>
-                        <li><strong>Langsung:</strong> Permohonan dapat diajukan langsung di kantor PPID BBIA</li>
-                        <li><strong>Online:</strong> Permohonan dapat diajukan melalui website atau email</li>
-                        <li><strong>Telepon:</strong> Permohonan informasi dapat diajukan melalui telepon</li>
-                        <li><strong>Fax:</strong> Permohonan informasi dapat diajukan melalui fax</li>
-                    </ul>
-                </div>
-                
-                <div class="info-box">
-                    <h3>Tata Cara Pelayanan</h3>
-                    <ul>
-                        <li><strong>Verifikasi:</strong> PPID BBIA akan memverifikasi kebenaran informasi yang diminta sebelum memberikan informasi tersebut</li>
-                        <li><strong>Konfirmasi:</strong> PPID BBIA akan memberikan konfirmasi atas kebenaran informasi yang diminta</li>
-                        <li><strong>Pemberitahuan:</strong> Informasi yang telah disediakan akan diberitahukan kepada pemohon</li>
-                        <li><strong>Pemutakhiran:</strong> Informasi publik akan dimutakhirkan secara berkala dan disediakan dalam daftar informasi publik</li>
-                        <li><strong>Pengaduan:</strong> PPID BBIA akan menangani pengaduan atas sengketa informasi yang diajukan oleh pemohon</li>
-                    </ul>
+                <div class="info-grid">
+                    <div class="info-box">
+                        <h3>Dasar Hukum</h3>
+                        <ul>
+                            <li>Undang-Undang Nomor 14 Tahun 2008 tentang Keterbukaan Informasi Publik</li>
+                            <li>Peraturan Pemerintah Nomor 61 Tahun 2010 tentang Pelaksanaan UU KIP</li>
+                            <li>Peraturan Komisi Informasi Nomor 1 Tahun 2010 tentang Standar Layanan Informasi Publik</li>
+                            <li>Peraturan internal Kementerian Perindustrian terkait PPID</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-box">
+                        <h3>Jangka Waktu Pelayanan</h3>
+                        <ul>
+                            <li><strong>Pemohonan Informasi:</strong> Maksimal 10 hari kerja sejak permohonan diterima</li>
+                            <li><strong>Keberatan:</strong> Maksimal 14 hari kerja sejak permohonan keberatan diterima</li>
+                            <li><strong>Sengketa Informasi:</strong> Maksimal 100 hari kerja sejak pengajuan sengketa informasi ke Komisi Informasi</li>
+                            <li><strong>Biaya:</strong> Tidak dipungut biaya untuk pemohonan informasi publik</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-box">
+                        <h3>Jam Pelayanan</h3>
+                        <ul>
+                            <li>Senin - Kamis: 08:00 - 16:00 WIB</li>
+                            <li>Senin - Jumat: Libur</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-box">
+                        <h3>Sarana dan Cara Pelayanan</h3>
+                        <ul>
+                            <li><strong>Langsung:</strong> Permohonan dapat diajukan langsung di kantor PPID BBIA</li>
+                            <li><strong>Online:</strong> Permohonan dapat diajukan melalui website atau email</li>
+                            <li><strong>Telepon:</strong> Permohonan informasi dapat diajukan melalui telepon</li>
+                            <li><strong>Fax:</strong> Permohonan informasi dapat diajukan melalui fax</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-box">
+                        <h3>Tata Cara Pelayanan</h3>
+                        <ul>
+                            <li><strong>Verifikasi:</strong> PPID BBIA akan memverifikasi kebenaran informasi yang diminta sebelum memberikan informasi tersebut</li>
+                            <li><strong>Konfirmasi:</strong> PPID BBIA akan memberikan konfirmasi atas kebenaran informasi yang diminta</li>
+                            <li><strong>Pemberitahuan:</strong> Informasi yang telah disediakan akan diberitahukan kepada pemohon</li>
+                            <li><strong>Pemutakhiran:</strong> Informasi publik akan dimutakhirkan secara berkala dan disediakan dalam daftar informasi publik</li>
+                            <li><strong>Pengaduan:</strong> PPID BBIA akan menangani pengaduan atas sengketa informasi yang diajukan oleh pemohon</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 </div>
 

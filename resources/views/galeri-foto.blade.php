@@ -13,73 +13,47 @@
     <div class="content-full">
         <h2>Dokumentasi Kegiatan PPID BBIA</h2>
         <p>Berikut adalah dokumentasi kegiatan PPID BBIA dalam memberikan layanan informasi publik kepada masyarakat.</p>
+        
+        <!-- Filter Categories -->
+        <div class="filter-section">
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterGallery('all')">Semua</button>
+                @php
+                    $categories = \App\Models\GaleriFoto::active()->distinct()->pluck('kategori')->sort();
+                @endphp
+                @foreach($categories as $category)
+                    <button class="filter-btn" onclick="filterGallery('{{ $category }}')">{{ $category }}</button>
+                @endforeach
+            </div>
+        </div>
             
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <img src="{{ asset('images/beranda.jpg') }}" alt="Sosialisasi PPID">
+            <div class="gallery-grid" id="galleryGrid">
+                @php
+                    $galeri = \App\Models\GaleriFoto::active()->ordered()->get();
+                @endphp
+                @forelse($galeri as $foto)
+                    <div class="gallery-item" data-category="{{ $foto->kategori }}">
+                        <div class="gallery-image">
+                            <img src="{{ $foto->image_url }}" alt="{{ $foto->judul }}" loading="lazy">
+                        </div>
+                        <div class="gallery-caption">
+                            <h3>{{ $foto->judul }}</h3>
+                            <p>{{ $foto->deskripsi }}</p>
+                            <div class="gallery-meta">
+                                <span class="gallery-category">{{ $foto->kategori }}</span>
+                                <span class="gallery-date">{{ $foto->created_at->format('d F Y') }}</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="gallery-caption">
-                        <h3>Sosialisasi PPID</h3>
-                        <p>Kegiatan sosialisasi keterbukaan informasi publik</p>
-                        <span class="gallery-date">15 Februari 2026</span>
+                @empty
+                    <div class="empty-gallery">
+                        <div class="empty-icon">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <h3>Belum Ada Foto</h3>
+                        <p>Belum ada foto galeri yang tersedia saat ini.</p>
                     </div>
-                </div>
-                
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <img src="{{ asset('images/beranda.jpg') }}" alt="Pelatihan PPID">
-                    </div>
-                    <div class="gallery-caption">
-                        <h3>Pelatihan PPID</h3>
-                        <p>Pelatihan peningkatan kapasitas petugas PPID</p>
-                        <span class="gallery-date">10 Februari 2026</span>
-                    </div>
-                </div>
-                
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <img src="{{ asset('images/beranda.jpg') }}" alt="Layanan Informasi">
-                    </div>
-                    <div class="gallery-caption">
-                        <h3>Layanan Informasi</h3>
-                        <p>Melayani permohonan informasi publik</p>
-                        <span class="gallery-date">5 Februari 2026</span>
-                    </div>
-                </div>
-                
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <img src="{{ asset('images/beranda.jpg') }}" alt="Rapat Koordinasi">
-                    </div>
-                    <div class="gallery-caption">
-                        <h3>Rapat Koordinasi</h3>
-                        <p>Rapat koordinasi PPID se-Jawa Barat</p>
-                        <span class="gallery-date">1 Februari 2026</span>
-                    </div>
-                </div>
-                
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <img src="{{ asset('images/beranda.jpg') }}" alt="Workshop">
-                    </div>
-                    <div class="gallery-caption">
-                        <h3>Workshop Keterbukaan Informasi</h3>
-                        <p>Workshop implementasi UU Keterbukaan Informasi</p>
-                        <span class="gallery-date">25 Januari 2026</span>
-                    </div>
-                </div>
-                
-                <div class="gallery-item">
-                    <div class="gallery-image">
-                        <img src="{{ asset('images/beranda.jpg') }}" alt="Kunjungan Kerja">
-                    </div>
-                    <div class="gallery-caption">
-                        <h3>Kunjungan Kerja</h3>
-                        <p>Kunjungan kerja PPID Kementerian Perindustrian</p>
-                        <span class="gallery-date">20 Januari 2026</span>
-                    </div>
-                </div>
+                @endforelse
             </div>
             
 
@@ -222,6 +196,85 @@
     font-weight: 500;
 }
 
+.filter-section {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.filter-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.filter-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #1a3a5f;
+    color: #1a3a5f;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: #1a3a5f;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 58, 95, 0.3);
+}
+
+.gallery-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e9ecef;
+}
+
+.gallery-category {
+    background: #1a3a5f;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.empty-gallery {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+}
+
+.empty-gallery .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.empty-gallery h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #1a3a5f;
+}
+
+.empty-gallery p {
+    font-size: 1rem;
+    margin: 0;
+}
+
 .gallery-info {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 15px;
@@ -254,5 +307,54 @@
     margin: 0;
 }
 </style>
+
+<script>
+function filterGallery(category) {
+    const items = document.querySelectorAll('.gallery-item');
+    const buttons = document.querySelectorAll('.filter-btn');
+    
+    // Update active button
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.trim().toLowerCase() === category.toLowerCase() || 
+            (category === 'all' && btn.textContent.trim() === 'Semua')) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Filter items
+    items.forEach(item => {
+        if (category === 'all') {
+            item.style.display = 'block';
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'scale(1)';
+            }, 100);
+        } else {
+            if (item.dataset.category === category) {
+                item.style.display = 'block';
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'scale(1)';
+                }, 100);
+            } else {
+                item.style.opacity = '0';
+                item.style.transform = 'scale(0.8)';
+                setTimeout(() => {
+                    item.style.display = 'none';
+                }, 300);
+            }
+        }
+    });
+}
+
+// Add transition styles
+document.addEventListener('DOMContentLoaded', function() {
+    const items = document.querySelectorAll('.gallery-item');
+    items.forEach(item => {
+        item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    });
+});
+</script>
 
 @endsection

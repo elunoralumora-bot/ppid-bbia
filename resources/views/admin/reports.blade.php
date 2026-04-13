@@ -4,147 +4,115 @@
 @section('page-title', 'Laporan Admin')
 
 @section('content')
-<div class="card">
-    <h2>Laporan Administrasi PPID</h2>
-    
-    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-        <select class="form-control" style="width: 200px;" id="yearFilter">
-            <option value="2026" {{ date('Y') == 2026 ? 'selected' : '' }}>2026</option>
-            <option value="2025" {{ date('Y') == 2025 ? 'selected' : '' }}>2025</option>
-            <option value="2024" {{ date('Y') == 2024 ? 'selected' : '' }}>2024</option>
-            <option value="2023" {{ date('Y') == 2023 ? 'selected' : '' }}>2023</option>
-        </select>
-        <button class="btn btn-primary" onclick="filterReports()">Filter</button>
-        <button class="btn btn-success" onclick="exportPDF()">Export PDF</button>
-        <button class="btn btn-warning" onclick="exportExcel()">Export Excel</button>
+<div class="table-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1.5rem 1.5rem 0;">
+        <h2 style="margin: 0; color: #0f2338; font-size: 1.25rem; font-weight: 700;">Laporan Administrasi PPID</h2>
+        <div style="display: flex; gap: 1rem;">
+            <button class="btn btn-success" onclick="exportPDF()">
+                <i class="fas fa-file-pdf"></i>
+                Export PDF
+            </button>
+            <button class="btn btn-warning" onclick="exportExcel()">
+                <i class="fas fa-file-excel"></i>
+                Export Excel
+            </button>
+        </div>
     </div>
     
-    <!-- Statistik Real-time -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-        <div style="background: #3498db; color: white; padding: 1.5rem; border-radius: 10px; text-align: center;">
-            <h3 style="margin: 0 0 0.5rem 0;">Total Permohonan</h3>
-            <div style="font-size: 2rem; font-weight: bold;">{{ App\Models\Permohonan::count() }}</div>
-            <small>{{ App\Models\Permohonan::whereYear('created_at', date('Y'))->count() }} tahun ini</small>
-        </div>
-        <div style="background: #27ae60; color: white; padding: 1.5rem; border-radius: 10px; text-align: center;">
-            <h3 style="margin: 0 0 0.5rem 0;">Diproses</h3>
-            <div style="font-size: 2rem; font-weight: bold;">{{ App\Models\Permohonan::where('status', 'diproses')->count() }}</div>
-            <small>{{ App\Models\Permohonan::where('status', 'diproses')->whereYear('created_at', date('Y'))->count() }} tahun ini</small>
-        </div>
-        <div style="background: #f39c12; color: white; padding: 1.5rem; border-radius: 10px; text-align: center;">
-            <h3 style="margin: 0 0 0.5rem 0;">Selesai</h3>
-            <div style="font-size: 2rem; font-weight: bold;">{{ App\Models\Permohonan::where('status', 'selesai')->count() }}</div>
-            <small>{{ App\Models\Permohonan::where('status', 'selesai')->whereYear('created_at', date('Y'))->count() }} tahun ini</small>
-        </div>
-        <div style="background: #e74c3c; color: white; padding: 1.5rem; border-radius: 10px; text-align: center;">
-            <h3 style="margin: 0 0 0.5rem 0;">Ditolak</h3>
-            <div style="font-size: 2rem; font-weight: bold;">{{ App\Models\Permohonan::where('status', 'ditolak')->count() }}</div>
-            <small>{{ App\Models\Permohonan::where('status', 'ditolak')->whereYear('created_at', date('Y'))->count() }} tahun ini</small>
+    <!-- Statistics Cards -->
+    <div style="padding: 0 1.5rem 1.5rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%); border-radius: 12px; padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #92400e;">{{ \App\Models\Permohonan::count() }}</div>
+                <div style="font-size: 0.875rem; color: #78350f;">Total Permohonan</div>
+                <div style="font-size: 0.75rem; color: #92400e; margin-top: 0.25rem;">{{ \App\Models\Permohonan::whereYear('tanggal_permohonan', date('Y'))->count() }} tahun ini</div>
+            </div>
+            <div style="background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%); border-radius: 12px; padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #92400e;">{{ \App\Models\Permohonan::where('status', 'baru')->count() }}</div>
+                <div style="font-size: 0.875rem; color: #78350f;">Permohonan Baru</div>
+                <div style="font-size: 0.75rem; color: #92400e; margin-top: 0.25rem;">{{ \App\Models\Permohonan::where('status', 'baru')->whereYear('tanggal_permohonan', date('Y'))->count() }} tahun ini</div>
+            </div>
+            <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px; padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #1e40af;">{{ \App\Models\Permohonan::where('status', 'diproses')->count() }}</div>
+                <div style="font-size: 0.875rem; color: #1e3a8a;">Sedang Diproses</div>
+                <div style="font-size: 0.75rem; color: #1e40af; margin-top: 0.25rem;">{{ \App\Models\Permohonan::where('status', 'diproses')->whereYear('tanggal_proses', date('Y'))->count() }} tahun ini</div>
+            </div>
+            <div style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-radius: 12px; padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #065f46;">{{ \App\Models\Permohonan::where('status', 'selesai')->count() }}</div>
+                <div style="font-size: 0.875rem; color: #047857;">Selesai</div>
+                <div style="font-size: 0.75rem; color: #065f46; margin-top: 0.25rem;">{{ \App\Models\Permohonan::where('status', 'selesai')->whereYear('tanggal_selesai', date('Y'))->count() }} tahun ini</div>
+            </div>
+            <div style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-radius: 12px; padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #991b1b;">{{ \App\Models\Permohonan::where('status', 'ditolak')->count() }}</div>
+                <div style="font-size: 0.875rem; color: #7f1d1d;">Ditolak</div>
+                <div style="font-size: 0.75rem; color: #991b1b; margin-top: 0.25rem;">{{ \App\Models\Permohonan::where('status', 'ditolak')->whereYear('tanggal_selesai', date('Y'))->count() }} tahun ini</div>
+            </div>
+            <div style="background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); border-radius: 12px; padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 700; color: #4338ca;">{{ \App\Models\Keberatan::count() }}</div>
+                <div style="font-size: 0.875rem; color: #4c1d95;">Total Keberatan</div>
+                <div style="font-size: 0.75rem; color: #4338ca; margin-top: 0.25rem;">{{ \App\Models\Keberatan::whereYear('tanggal_keberatan', date('Y'))->count() }} tahun ini</div>
+            </div>
         </div>
     </div>
     
     <!-- Tabel Laporan Bulanan -->
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Bulan</th>
-                <th>Permohonan Baru</th>
-                <th>Diproses</th>
-                <th>Selesai</th>
-                <th>Ditolak</th>
-                <th>Keberatan</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php
-                $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                $currentYear = date('Y');
-            @endphp
-            
-            @for($i = 1; $i <= 12; $i++)
+    <div style="padding: 0 1.5rem 1.5rem;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Bulan</th>
+                    <th>Permohonan Baru</th>
+                    <th>Sedang Diproses</th>
+                    <th>Selesai</th>
+                    <th>Ditolak</th>
+                    <th>Keberatan</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
                 @php
-                    $monthName = $months[$i-1];
-                    $permohonanBaru = App\Models\Permohonan::whereMonth('created_at', $i)->whereYear('created_at', $currentYear)->count();
-                    $diproses = App\Models\Permohonan::where('status', 'diproses')->whereMonth('updated_at', $i)->whereYear('updated_at', $currentYear)->count();
-                    $selesai = App\Models\Permohonan::where('status', 'selesai')->whereMonth('updated_at', $i)->whereYear('updated_at', $currentYear)->count();
-                    $ditolak = App\Models\Permohonan::where('status', 'ditolak')->whereMonth('updated_at', $i)->whereYear('updated_at', $currentYear)->count();
-                    $keberatan = App\Models\Keberatan::whereMonth('created_at', $i)->whereYear('created_at', $currentYear)->count();
-                    $total = $permohonanBaru;
+                    $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                    $currentYear = date('Y');
                 @endphp
                 
-                <tr>
-                    <td>{{ $monthName }}</td>
-                    <td>{{ $permohonanBaru }}</td>
-                    <td>{{ $diproses }}</td>
-                    <td>{{ $selesai }}</td>
-                    <td>{{ $ditolak }}</td>
-                    <td>{{ $keberatan }}</td>
-                    <td><strong>{{ $total }}</strong></td>
+                @for($i = 1; $i <= 12; $i++)
+                    @php
+                        $monthName = $months[$i-1];
+                        $permohonanBaru = \App\Models\Permohonan::whereMonth('tanggal_permohonan', $i)->whereYear('tanggal_permohonan', $currentYear)->count();
+                        $diproses = \App\Models\Permohonan::where('status', 'diproses')->whereMonth('tanggal_proses', $i)->whereYear('tanggal_proses', $currentYear)->count();
+                        $selesai = \App\Models\Permohonan::where('status', 'selesai')->whereMonth('tanggal_selesai', $i)->whereYear('tanggal_selesai', $currentYear)->count();
+                        $ditolak = \App\Models\Permohonan::where('status', 'ditolak')->whereMonth('tanggal_selesai', $i)->whereYear('tanggal_selesai', $currentYear)->count();
+                        $keberatan = \App\Models\Keberatan::whereMonth('tanggal_keberatan', $i)->whereYear('tanggal_keberatan', $currentYear)->count();
+                        $total = $permohonanBaru;
+                    @endphp
+                    
+                    <tr>
+                        <td>{{ $monthName }}</td>
+                        <td>{{ $permohonanBaru }}</td>
+                        <td>{{ $diproses }}</td>
+                        <td>{{ $selesai }}</td>
+                        <td>{{ $ditolak }}</td>
+                        <td>{{ $keberatan }}</td>
+                        <td><strong>{{ $total }}</strong></td>
+                    </tr>
+                @endfor
+                
+                <!-- Total Row -->
+                <tr style="background: #f8f9fa; font-weight: bold;">
+                    <td>TOTAL</td>
+                    <td>{{ \App\Models\Permohonan::whereYear('tanggal_permohonan', $currentYear)->count() }}</td>
+                    <td>{{ \App\Models\Permohonan::where('status', 'diproses')->whereYear('tanggal_proses', $currentYear)->count() }}</td>
+                    <td>{{ \App\Models\Permohonan::where('status', 'selesai')->whereYear('tanggal_selesai', $currentYear)->count() }}</td>
+                    <td>{{ \App\Models\Permohonan::where('status', 'ditolak')->whereYear('tanggal_selesai', $currentYear)->count() }}</td>
+                    <td>{{ \App\Models\Keberatan::whereYear('tanggal_keberatan', $currentYear)->count() }}</td>
+                    <td>{{ \App\Models\Permohonan::whereYear('tanggal_permohonan', $currentYear)->count() }}</td>
                 </tr>
-            @endfor
-            
-            <!-- Total Row -->
-            <tr style="background: #f8f9fa; font-weight: bold;">
-                <td>TOTAL</td>
-                <td>{{ App\Models\Permohonan::whereYear('created_at', $currentYear)->count() }}</td>
-                <td>{{ App\Models\Permohonan::where('status', 'diproses')->whereYear('updated_at', $currentYear)->count() }}</td>
-                <td>{{ App\Models\Permohonan::where('status', 'selesai')->whereYear('updated_at', $currentYear)->count() }}</td>
-                <td>{{ App\Models\Permohonan::where('status', 'ditolak')->whereYear('updated_at', $currentYear)->count() }}</td>
-                <td>{{ App\Models\Keberatan::whereYear('created_at', $currentYear)->count() }}</td>
-                <td>{{ App\Models\Permohonan::whereYear('created_at', $currentYear)->count() }}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- Additional Statistics -->
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-    <div class="card">
-        <h3>Statistik Berita</h3>
-        <div style="padding: 1rem 0;">
-            <p><strong>Total:</strong> {{ App\Models\Berita::count() }} berita</p>
-            <p><strong>Dipublikasikan:</strong> {{ App\Models\Berita::where('status', 'published')->count() }} berita</p>
-            <p><strong>Draft:</strong> {{ App\Models\Berita::where('status', 'draft')->count() }} berita</p>
-            <p><strong>Tahun ini:</strong> {{ App\Models\Berita::whereYear('created_at', $currentYear)->count() }} berita</p>
-        </div>
-    </div>
-    
-    <div class="card">
-        <h3>Statistik Konten</h3>
-        <div style="padding: 1rem 0;">
-            <p><strong>Profil:</strong> {{ App\Models\Profil::count() }} item</p>
-            <p><strong>Informasi Publik:</strong> {{ App\Models\InformasiPublik::count() }} item</p>
-            <p><strong>Standar Layanan:</strong> {{ App\Models\StandarLayanan::count() }} item</p>
-            <p><strong>Laporan Publik:</strong> {{ App\Models\LaporanPublik::count() }} item</p>
-        </div>
-    </div>
-    
-    <div class="card">
-        <h3>Statistik User</h3>
-        <div style="padding: 1rem 0;">
-            <p><strong>Total Admin:</strong> {{ App\Models\Admin::count() }} admin</p>
-            <p><strong>Total User:</strong> {{ App\Models\User::count() }} user</p>
-            <p><strong>Aktif Hari Ini:</strong> 
-                @php
-                    $activeToday = App\Models\Admin::whereDate('last_login', today())->count() + 
-                                  App\Models\User::whereDate('last_login', today())->count();
-                @endphp
-                {{ $activeToday }} user
-            </p>
-        </div>
+            </tbody>
+        </table>
     </div>
 </div>
 
 <script>
-function filterReports() {
-    const year = document.getElementById('yearFilter').value;
-    // Implementasi filter berdasarkan tahun
-    console.log('Filter tahun:', year);
-    // Reload halaman dengan parameter tahun
-    window.location.href = '?year=' + year;
-}
-
 function exportPDF() {
     alert('Export PDF akan segera tersedia');
     // Implementasi export PDF

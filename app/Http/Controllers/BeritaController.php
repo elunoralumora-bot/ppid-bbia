@@ -11,12 +11,12 @@ class BeritaController extends Controller
     public function index()
     {
         $beritas = Berita::latest()->paginate(10);
-        return view('admin.berita', compact('beritas'));
+        return view('admin.berita.index', compact('beritas'));
     }
 
     public function create()
     {
-        return view('admin.berita-create');
+        return view('admin.berita.create');
     }
 
     public function store(Request $request)
@@ -51,7 +51,7 @@ class BeritaController extends Controller
     public function edit(string $id)
     {
         $berita = Berita::findOrFail($id);
-        return view('admin.berita-edit', compact('berita'));
+        return view('admin.berita.edit', compact('berita'));
     }
 
     public function update(Request $request, string $id)

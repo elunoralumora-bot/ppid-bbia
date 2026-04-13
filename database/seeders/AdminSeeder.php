@@ -15,8 +15,8 @@ class AdminSeeder extends Seeder
     {
         Admin::create([
             'name' => 'Admin PPID BBIA',
-            'email' => 'admin@ppid-bbia.com',
-            'password' => Hash::make('admin123'),
+            'email' => 'admin.ppid@bbia.go.id',
+            'password' => Hash::make('BBIA_PPID_2026'),
         ]);
     }
 }

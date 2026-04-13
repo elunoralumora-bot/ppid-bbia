@@ -27,10 +27,9 @@
 
         /* ===================== SIDEBAR ===================== */
         .sidebar {
-            width: 70px;
+            width: 275px;
             background: linear-gradient(180deg, #0f2338 0%, #0a1825 100%);
             color: white;
-            transition: width 0.3s ease;
             position: fixed;
             top: 0;
             left: 0;
@@ -41,10 +40,6 @@
             display: flex;
             flex-direction: column;
             box-shadow: 4px 0 15px rgba(0,0,0,0.2);
-        }
-
-        .sidebar:hover {
-            width: 275px;
         }
 
         /* Custom scrollbar for sidebar */
@@ -59,7 +54,7 @@
             white-space: nowrap;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             min-height: 70px;
             overflow: hidden;
             flex-shrink: 0;
@@ -87,17 +82,8 @@
             letter-spacing: 1.5px;
             color: white;
             margin: 0 0 0 0.75rem;
-            opacity: 0;
-            white-space: nowrap;
-            transition: opacity 0.2s ease;
-        }
-
-        .sidebar:hover .sidebar-header h2 {
             opacity: 1;
-        }
-
-        .sidebar:hover .sidebar-header {
-            justify-content: flex-start;
+            white-space: nowrap;
         }
 
         /* ===================== SIDEBAR MENU ===================== */
@@ -129,11 +115,6 @@
         }
 
         .sidebar-menu li a span {
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        .sidebar:hover .sidebar-menu li a span {
             opacity: 1;
         }
 
@@ -169,12 +150,8 @@
             margin-left: auto !important;
             transition: transform 0.3s ease;
             font-size: 11px !important;
-            opacity: 0;
-            width: auto !important;
-        }
-
-        .sidebar:hover .dropdown-arrow {
             opacity: 1;
+            width: auto !important;
         }
 
         .dropdown-toggle.open .dropdown-arrow {
@@ -225,12 +202,6 @@
             border-left-color: #3b82f6 !important;
         }
 
-        /* Hide submenu when sidebar is collapsed */
-        .sidebar:not(:hover) .submenu {
-            max-height: 0 !important;
-            opacity: 0 !important;
-        }
-
         /* Active parent state */
         li a.dropdown-toggle.open {
             background: rgba(59, 130, 246, 0.1);
@@ -257,11 +228,6 @@
             font-size: 0.875rem;
             color: white;
             flex-shrink: 0;
-            margin: 0 auto;
-            transition: margin 0.3s ease;
-        }
-
-        .sidebar:hover .admin-avatar {
             margin: 0;
         }
 
@@ -300,11 +266,6 @@
             display: flex;
             gap: 0.5rem;
             margin-top: 0.6rem;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        .sidebar:hover .admin-actions {
             opacity: 1;
         }
 
@@ -343,17 +304,11 @@
 
         /* ===================== MAIN CONTENT ===================== */
         .main-content {
-            margin-left: 70px;
+            margin-left: 275px;
             flex: 1;
-            transition: margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: margin-left;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-        }
-
-        .sidebar:hover ~ .main-content {
-            margin-left: 275px;
         }
 
         .top-bar {
@@ -363,9 +318,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky;
+            position: fixed;
             top: 0;
-            z-index: 50;
+            left: 275px;
+            right: 0;
+            z-index: 99;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
@@ -378,6 +335,7 @@
 
         .content {
             padding: 1.75rem;
+            padding-top: 0rem;
             flex: 1;
         }
 
@@ -441,6 +399,36 @@
         .btn-secondary { background: #64748b; color: white; }
         .btn-secondary:hover { background: #475569; }
         .btn-sm { padding: 0.35rem 0.7rem; font-size: 0.8rem; }
+        
+        .btn-outline-primary { 
+            background: transparent; 
+            color: #3b82f6; 
+            border: 1.5px solid #3b82f6; 
+        }
+        .btn-outline-primary:hover { 
+            background: #3b82f6; 
+            color: white; 
+        }
+        
+        .btn-outline-success { 
+            background: transparent; 
+            color: #10b981; 
+            border: 1.5px solid #10b981; 
+        }
+        .btn-outline-success:hover { 
+            background: #10b981; 
+            color: white; 
+        }
+        
+        .btn-outline-danger { 
+            background: transparent; 
+            color: #ef4444; 
+            border: 1.5px solid #ef4444; 
+        }
+        .btn-outline-danger:hover { 
+            background: #ef4444; 
+            color: white; 
+        }
 
         /* ===================== TABLES ===================== */
         .table-container {
@@ -550,7 +538,64 @@
         .badge-danger   { background: #fee2e2; color: #991b1b; }
         .badge-warning  { background: #fef3c7; color: #92400e; }
         .badge-info     { background: #dbeafe; color: #1e40af; }
+        .badge-primary  { background: #dbeafe; color: #1e40af; }
         .badge-secondary{ background: #f1f5f9; color: #475569; }
+        
+        /* Text utilities */
+        .text-muted { color: #64748b; }
+        .text-success { color: #059669; }
+        .text-primary { color: #3b82f6; }
+        
+        .text-center { text-align: center; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .me-1 { margin-right: 0.25rem; }
+        .me-2 { margin-right: 0.5rem; }
+        
+        /* Flex utilities */
+        .d-flex { display: flex; }
+        .justify-content-between { justify-content: space-between; }
+        .align-items-center { align-items: center; }
+        .mb-4 { margin-bottom: 1.5rem; }
+        .mb-0 { margin-bottom: 0; }
+        .h3 { font-size: 1.25rem; font-weight: 700; }
+
+        /* ===================== FORMS ===================== */
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.55rem 0.75rem;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+
+        .mb-3 { margin-bottom: 1rem; }
+        .gap-2 { gap: 0.5rem; }
+        .text-danger { color: #ef4444; }
+        .row { display: flex; flex-wrap: wrap; margin: 0 -0.75rem; }
+        .col-md-8 { flex: 0 0 66.666667%; padding: 0 0.75rem; }
+        .col-md-4 { flex: 0 0 33.333333%; padding: 0 0.75rem; }
 
         /* ===================== RECENT ACTIVITY ===================== */
         .recent-activity {
@@ -599,7 +644,7 @@
         /* ===================== RESPONSIVE ===================== */
         @media (max-width: 768px) {
             .sidebar {
-                left: -70px;
+                left: -275px;
             }
 
             .sidebar.show {
@@ -607,25 +652,16 @@
                 width: 275px;
             }
 
-            .sidebar:hover ~ .main-content,
             .sidebar.show ~ .main-content {
                 margin-left: 0;
             }
 
-            .sidebar.show .sidebar-menu li a span,
-            .sidebar.show .sidebar-header h2,
-            .sidebar.show .admin-info,
-            .sidebar.show .admin-actions,
-            .sidebar.show .dropdown-arrow {
-                opacity: 1;
-            }
-
-            .sidebar.show .admin-avatar {
-                margin: 0;
-            }
-
             .main-content {
                 margin-left: 0;
+            }
+
+            .top-bar {
+                left: 0;
             }
         }
     </style>
@@ -673,11 +709,11 @@
                 @php
                     $profilRoutes = [
                         'admin.tentang-ppid', 'admin.tentang-ppid.*',
-                        'admin.tugas-dan-fungsi', 'admin.tugas-dan-fungsi.*',
                         'admin.struktur-organisasi', 'admin.struktur-organisasi.*',
                         'admin.profil-pejabat', 'admin.profil-pejabat.*',
                         'admin.visi-misi', 'admin.visi-misi.*',
                         'admin.kontak-ppid', 'admin.kontak-ppid.*',
+                        'admin.galeri.index', 'admin.galeri.*',
                     ];
                     $isProfilActive = request()->routeIs(...$profilRoutes);
                 @endphp
@@ -696,13 +732,6 @@
                                class="{{ request()->routeIs('admin.tentang-ppid', 'admin.tentang-ppid.*') ? 'active' : '' }}">
                                 <i class="fas fa-angle-right"></i>
                                 <span>Tentang PPID</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.tugas-dan-fungsi') }}"
-                               class="{{ request()->routeIs('admin.tugas-dan-fungsi', 'admin.tugas-dan-fungsi.*') ? 'active' : '' }}">
-                                <i class="fas fa-angle-right"></i>
-                                <span>Tugas & Fungsi</span>
                             </a>
                         </li>
                         <li>
@@ -733,13 +762,25 @@
                                 <span>Kontak PPID</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('admin.galeri.index') }}"
+                               class="{{ request()->routeIs('admin.galeri.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Galeri Foto</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
                 <!-- INFORMASI PUBLIK - Dropdown -->
                 @php
-                    $isInfoPubActive = request()->routeIs('admin.informasi-publik', 'admin.informasi-publik.*');
-                    $infoPubKat = request()->query('kategori');
+                    $infoPubRoutes = [
+                        'admin.informasi-berkala', 'admin.informasi-berkala.*',
+                        'admin.informasi-serta-merta', 'admin.informasi-serta-merta.*',
+                        'admin.informasi-setiap-saat', 'admin.informasi-setiap-saat.*',
+                        'admin.daftar-informasi-publik-online', 'admin.daftar-informasi-publik-online.*',
+                    ];
+                    $isInfoPubActive = request()->routeIs(...$infoPubRoutes);
                 @endphp
                 <li>
                     <a href="javascript:void(0)"
@@ -751,19 +792,50 @@
                         <i class="fas fa-chevron-down dropdown-arrow" id="arrowInfoPub"></i>
                     </a>
                     <ul id="infoPubMenu" class="submenu {{ $isInfoPubActive ? 'show' : '' }}">
-                        <li><a href="{{ route('admin.informasi-publik') }}" class="{{ $isInfoPubActive && !$infoPubKat && !request()->routeIs('admin.informasi-publik.*') ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Semua Informasi</span></a></li>
-                        <li><a href="{{ route('admin.informasi-publik') }}?kategori=Berkala" class="{{ $isInfoPubActive && $infoPubKat === 'Berkala' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Informasi Berkala</span></a></li>
-                        <li><a href="{{ route('admin.informasi-publik') }}?kategori=Serta+Merta" class="{{ $isInfoPubActive && $infoPubKat === 'Serta Merta' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Informasi Serta Merta</span></a></li>
-                        <li><a href="{{ route('admin.informasi-publik') }}?kategori=Setiap+Saat" class="{{ $isInfoPubActive && $infoPubKat === 'Setiap Saat' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Informasi Setiap Saat</span></a></li>
-                        <li><a href="{{ route('admin.informasi-publik') }}?kategori=DIP+Online" class="{{ $isInfoPubActive && $infoPubKat === 'DIP Online' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Daftar Informasi Publik Online</span></a></li>
-                        <li><a href="{{ route('admin.informasi-publik.create') }}" class="{{ request()->routeIs('admin.informasi-publik.create') ? 'active' : '' }}"><i class="fas fa-plus"></i><span>Tambah Informasi</span></a></li>
+                        <li>
+                            <a href="{{ route('admin.informasi-berkala') }}"
+                               class="{{ request()->routeIs('admin.informasi-berkala', 'admin.informasi-berkala.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Informasi Berkala</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.informasi-serta-merta') }}"
+                               class="{{ request()->routeIs('admin.informasi-serta-merta', 'admin.informasi-serta-merta.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Informasi Serta Merta</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.informasi-setiap-saat') }}"
+                               class="{{ request()->routeIs('admin.informasi-setiap-saat', 'admin.informasi-setiap-saat.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Informasi Setiap Saat</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.daftar-informasi-publik-online') }}"
+                               class="{{ request()->routeIs('admin.daftar-informasi-publik-online', 'admin.daftar-informasi-publik-online.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Daftar Informasi Publik Online</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
                 <!-- STANDAR LAYANAN - Dropdown -->
                 @php
-                    $isStandarActive = request()->routeIs('admin.standar-layanan', 'admin.standar-layanan.*');
-                    $standarJenis = request()->query('jenis');
+                    $standarRoutes = [
+                        'admin.regulasi', 'admin.regulasi.*',
+                        'admin.prosedur-permohonan-informasi', 'admin.prosedur-permohonan-informasi.*',
+                        'admin.prosedur-pengajuan-keberatan', 'admin.prosedur-pengajuan-keberatan.*',
+                        'admin.mekanisme-sengketa-informasi', 'admin.mekanisme-sengketa-informasi.*',
+                        'admin.sop-ppid', 'admin.sop-ppid.*',
+                        'admin.kanal-layanan-informasi', 'admin.kanal-layanan-informasi.*',
+                        'admin.waktu-biaya-layanan', 'admin.waktu-biaya-layanan.*',
+                        'admin.maklumat-informasi-publik', 'admin.maklumat-informasi-publik.*',
+                    ];
+                    $isStandarActive = request()->routeIs(...$standarRoutes);
                 @endphp
                 <li>
                     <a href="javascript:void(0)"
@@ -775,23 +847,73 @@
                         <i class="fas fa-chevron-down dropdown-arrow" id="arrowStandar"></i>
                     </a>
                     <ul id="standarMenu" class="submenu {{ $isStandarActive ? 'show' : '' }}">
-                        <li><a href="{{ route('admin.standar-layanan') }}" class="{{ $isStandarActive && !$standarJenis && !request()->routeIs('admin.standar-layanan.*') ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Semua Dokumen</span></a></li>
-                        <li><a href="{{ route('admin.standar-layanan') }}?jenis=Regulasi" class="{{ $isStandarActive && $standarJenis === 'Regulasi' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Regulasi</span></a></li>
-                        <li><a href="{{ route('admin.standar-layanan') }}?jenis=Prosedur+Permohonan" class="{{ $isStandarActive && $standarJenis === 'Prosedur Permohonan' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Prosedur Permohonan Informasi</span></a></li>
-                        <li><a href="{{ route('admin.standar-layanan') }}?jenis=Prosedur+Keberatan" class="{{ $isStandarActive && $standarJenis === 'Prosedur Keberatan' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Prosedur Pengajuan Keberatan</span></a></li>
-                        <li><a href="{{ route('admin.standar-layanan') }}?jenis=Mekanisme+Sengketa" class="{{ $isStandarActive && $standarJenis === 'Mekanisme Sengketa' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Mekanisme Penanganan Sengketa Informasi</span></a></li>
-                        <li><a href="{{ route('admin.standar-layanan') }}?jenis=SOP+PPID" class="{{ $isStandarActive && $standarJenis === 'SOP PPID' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>SOP PPID</span></a></li>
-                        <li><a href="{{ route('admin.standar-layanan') }}?jenis=Kanal+Layanan" class="{{ $isStandarActive && $standarJenis === 'Kanal Layanan' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Kanal Layanan Informasi</span></a></li>
-                        <li><a href="{{ route('admin.standar-layanan') }}?jenis=Waktu+Biaya" class="{{ $isStandarActive && $standarJenis === 'Waktu Biaya' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Waktu &amp; Biaya Layanan</span></a></li>
-                        <li><a href="{{ route('admin.standar-layanan') }}?jenis=Maklumat" class="{{ $isStandarActive && $standarJenis === 'Maklumat' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Maklumat Informasi Publik</span></a></li>
-                        <li><a href="{{ route('admin.standar-layanan.create') }}" class="{{ request()->routeIs('admin.standar-layanan.create') ? 'active' : '' }}"><i class="fas fa-plus"></i><span>Tambah Dokumen</span></a></li>
+                        <li>
+                            <a href="{{ route('admin.regulasi') }}"
+                               class="{{ request()->routeIs('admin.regulasi', 'admin.regulasi.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Regulasi</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.prosedur-permohonan-informasi') }}"
+                               class="{{ request()->routeIs('admin.prosedur-permohonan-informasi', 'admin.prosedur-permohonan-informasi.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Prosedur Permohonan Informasi</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.prosedur-pengajuan-keberatan') }}"
+                               class="{{ request()->routeIs('admin.prosedur-pengajuan-keberatan', 'admin.prosedur-pengajuan-keberatan.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Prosedur Pengajuan Keberatan</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.mekanisme-sengketa-informasi') }}"
+                               class="{{ request()->routeIs('admin.mekanisme-sengketa-informasi', 'admin.mekanisme-sengketa-informasi.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Mekanisme Penanganan Sengketa Informasi</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.sop-ppid') }}"
+                               class="{{ request()->routeIs('admin.sop-ppid', 'admin.sop-ppid.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>SOP PPID</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.kanal-layanan-informasi') }}"
+                               class="{{ request()->routeIs('admin.kanal-layanan-informasi', 'admin.kanal-layanan-informasi.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Kanal Layanan Informasi</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.waktu-biaya-layanan') }}"
+                               class="{{ request()->routeIs('admin.waktu-biaya-layanan', 'admin.waktu-biaya-layanan.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Waktu & Biaya Layanan</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.maklumat-informasi-publik') }}"
+                               class="{{ request()->routeIs('admin.maklumat-informasi-publik', 'admin.maklumat-informasi-publik.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Maklumat Informasi Publik</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
                 <!-- LAPORAN - Dropdown -->
                 @php
-                    $isLaporanActive = request()->routeIs('admin.laporan-publik', 'admin.laporan-publik.*');
-                    $laporanKat = request()->query('kategori');
+                    $laporanRoutes = [
+                        'admin.laporan-tahunan-ppid', 'admin.laporan-tahunan-ppid.*',
+                        'admin.laporan-survey-kepuasan', 'admin.laporan-survey-kepuasan.*',
+                        'admin.statistik-layanan-informasi', 'admin.statistik-layanan-informasi.*',
+                    ];
+                    $isLaporanActive = request()->routeIs(...$laporanRoutes);
                 @endphp
                 <li>
                     <a href="javascript:void(0)"
@@ -803,11 +925,27 @@
                         <i class="fas fa-chevron-down dropdown-arrow" id="arrowLaporan"></i>
                     </a>
                     <ul id="laporanMenu" class="submenu {{ $isLaporanActive ? 'show' : '' }}">
-                        <li><a href="{{ route('admin.laporan-publik') }}" class="{{ $isLaporanActive && !$laporanKat && !request()->routeIs('admin.laporan-publik.*') ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Semua Laporan</span></a></li>
-                        <li><a href="{{ route('admin.laporan-publik') }}?kategori=Laporan+Tahunan" class="{{ $isLaporanActive && $laporanKat === 'Laporan Tahunan' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Laporan Tahunan PPID</span></a></li>
-                        <li><a href="{{ route('admin.laporan-publik') }}?kategori=Survey+Kepuasan" class="{{ $isLaporanActive && $laporanKat === 'Survey Kepuasan' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Laporan Survey Kepuasan Masyarakat</span></a></li>
-                        <li><a href="{{ route('admin.laporan-publik') }}?kategori=Statistik+Layanan" class="{{ $isLaporanActive && $laporanKat === 'Statistik Layanan' ? 'active' : '' }}"><i class="fas fa-angle-right"></i><span>Statistik Layanan Informasi Publik</span></a></li>
-                        <li><a href="{{ route('admin.laporan-publik.create') }}" class="{{ request()->routeIs('admin.laporan-publik.create') ? 'active' : '' }}"><i class="fas fa-plus"></i><span>Tambah Laporan</span></a></li>
+                        <li>
+                            <a href="{{ route('admin.laporan-tahunan-ppid') }}"
+                               class="{{ request()->routeIs('admin.laporan-tahunan-ppid', 'admin.laporan-tahunan-ppid.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Laporan Tahunan PPID</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.laporan-survey-kepuasan') }}"
+                               class="{{ request()->routeIs('admin.laporan-survey-kepuasan', 'admin.laporan-survey-kepuasan.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Laporan Survey Kepuasan Masyarakat</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin.statistik-layanan-informasi') }}"
+                               class="{{ request()->routeIs('admin.statistik-layanan-informasi', 'admin.statistik-layanan-informasi.*') ? 'active' : '' }}">
+                                <i class="fas fa-angle-right"></i>
+                                <span>Statistik Layanan Informasi Publik</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
@@ -894,7 +1032,7 @@
             </div>
 
             <!-- Alert Messages -->
-            <div style="padding: 1.25rem 1.75rem 0;">
+            <div style="padding: 2rem 1.75rem 0;">
                 @if(session('success'))
                     <div class="alert alert-success">
                         <i class="fas fa-check-circle"></i>

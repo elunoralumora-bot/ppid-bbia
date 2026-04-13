@@ -4,13 +4,40 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Permohonan;
+use Illuminate\Support\Facades\Mail;
 
 class PermohonanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $permohonans = Permohonan::latest()->paginate(10);
-        return view('admin.permohonan', compact('permohonans'));
+        $query = Permohonan::latest();
+        
+        // Filter berdasarkan status
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+        
+        // Filter berdasarkan pencarian
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama_pemohon', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%')
+                  ->orWhere('informasi_diminta', 'like', '%' . $search . '%');
+            });
+        }
+        
+        $permohonans = $query->paginate(10);
+        
+        // Hitung statistik semua status (tidak terpengaruh filter)
+        $permohonanStats = [
+            'baru' => Permohonan::where('status', 'baru')->count(),
+            'diproses' => Permohonan::where('status', 'diproses')->count(),
+            'selesai' => Permohonan::where('status', 'selesai')->count(),
+            'ditolak' => Permohonan::where('status', 'ditolak')->count(),
+        ];
+        
+        return view('admin.permohonan', compact('permohonans', 'permohonanStats'))->with('request', $request);
     }
 
     public function store(Request $request)
@@ -44,17 +71,33 @@ class PermohonanController extends Controller
     {
         $request->validate([
             'status' => 'required|in:baru,diproses,selesai,ditolak',
-            'catatan' => 'nullable|string',
+            'message' => 'nullable|string',
+            'subject' => 'nullable|string',
         ]);
 
         $permohonan = Permohonan::findOrFail($id);
         $permohonan->status = $request->status;
-        $permohonan->catatan = $request->catatan;
 
         if ($request->status == 'diproses') {
             $permohonan->tanggal_proses = now();
         } elseif ($request->status == 'selesai' || $request->status == 'ditolak') {
             $permohonan->tanggal_selesai = now();
+            
+            // Kirim email notifikasi
+            if ($request->message && $request->subject) {
+                try {
+                    Mail::send('emails.permohonan-reply', [
+                        'permohonan' => $permohonan,
+                        'message' => $request->message,
+                    ], function ($message) use ($permohonan, $request) {
+                        $message->to($permohonan->email, $permohonan->nama_pemohon)
+                                ->subject($request->subject);
+                    });
+                } catch (\Exception $e) {
+                    // Log error tapi tetap lanjutkan proses
+                    \Log::error('Email gagal dikirim: ' . $e->getMessage());
+                }
+            }
         }
 
         $permohonan->save();
@@ -62,9 +105,66 @@ class PermohonanController extends Controller
         return redirect()->back()->with('success', 'Status permohonan berhasil diperbarui!');
     }
 
+    public function reply(Request $request, $id)
+    {
+        $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+            'attachment' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120',
+        ]);
+
+        $permohonan = Permohonan::findOrFail($id);
+
+        try {
+            $attachment = null;
+            if ($request->hasFile('attachment')) {
+                $attachment = $request->file('attachment');
+            }
+
+            Mail::send('emails.permohonan-reply', [
+                'permohonan' => $permohonan,
+                'message' => $request->message,
+                'attachment' => $attachment,
+            ], function ($message) use ($permohonan, $request, $attachment) {
+                $message->to($permohonan->email, $permohonan->nama_pemohon)
+                        ->subject($request->subject);
+                
+                if ($attachment) {
+                    $message->attach($attachment->getRealPath(), [
+                        'as' => $attachment->getClientOriginalName(),
+                        'mime' => $attachment->getMimeType(),
+                    ]);
+                }
+            });
+
+            return redirect()->back()->with('success', 'Email balasan berhasil dikirim!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal mengirim email: ' . $e->getMessage());
+        }
+    }
+
     public function show($id)
     {
         $permohonan = Permohonan::findOrFail($id);
         return view('admin.permohonan-detail', compact('permohonan'));
+    }
+
+    public function cekStatus(Request $request)
+    {
+        $request->validate([
+            'nomor_tiket_permohonan' => 'required|string',
+            'email_pemohon_permohonan' => 'required|email',
+        ]);
+
+        // Cari permohonan berdasarkan ID (nomor tiket) dan email
+        $permohonan = Permohonan::where('id', $request->nomor_tiket_permohonan)
+                                ->where('email', $request->email_pemohon_permohonan)
+                                ->first();
+
+        if (!$permohonan) {
+            return redirect()->back()->with('error', 'Data permohonan tidak ditemukan. Periksa kembali nomor tiket dan email Anda.');
+        }
+
+        return redirect()->back()->with('success', 'Status permohonan ditemukan!')->with('permohonan', $permohonan);
     }
 }

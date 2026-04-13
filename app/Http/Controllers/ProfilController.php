@@ -10,12 +10,12 @@ class ProfilController extends Controller
     public function index()
     {
         $profils = Profil::orderBy('kategori')->orderBy('urutan')->get();
-        return view('admin.profil', compact('profils'));
+        return view('admin.profil.profil', compact('profils'));
     }
 
     public function create()
     {
-        return view('admin.profil-create');
+        return view('admin.profil.profil-create');
     }
 
     public function store(Request $request)
@@ -34,7 +34,7 @@ class ProfilController extends Controller
     public function edit($id)
     {
         $profil = Profil::findOrFail($id);
-        return view('admin.profil-edit', compact('profil'));
+        return view('admin.profil.profil-edit', compact('profil'));
     }
 
     public function update(Request $request, $id)
@@ -71,7 +71,7 @@ class ProfilController extends Controller
         $pengantarDb = Profil::where('kategori', 'Pengantar')->where('judul', 'Tentang PPID')->first();
         $pengantar = $pengantarDb ? $pengantarDb->konten : "Pejabat Pengelola Informasi dan Dokumentasi (PPID) adalah pejabat yang bertanggung jawab atas penyediaan layanan dan informasi publik di lingkungan Balai Besar Industri Agro (BBIA). PPID BBIA berfungsi sebagai jembatan antara institusi dengan masyarakat dalam hal akses informasi publik.";
         
-        return view('admin.tentang-ppid', compact('profils', 'pengantar'));
+        return view('admin.profil.tentang-ppid', compact('profils', 'pengantar'));
     }
 
     public function updateTentangPPID(Request $request)
@@ -111,7 +111,7 @@ class ProfilController extends Controller
             ->orderBy('urutan')
             ->get();
         
-        return view('admin.tugas-dan-fungsi', compact('profils'));
+        return view('admin.profil.tugas-dan-fungsi', compact('profils'));
     }
 
     public function updateTugasDanFungsi(Request $request)
@@ -137,7 +137,7 @@ class ProfilController extends Controller
             ->orderBy('urutan')
             ->get();
         
-        return view('admin.struktur-organisasi', compact('profils'));
+        return view('admin.profil.struktur-organisasi', compact('profils'));
     }
 
     public function updateStrukturOrganisasi(Request $request)
@@ -163,7 +163,7 @@ class ProfilController extends Controller
             ->orderBy('urutan')
             ->get();
         
-        return view('admin.profil-pejabat', compact('profils'));
+        return view('admin.profil.profil-pejabat', compact('profils'));
     }
 
     public function updateProfilPejabat(Request $request)
@@ -189,7 +189,7 @@ class ProfilController extends Controller
             ->orderBy('urutan')
             ->get();
         
-        return view('admin.visi-misi', compact('profils'));
+        return view('admin.profil.visi-misi', compact('profils'));
     }
 
     public function updateVisiMisi(Request $request)
@@ -215,7 +215,7 @@ class ProfilController extends Controller
             ->orderBy('urutan')
             ->get();
         
-        return view('admin.kontak-ppid', compact('profils'));
+        return view('admin.profil.kontak-ppid', compact('profils'));
     }
 
     public function updateKontakPPID(Request $request)
