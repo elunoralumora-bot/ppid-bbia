@@ -156,31 +156,6 @@ class ProfilController extends Controller
         return redirect()->route('admin.struktur-organisasi')->with('success', 'Halaman Struktur Organisasi berhasil diperbarui');
     }
 
-    public function editProfilPejabat()
-    {
-        $profils = Profil::where('is_active', true)
-            ->where('kategori', 'Profil Pejabat')
-            ->orderBy('urutan')
-            ->get();
-        
-        return view('admin.profil.profil-pejabat', compact('profils'));
-    }
-
-    public function updateProfilPejabat(Request $request)
-    {
-        foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'konten_') === 0) {
-                $profilId = str_replace('konten_', '', $key);
-                $profil = Profil::find($profilId);
-                if ($profil) {
-                    $profil->konten = $value;
-                    $profil->save();
-                }
-            }
-        }
-
-        return redirect()->route('admin.profil-pejabat')->with('success', 'Halaman Profil Pejabat berhasil diperbarui');
-    }
 
     public function editVisiMisi()
     {

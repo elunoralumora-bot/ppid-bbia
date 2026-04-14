@@ -1,6 +1,7 @@
 @extends('admin.layout')
 
 @section('title', 'Prosedur Pengajuan Keberatan - PPID BBIA')
+@section('page-title', 'Prosedur Pengajuan Keberatan')
 
 @section('content')
 <div class="content">

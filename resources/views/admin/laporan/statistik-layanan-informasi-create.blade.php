@@ -1,14 +1,14 @@
 @extends('admin.layout')
 
-@section('title', 'Tambah Laporan Survey Kepuasan - PPID BBIA')
-@section('page-title', 'Tambah Laporan Survey Kepuasan')
+@section('title', 'Tambah Statistik Layanan Informasi - PPID BBIA')
+@section('page-title', 'Tambah Statistik Layanan Informasi')
 
 @section('content')
 <div class="content">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0">Tambah Laporan Survey Kepuasan</h1>
+        <h1 class="h3 mb-0">Tambah Statistik Layanan Informasi</h1>
         <div>
-            <a href="{{ route('admin.laporan-survey-kepuasan') }}" class="btn btn-secondary">
+            <a href="{{ route('admin.statistik-layanan-informasi') }}" class="btn btn-secondary">
                 <i class="fas fa-arrow-left me-2"></i>Kembali
             </a>
         </div>
@@ -38,13 +38,13 @@
     @endif
 
     <div class="form-card">
-        <form action="{{ route('admin.laporan-survey-kepuasan.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.statistik-layanan-informasi.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             <div class="row">
                 <div class="col-md-8">
                     <div class="mb-3">
-                        <label for="judul" class="form-label">Judul Survey <span class="text-danger">*</span></label>
+                        <label for="judul" class="form-label">Judul Statistik <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="judul" name="judul" value="{{ old('judul') }}" required>
                     </div>
 
@@ -54,19 +54,19 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="ringkasan" class="form-label">Ringkasan Hasil</label>
+                        <label for="ringkasan" class="form-label">Ringkasan Data</label>
                         <textarea class="form-control" id="ringkasan" name="ringkasan" rows="8">{{ old('ringkasan') }}</textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label for="kesimpulan" class="form-label">Kesimpulan</label>
-                        <textarea class="form-control" id="kesimpulan" name="kesimpulan" rows="5">{{ old('kesimpulan') }}</textarea>
+                        <label for="analisis" class="form-label">Analisis Data</label>
+                        <textarea class="form-control" id="analisis" name="analisis" rows="5">{{ old('analisis') }}</textarea>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label for="tahun" class="form-label">Tahun Survey <span class="text-danger">*</span></label>
+                        <label for="tahun" class="form-label">Tahun Statistik <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" id="tahun" name="tahun" value="{{ old('tahun') ?? date('Y') }}" min="2000" max="{{ date('Y') }}" required>
                     </div>
 
@@ -84,18 +84,22 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="responden" class="form-label">Jumlah Responden</label>
-                        <input type="number" class="form-control" id="responden" name="responden" value="{{ old('responden') }}" min="0">
+                        <label for="total_permohonan" class="form-label">Total Permohonan</label>
+                        <input type="number" class="form-control" id="total_permohonan" name="total_permohonan" value="{{ old('total_permohonan') }}" min="0">
                     </div>
 
                     <div class="mb-3">
-                        <label for="nilai_kepuasan" class="form-label">Nilai Kepuasan (%)</label>
-                        <input type="number" class="form-control" id="nilai_kepuasan" name="nilai_kepuasan" value="{{ old('nilai_kepuasan') }}" min="0" max="100" step="0.1">
-                        <small class="text-muted">Contoh: 85.5</small>
+                        <label for="total_disetujui" class="form-label">Total Disetujui</label>
+                        <input type="number" class="form-control" id="total_disetujui" name="total_disetujui" value="{{ old('total_disetujui') }}" min="0">
                     </div>
 
                     <div class="mb-3">
-                        <label for="file" class="form-label">File Laporan (PDF) <span class="text-danger">*</span></label>
+                        <label for="total_ditolak" class="form-label">Total Ditolak</label>
+                        <input type="number" class="form-control" id="total_ditolak" name="total_ditolak" value="{{ old('total_ditolak') }}" min="0">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="file" class="form-label">File Statistik (PDF) <span class="text-danger">*</span></label>
                         <input type="file" class="form-control" id="file" name="file" accept=".pdf" required>
                         <small class="text-muted">Maksimal 20MB</small>
                     </div>
@@ -117,7 +121,7 @@
             </div>
 
             <div class="d-flex justify-content-end gap-2">
-                <a href="{{ route('admin.laporan-survey-kepuasan') }}" class="btn btn-secondary">
+                <a href="{{ route('admin.statistik-layanan-informasi') }}" class="btn btn-secondary">
                     <i class="fas fa-times me-2"></i>Batal
                 </a>
                 <button type="submit" class="btn btn-primary">

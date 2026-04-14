@@ -1626,4 +1626,30 @@ body {
 .icon-file-check::before { content: "📋✅"; }
 .icon-chart-line::before { content: "📈"; }
 .icon-database-export::before { content: "🗄️📤"; }
-.icon-message-square::before { content: "💬"; }
+.icon-message-square::before { content: ""; }
+
+/* Fix for btn-group horizontal layout */
+.btn-group {
+    display: inline-flex !important;
+    flex-wrap: nowrap !important;
+}
+
+.btn-group .btn {
+    position: relative;
+    flex: 1 1 auto;
+}
+
+.btn-group .btn:first-child {
+    margin-right: 5px;
+    border-top-left-radius: 0.375rem !important;
+    border-bottom-left-radius: 0.375rem !important;
+}
+
+.btn-group .btn:last-child {
+    border-top-right-radius: 0.375rem !important;
+    border-bottom-right-radius: 0.375rem !important;
+}
+
+.btn-group .btn:not(:first-child):not(:last-child) {
+    border-radius: 0 !important;
+}

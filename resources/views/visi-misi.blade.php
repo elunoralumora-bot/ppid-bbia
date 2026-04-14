@@ -51,42 +51,6 @@
                 </div>
             </div>
             
-            <h2>Nilai-Nilai</h2>
-            <div class="values-grid">
-                <div class="value-item">
-                    <h3>Integritas</h3>
-                    <p>Berintegritas dalam setiap tindakan dan keputusan terkait informasi publik.</p>
-                </div>
-                
-                <div class="value-item">
-                    <h3>Komitmen</h3>
-                    <p>Berkomitmen untuk memberikan layanan terbaik kepada masyarakat.</p>
-                </div>
-                
-                <div class="value-item">
-                    <h3>Kepedulian</h3>
-                    <p>Selalu memprioritaskan kebutuhan dan kepentingan masyarakat dalam akses informasi.</p>
-                </div>
-                
-                <div class="value-item">
-                    <h3>Kerjasama</h3>
-                    <p>Membangun kerjasama yang baik dengan semua stakeholder terkait.</p>
-                </div>
-            </div>
-            
-            <h2>Sasaran Strategis</h2>
-            <ul>
-                <li>Meningkatkan kepuasan masyarakat terhadap layanan informasi publik BBIA</li>
-                <li>Mempercepat waktu penyelesaian permohonan informasi</li>
-                <li>Meningkatkan kualitas dan kuantitas informasi publik yang tersedia</li>
-                <li>Mengembangkan sistem informasi publik yang berbasis teknologi</li>
-                <li>Meningkatkan kapasitas dan kompetensi SDM PPID</li>
-                <li>Membangun budaya keterbukaan informasi di lingkungan BBIA</li>
-            </ul>
-        </div>
-    </div>
-</div>
-
 <style>
 .page-header {
     background: linear-gradient(135deg, #0f2338 0%, #2c5282 35%, #1a3a5f 100%);

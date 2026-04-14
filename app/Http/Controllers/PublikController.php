@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\KontenWeb;
+use App\Models\InformasiPublik;
 
 class PublikController extends Controller
 {
@@ -26,8 +27,12 @@ class PublikController extends Controller
 
     public function laporanTahunan()
     {
-        $konten = KontenWeb::laporan()->where('slug', 'laporan-tahunan')->active()->first();
-        return view('laporan-tahunan', compact('konten'));
+        $kontens = KontenWeb::laporan()
+            ->where('slug', 'like', 'laporan-tahunan-ppid%')
+            ->where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('laporan-tahunan', compact('kontens'));
     }
 
     public function visiMisi()
@@ -42,12 +47,7 @@ class PublikController extends Controller
         return view('struktur-organisasi', compact('konten'));
     }
 
-    public function profilPejabat()
-    {
-        $konten = KontenWeb::profil()->where('slug', 'profil-pejabat')->active()->first();
-        return view('profil-pejabat', compact('konten'));
-    }
-
+    
     public function kontakPpid()
     {
         $konten = KontenWeb::profil()->where('slug', 'kontak-ppid')->active()->first();
@@ -56,19 +56,31 @@ class PublikController extends Controller
 
     public function informasiBerkala()
     {
-        $kontens = KontenWeb::informasiPublik()->where('slug', 'like', 'informasi-berkala%')->active()->get();
+        $kontens = InformasiPublik::where('kategori', 'Informasi Berkala')
+            ->orWhere('kategori', 'Laporan Keuangan')
+            ->orWhere('kategori', 'Program Kerja')
+            ->orWhere('kategori', 'Lainnya')
+            ->where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('informasi-berkala', compact('kontens'));
     }
 
     public function informasiSertaMerta()
     {
-        $kontens = KontenWeb::informasiPublik()->where('slug', 'like', 'informasi-serta-merta%')->active()->get();
+        $kontens = InformasiPublik::where('kategori', 'Informasi Serta Merta')
+            ->where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('informasi-serta-merta', compact('kontens'));
     }
 
     public function informasiSetiapSaat()
     {
-        $kontens = KontenWeb::informasiPublik()->where('slug', 'like', 'informasi-setiap-saat%')->active()->get();
+        $kontens = InformasiPublik::where('kategori', 'Informasi Setiap Saat')
+            ->where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('informasi-setiap-saat', compact('kontens'));
     }
 
@@ -128,13 +140,21 @@ class PublikController extends Controller
 
     public function surveyKepuasanMasyarakat()
     {
-        $konten = KontenWeb::laporan()->where('slug', 'survey-kepuasan-masyarakat')->active()->first();
-        return view('survey-kepuasan-masyarakat', compact('konten'));
+        $kontens = KontenWeb::laporan()
+            ->where('slug', 'like', 'survey-kepuasan-masyarakat%')
+            ->where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('survey-kepuasan-masyarakat', compact('kontens'));
     }
 
     public function statistikLayanan()
     {
-        $konten = KontenWeb::laporan()->where('slug', 'statistik-layanan')->active()->first();
-        return view('statistik-layanan', compact('konten'));
+        $kontens = KontenWeb::laporan()
+            ->where('slug', 'like', 'statistik-layanan-informasi%')
+            ->where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('statistik-layanan', compact('kontens'));
     }
 }

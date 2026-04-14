@@ -1,6 +1,7 @@
 @extends('admin.layout')
 
 @section('title', 'Informasi Setiap Saat - PPID BBIA')
+@section('page-title', 'Informasi Setiap Saat')
 
 @section('content')
 <div class="content">

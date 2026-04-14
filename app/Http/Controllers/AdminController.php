@@ -9,6 +9,7 @@ use App\Models\Admin;
 use App\Models\User;
 use App\Models\Permohonan;
 use App\Models\Keberatan;
+use App\Models\KontenWeb;
 
 class AdminController extends Controller
 {
@@ -239,7 +240,14 @@ class AdminController extends Controller
     // Informasi Publik Methods
     public function informasiBerkala()
     {
-        return view('admin.informasi-publik.informasi-berkala');
+        $informasiBerkala = \App\Models\InformasiPublik::where('kategori', 'Informasi Berkala')
+            ->orWhere('kategori', 'Laporan Keuangan')
+            ->orWhere('kategori', 'Program Kerja')
+            ->orWhere('kategori', 'Lainnya')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        
+        return view('admin.informasi-publik.informasi-berkala', compact('informasiBerkala'));
     }
 
     public function createInformasiBerkala()
@@ -249,30 +257,108 @@ class AdminController extends Controller
 
     public function storeInformasiBerkala(Request $request)
     {
-        // Implementasi store logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'isi' => 'nullable|string',
+            'kategori' => 'required|string|max:255',
+            'file' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+            'tanggal_publikasi' => 'nullable|date',
+            'status' => 'required|in:draft,published,archived',
+        ]);
+
+        $data = [
+            'judul' => $request->judul,
+            'konten' => $request->isi ?? '',
+            'kategori' => $request->kategori,
+            'deskripsi' => $request->deskripsi,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status' => $request->status,
+            'urutan' => 0,
+            'is_active' => $request->status == 'published' ? 1 : 0,
+        ];
+
+        // Handle file upload
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('files/informasi'), $filename);
+            $data['file_path'] = 'files/informasi/' . $filename;
+        }
+
+        // Create the informasi publik record
+        $informasi = \App\Models\InformasiPublik::create($data);
+
         return redirect()->route('admin.informasi-berkala')->with('success', 'Informasi berkala berhasil ditambahkan');
     }
 
     public function editInformasiBerkala($id)
     {
-        return view('admin.informasi-publik.informasi-berkala-edit', compact('id'));
+        $informasi = \App\Models\InformasiPublik::findOrFail($id);
+        return view('admin.informasi-publik.informasi-berkala-edit', compact('informasi'));
     }
 
     public function updateInformasiBerkala(Request $request, $id)
     {
-        // Implementasi update logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'isi' => 'nullable|string',
+            'kategori' => 'required|string|max:255',
+            'file' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+            'tanggal_publikasi' => 'nullable|date',
+            'status' => 'required|in:draft,published,archived',
+        ]);
+
+        $informasi = \App\Models\InformasiPublik::findOrFail($id);
+        
+        $data = [
+            'judul' => $request->judul,
+            'konten' => $request->isi ?? '',
+            'kategori' => $request->kategori,
+            'deskripsi' => $request->deskripsi,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status' => $request->status,
+            'is_active' => $request->status == 'published' ? 1 : 0,
+        ];
+
+        // Handle file upload
+        if ($request->hasFile('file')) {
+            // Delete old file
+            if ($informasi->file_path && file_exists(public_path($informasi->file_path))) {
+                unlink(public_path($informasi->file_path));
+            }
+            
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('files/informasi'), $filename);
+            $data['file_path'] = 'files/informasi/' . $filename;
+        }
+
+        $informasi->update($data);
         return redirect()->route('admin.informasi-berkala')->with('success', 'Informasi berkala berhasil diperbarui');
     }
 
     public function destroyInformasiBerkala($id)
     {
-        // Implementasi delete logic
+        $informasi = \App\Models\InformasiPublik::findOrFail($id);
+        
+        // Delete file if exists
+        if ($informasi->file_path && file_exists(public_path($informasi->file_path))) {
+            unlink(public_path($informasi->file_path));
+        }
+        
+        $informasi->delete();
         return redirect()->route('admin.informasi-berkala')->with('success', 'Informasi berkala berhasil dihapus');
     }
 
     public function informasiSertaMerta()
     {
-        return view('admin.informasi-publik.informasi-serta-merta');
+        $informasiSertaMerta = \App\Models\InformasiPublik::where('kategori', 'Informasi Serta Merta')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        
+        return view('admin.informasi-publik.informasi-serta-merta', compact('informasiSertaMerta'));
     }
 
     public function createInformasiSertaMerta()
@@ -282,7 +368,37 @@ class AdminController extends Controller
 
     public function storeInformasiSertaMerta(Request $request)
     {
-        // Implementasi store logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'isi' => 'nullable|string',
+            'file' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+            'tanggal_publikasi' => 'nullable|date',
+            'status' => 'required|in:draft,published,archived',
+        ]);
+
+        $data = [
+            'judul' => $request->judul,
+            'konten' => $request->isi ?? '',
+            'kategori' => 'Informasi Serta Merta',
+            'deskripsi' => $request->deskripsi,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status' => $request->status,
+            'urutan' => 0,
+            'is_active' => $request->status == 'published' ? 1 : 0,
+        ];
+
+        // Handle file upload
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('files/informasi'), $filename);
+            $data['file_path'] = 'files/informasi/' . $filename;
+        }
+
+        // Create the informasi publik record
+        $informasi = \App\Models\InformasiPublik::create($data);
+
         return redirect()->route('admin.informasi-serta-merta')->with('success', 'Informasi serta merta berhasil ditambahkan');
     }
 
@@ -305,7 +421,11 @@ class AdminController extends Controller
 
     public function informasiSetiapSaat()
     {
-        return view('admin.informasi-publik.informasi-setiap-saat');
+        $informasiSetiapSaat = \App\Models\InformasiPublik::where('kategori', 'Informasi Setiap Saat')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        
+        return view('admin.informasi-publik.informasi-setiap-saat', compact('informasiSetiapSaat'));
     }
 
     public function createInformasiSetiapSaat()
@@ -315,7 +435,37 @@ class AdminController extends Controller
 
     public function storeInformasiSetiapSaat(Request $request)
     {
-        // Implementasi store logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'isi' => 'nullable|string',
+            'file' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+            'tanggal_publikasi' => 'nullable|date',
+            'status' => 'required|in:draft,published,archived',
+        ]);
+
+        $data = [
+            'judul' => $request->judul,
+            'konten' => $request->isi ?? '',
+            'kategori' => 'Informasi Setiap Saat',
+            'deskripsi' => $request->deskripsi,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status' => $request->status,
+            'urutan' => 0,
+            'is_active' => $request->status == 'published' ? 1 : 0,
+        ];
+
+        // Handle file upload
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('files/informasi'), $filename);
+            $data['file_path'] = 'files/informasi/' . $filename;
+        }
+
+        // Create the informasi publik record
+        $informasi = \App\Models\InformasiPublik::create($data);
+
         return redirect()->route('admin.informasi-setiap-saat')->with('success', 'Informasi setiap saat berhasil ditambahkan');
     }
 
@@ -637,7 +787,12 @@ class AdminController extends Controller
     // Laporan Methods
     public function laporanTahunanPpid()
     {
-        return view('admin.laporan.laporan-tahunan-ppid');
+        $laporanTahunan = KontenWeb::laporan()
+            ->where('slug', 'like', 'laporan-tahunan-ppid%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        
+        return view('admin.laporan.laporan-tahunan-ppid', compact('laporanTahunan'));
     }
 
     public function createLaporanTahunanPpid()
@@ -647,30 +802,122 @@ class AdminController extends Controller
 
     public function storeLaporanTahunanPpid(Request $request)
     {
-        // Implementasi store logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'tahun' => 'required|integer|min:2000|max:' . date('Y'),
+            'file' => 'required|file|mimes:pdf|max:20480',
+        ]);
+
+        // Handle file upload
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = 'laporan-tahunan-' . time() . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('laporan/tahunan', $fileName, 'public');
+        }
+
+        // Create slug
+        $slug = 'laporan-tahunan-ppid-' . time();
+
+        // Prepare meta data
+        $metaData = [
+            'tahun' => $request->tahun,
+            'deskripsi' => $request->deskripsi,
+            'ringkasan' => $request->ringkasan,
+            'file_path' => $filePath,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status' => $request->status ?? 'draft',
+        ];
+
+        // Create content
+        $konten = "<h2>" . $request->judul . "</h2>";
+        $konten .= "<p><strong>Tahun:</strong> " . $request->tahun . "</p>";
+        if ($request->deskripsi) {
+            $konten .= "<p><strong>Deskripsi:</strong> " . $request->deskripsi . "</p>";
+        }
+        if ($request->ringkasan) {
+            $konten .= "<p><strong>Ringkasan:</strong> " . $request->ringkasan . "</p>";
+        }
+
+        KontenWeb::create([
+            'jenis_konten' => 'laporan',
+            'slug' => $slug,
+            'judul' => $request->judul,
+            'konten' => $konten,
+            'meta_data' => $metaData,
+            'is_active' => true,
+        ]);
+
         return redirect()->route('admin.laporan-tahunan-ppid')->with('success', 'Laporan tahunan PPID berhasil ditambahkan');
     }
 
     public function editLaporanTahunanPpid($id)
     {
-        return view('admin.laporan.laporan-tahunan-ppid-edit', compact('id'));
+        $laporan = KontenWeb::findOrFail($id);
+        return view('admin.laporan.laporan-tahunan-ppid-edit', compact('id', 'laporan'));
     }
 
     public function updateLaporanTahunanPpid(Request $request, $id)
     {
-        // Implementasi update logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'tahun' => 'required|integer|min:2000|max:' . date('Y'),
+        ]);
+
+        $laporan = KontenWeb::findOrFail($id);
+
+        // Handle file upload
+        $filePath = $laporan->meta_data['file_path'] ?? null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = 'laporan-tahunan-' . time() . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('laporan/tahunan', $fileName, 'public');
+        }
+
+        // Prepare meta data
+        $metaData = [
+            'tahun' => $request->tahun,
+            'deskripsi' => $request->deskripsi,
+            'ringkasan' => $request->ringkasan,
+            'file_path' => $filePath,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status' => $request->status ?? 'draft',
+        ];
+
+        // Update content
+        $konten = "<h2>" . $request->judul . "</h2>";
+        $konten .= "<p><strong>Tahun:</strong> " . $request->tahun . "</p>";
+        if ($request->deskripsi) {
+            $konten .= "<p><strong>Deskripsi:</strong> " . $request->deskripsi . "</p>";
+        }
+        if ($request->ringkasan) {
+            $konten .= "<p><strong>Ringkasan:</strong> " . $request->ringkasan . "</p>";
+        }
+
+        $laporan->update([
+            'judul' => $request->judul,
+            'konten' => $konten,
+            'meta_data' => $metaData,
+        ]);
+
         return redirect()->route('admin.laporan-tahunan-ppid')->with('success', 'Laporan tahunan PPID berhasil diperbarui');
     }
 
     public function destroyLaporanTahunanPpid($id)
     {
-        // Implementasi delete logic
+        $laporan = KontenWeb::findOrFail($id);
+        $laporan->delete();
         return redirect()->route('admin.laporan-tahunan-ppid')->with('success', 'Laporan tahunan PPID berhasil dihapus');
     }
 
     public function laporanSurveyKepuasan()
     {
-        return view('admin.laporan.laporan-survey-kepuasan');
+        $laporanSurvey = KontenWeb::laporan()
+            ->where('slug', 'like', 'survey-kepuasan-masyarakat%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        
+        return view('admin.laporan.laporan-survey-kepuasan', compact('laporanSurvey'));
     }
 
     public function createLaporanSurveyKepuasan()
@@ -680,30 +927,154 @@ class AdminController extends Controller
 
     public function storeLaporanSurveyKepuasan(Request $request)
     {
-        // Implementasi store logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'tahun' => 'required|integer|min:2000|max:' . date('Y'),
+            'file' => 'required|file|mimes:pdf|max:20480',
+        ]);
+
+        // Handle file upload
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = 'survey-kepuasan-' . time() . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('laporan/survey', $fileName, 'public');
+        }
+
+        // Create slug
+        $slug = 'survey-kepuasan-masyarakat-' . time();
+
+        // Prepare meta data
+        $metaData = [
+            'tahun' => $request->tahun,
+            'periode' => $request->periode,
+            'deskripsi' => $request->deskripsi,
+            'ringkasan' => $request->ringkasan,
+            'kesimpulan' => $request->kesimpulan,
+            'responden' => $request->responden,
+            'nilai_kepuasan' => $request->nilai_kepuasan,
+            'file_path' => $filePath,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status' => $request->status ?? 'draft',
+        ];
+
+        // Create content
+        $konten = "<h2>" . $request->judul . "</h2>";
+        $konten .= "<p><strong>Tahun:</strong> " . $request->tahun . "</p>";
+        if ($request->periode) {
+            $konten .= "<p><strong>Periode:</strong> " . $request->periode . "</p>";
+        }
+        if ($request->deskripsi) {
+            $konten .= "<p><strong>Deskripsi:</strong> " . $request->deskripsi . "</p>";
+        }
+        if ($request->ringkasan) {
+            $konten .= "<p><strong>Ringkasan Hasil:</strong> " . $request->ringkasan . "</p>";
+        }
+        if ($request->kesimpulan) {
+            $konten .= "<p><strong>Kesimpulan:</strong> " . $request->kesimpulan . "</p>";
+        }
+        if ($request->responden) {
+            $konten .= "<p><strong>Jumlah Responden:</strong> " . $request->responden . "</p>";
+        }
+        if ($request->nilai_kepuasan) {
+            $konten .= "<p><strong>Nilai Kepuasan:</strong> " . $request->nilai_kepuasan . "%</p>";
+        }
+
+        KontenWeb::create([
+            'jenis_konten' => 'laporan',
+            'slug' => $slug,
+            'judul' => $request->judul,
+            'konten' => $konten,
+            'meta_data' => $metaData,
+            'is_active' => true,
+        ]);
+
         return redirect()->route('admin.laporan-survey-kepuasan')->with('success', 'Laporan survey kepuasan berhasil ditambahkan');
     }
 
     public function editLaporanSurveyKepuasan($id)
     {
-        return view('admin.laporan.laporan-survey-kepuasan-edit', compact('id'));
+        $laporan = KontenWeb::findOrFail($id);
+        return view('admin.laporan.laporan-survey-kepuasan-edit', compact('id', 'laporan'));
     }
 
     public function updateLaporanSurveyKepuasan(Request $request, $id)
     {
-        // Implementasi update logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'tahun' => 'required|integer|min:2000|max:' . date('Y'),
+        ]);
+
+        $laporan = KontenWeb::findOrFail($id);
+
+        // Handle file upload
+        $filePath = $laporan->meta_data['file_path'] ?? null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = 'survey-kepuasan-' . time() . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('laporan/survey', $fileName, 'public');
+        }
+
+        // Prepare meta data
+        $metaData = [
+            'tahun' => $request->tahun,
+            'periode' => $request->periode,
+            'deskripsi' => $request->deskripsi,
+            'ringkasan' => $request->ringkasan,
+            'kesimpulan' => $request->kesimpulan,
+            'responden' => $request->responden,
+            'nilai_kepuasan' => $request->nilai_kepuasan,
+            'file_path' => $filePath,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status' => $request->status ?? 'draft',
+        ];
+
+        // Update content
+        $konten = "<h2>" . $request->judul . "</h2>";
+        $konten .= "<p><strong>Tahun:</strong> " . $request->tahun . "</p>";
+        if ($request->periode) {
+            $konten .= "<p><strong>Periode:</strong> " . $request->periode . "</p>";
+        }
+        if ($request->deskripsi) {
+            $konten .= "<p><strong>Deskripsi:</strong> " . $request->deskripsi . "</p>";
+        }
+        if ($request->ringkasan) {
+            $konten .= "<p><strong>Ringkasan Hasil:</strong> " . $request->ringkasan . "</p>";
+        }
+        if ($request->kesimpulan) {
+            $konten .= "<p><strong>Kesimpulan:</strong> " . $request->kesimpulan . "</p>";
+        }
+        if ($request->responden) {
+            $konten .= "<p><strong>Jumlah Responden:</strong> " . $request->responden . "</p>";
+        }
+        if ($request->nilai_kepuasan) {
+            $konten .= "<p><strong>Nilai Kepuasan:</strong> " . $request->nilai_kepuasan . "%</p>";
+        }
+
+        $laporan->update([
+            'judul' => $request->judul,
+            'konten' => $konten,
+            'meta_data' => $metaData,
+        ]);
+
         return redirect()->route('admin.laporan-survey-kepuasan')->with('success', 'Laporan survey kepuasan berhasil diperbarui');
     }
 
     public function destroyLaporanSurveyKepuasan($id)
     {
-        // Implementasi delete logic
+        $laporan = KontenWeb::findOrFail($id);
+        $laporan->delete();
         return redirect()->route('admin.laporan-survey-kepuasan')->with('success', 'Laporan survey kepuasan berhasil dihapus');
     }
 
     public function statistikLayananInformasi()
     {
-        return view('admin.laporan.statistik-layanan-informasi');
+        $statistikLayanan = KontenWeb::laporan()
+            ->where('slug', 'like', 'statistik-layanan-informasi%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        
+        return view('admin.laporan.statistik-layanan-informasi', compact('statistikLayanan'));
     }
 
     public function createStatistikLayananInformasi()
@@ -713,24 +1084,151 @@ class AdminController extends Controller
 
     public function storeStatistikLayananInformasi(Request $request)
     {
-        // Implementasi store logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'tahun' => 'required|integer|min:2000|max:' . date('Y'),
+            'file' => 'required|file|mimes:pdf|max:20480',
+        ]);
+
+        // Handle file upload
+        $filePath = null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = 'statistik-' . time() . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('laporan/statistik', $fileName, 'public');
+        }
+
+        // Create slug
+        $slug = 'statistik-layanan-informasi-' . time();
+
+        // Prepare meta data
+        $metaData = [
+            'tahun' => $request->tahun,
+            'periode' => $request->periode,
+            'deskripsi' => $request->deskripsi,
+            'ringkasan' => $request->ringkasan,
+            'analisis' => $request->analisis,
+            'total_permohonan' => $request->total_permohonan,
+            'total_disetujui' => $request->total_disetujui,
+            'total_ditolak' => $request->total_ditolak,
+            'file_path' => $filePath,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status' => $request->status ?? 'draft',
+        ];
+
+        // Create content
+        $konten = "<h2>" . $request->judul . "</h2>";
+        $konten .= "<p><strong>Tahun:</strong> " . $request->tahun . "</p>";
+        if ($request->periode) {
+            $konten .= "<p><strong>Periode:</strong> " . $request->periode . "</p>";
+        }
+        if ($request->deskripsi) {
+            $konten .= "<p><strong>Deskripsi:</strong> " . $request->deskripsi . "</p>";
+        }
+        if ($request->ringkasan) {
+            $konten .= "<p><strong>Ringkasan:</strong> " . $request->ringkasan . "</p>";
+        }
+        if ($request->analisis) {
+            $konten .= "<p><strong>Analisis:</strong> " . $request->analisis . "</p>";
+        }
+        if ($request->total_permohonan) {
+            $konten .= "<p><strong>Total Permohonan:</strong> " . $request->total_permohonan . "</p>";
+        }
+        if ($request->total_disetujui) {
+            $konten .= "<p><strong>Total Disetujui:</strong> " . $request->total_disetujui . "</p>";
+        }
+        if ($request->total_ditolak) {
+            $konten .= "<p><strong>Total Ditolak:</strong> " . $request->total_ditolak . "</p>";
+        }
+
+        KontenWeb::create([
+            'jenis_konten' => 'laporan',
+            'slug' => $slug,
+            'judul' => $request->judul,
+            'konten' => $konten,
+            'meta_data' => $metaData,
+            'is_active' => true,
+        ]);
+
         return redirect()->route('admin.statistik-layanan-informasi')->with('success', 'Statistik layanan informasi berhasil ditambahkan');
     }
 
     public function editStatistikLayananInformasi($id)
     {
-        return view('admin.laporan.statistik-layanan-informasi-edit', compact('id'));
+        $statistik = KontenWeb::findOrFail($id);
+        return view('admin.laporan.statistik-layanan-informasi-edit', compact('statistik'));
     }
 
     public function updateStatistikLayananInformasi(Request $request, $id)
     {
-        // Implementasi update logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'tahun' => 'required|integer|min:2000|max:' . date('Y'),
+        ]);
+
+        $statistik = KontenWeb::findOrFail($id);
+
+        // Handle file upload
+        $filePath = $statistik->meta_data['file_path'] ?? null;
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = 'statistik-' . time() . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->storeAs('laporan/statistik', $fileName, 'public');
+        }
+
+        // Prepare meta data
+        $metaData = [
+            'tahun' => $request->tahun,
+            'periode' => $request->periode,
+            'deskripsi' => $request->deskripsi,
+            'ringkasan' => $request->ringkasan,
+            'analisis' => $request->analisis,
+            'total_permohonan' => $request->total_permohonan,
+            'total_disetujui' => $request->total_disetujui,
+            'total_ditolak' => $request->total_ditolak,
+            'file_path' => $filePath,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status' => $request->status ?? 'draft',
+        ];
+
+        // Update content
+        $konten = "<h2>" . $request->judul . "</h2>";
+        $konten .= "<p><strong>Tahun:</strong> " . $request->tahun . "</p>";
+        if ($request->periode) {
+            $konten .= "<p><strong>Periode:</strong> " . $request->periode . "</p>";
+        }
+        if ($request->deskripsi) {
+            $konten .= "<p><strong>Deskripsi:</strong> " . $request->deskripsi . "</p>";
+        }
+        if ($request->ringkasan) {
+            $konten .= "<p><strong>Ringkasan:</strong> " . $request->ringkasan . "</p>";
+        }
+        if ($request->analisis) {
+            $konten .= "<p><strong>Analisis:</strong> " . $request->analisis . "</p>";
+        }
+        if ($request->total_permohonan) {
+            $konten .= "<p><strong>Total Permohonan:</strong> " . $request->total_permohonan . "</p>";
+        }
+        if ($request->total_disetujui) {
+            $konten .= "<p><strong>Total Disetujui:</strong> " . $request->total_disetujui . "</p>";
+        }
+        if ($request->total_ditolak) {
+            $konten .= "<p><strong>Total Ditolak:</strong> " . $request->total_ditolak . "</p>";
+        }
+
+        $statistik->update([
+            'judul' => $request->judul,
+            'konten' => $konten,
+            'meta_data' => $metaData,
+        ]);
+
         return redirect()->route('admin.statistik-layanan-informasi')->with('success', 'Statistik layanan informasi berhasil diperbarui');
     }
 
     public function destroyStatistikLayananInformasi($id)
     {
-        // Implementasi delete logic
+        $statistik = KontenWeb::findOrFail($id);
+        $statistik->delete();
         return redirect()->route('admin.statistik-layanan-informasi')->with('success', 'Statistik layanan informasi berhasil dihapus');
     }
 }

@@ -37,34 +37,52 @@ class PermohonanController extends Controller
             'ditolak' => Permohonan::where('status', 'ditolak')->count(),
         ];
         
-        return view('admin.permohonan', compact('permohonans', 'permohonanStats'))->with('request', $request);
+        return view('admin.permohonan.permohonan', compact('permohonans', 'permohonanStats'))->with('request', $request);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_pemohon' => 'required|string|max:255',
-            'email' => 'required|email',
-            'telepon' => 'required|string|max:20',
-            'alamat' => 'required|string',
-            'informasi_diminta' => 'required|string',
-            'tujuan' => 'required|string',
-            'cara_perolehan' => 'required|string',
-        ]);
+        try {
+            \Log::info('Permohonan submission attempt', $request->all());
+            
+            $request->validate([
+                'nama_pemohon' => 'required|string|max:255',
+                'email' => 'required|email',
+                'telepon' => 'required|string|max:20',
+                'alamat' => 'required|string',
+                'informasi_diminta' => 'required|string',
+                'tujuan' => 'required|string',
+                'cara_perolehan' => 'required|string',
+            ]);
 
-        Permohonan::create([
-            'nama_pemohon' => $request->nama_pemohon,
-            'email' => $request->email,
-            'telepon' => $request->telepon,
-            'alamat' => $request->alamat,
-            'informasi_diminta' => $request->informasi_diminta,
-            'tujuan' => $request->tujuan,
-            'cara_perolehan' => $request->cara_perolehan,
-            'status' => 'baru',
-            'tanggal_permohonan' => now(),
-        ]);
+            $permohonan = Permohonan::create([
+                'nama_pemohon' => $request->nama_pemohon,
+                'email' => $request->email,
+                'telepon' => $request->telepon,
+                'alamat' => $request->alamat,
+                'informasi_diminta' => $request->informasi_diminta,
+                'tujuan' => $request->tujuan,
+                'cara_perolehan' => $request->cara_perolehan,
+                'status' => 'baru',
+                'tanggal_permohonan' => now(),
+            ]);
 
-        return redirect()->back()->with('success', 'Permohonan berhasil dikirim!');
+            \Log::info('Permohonan created successfully', ['id' => $permohonan->id]);
+
+            return redirect()->back()->with('success', 'Permohonan berhasil dikirim! Nomor tiket: ' . $permohonan->id);
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Validation failed', ['errors' => $e->errors()]);
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->with('error', 'Validasi gagal. Silakan periksa kembali formulir Anda.')
+                ->withInput();
+        } catch (\Exception $e) {
+            \Log::error('Permohonan submission failed', ['error' => $e->getMessage()]);
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
     public function updateStatus(Request $request, $id)

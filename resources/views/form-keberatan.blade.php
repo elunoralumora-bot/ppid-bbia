@@ -13,6 +13,30 @@
 
 <div class="content-section">
     <div class="content-full">
+        @if(session('success'))
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i>
+                {{ session('success') }}
+            </div>
+        @endif
+        
+        @if(session('error'))
+            <div class="alert alert-error">
+                <i class="fas fa-exclamation-circle"></i>
+                {{ session('error') }}
+            </div>
+        @endif
+        
+        @if($errors->any())
+            <div class="alert alert-error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         
         <form class="keberatan-form" method="POST" action="{{ url('/submit-keberatan') }}">
             @csrf
@@ -23,30 +47,33 @@
                             
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="nama_pemohon_keberatan">Nama Pemohon Keberatan *</label>
-                                    <input type="text" id="nama_pemohon_keberatan" name="nama_pemohon_keberatan" required placeholder="Masukkan nama lengkap Anda">
+                                    <label for="nama_pemohon">Nama Pemohon Keberatan *</label>
+                                    <input type="text" id="nama_pemohon" name="nama_pemohon" required placeholder="Masukkan nama lengkap Anda">
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label for="no_tiket_permohonan">No. Tiket Permohonan *</label>
-                                    <input type="text" id="no_tiket_permohonan" name="no_tiket_permohonan" required placeholder="Masukkan nomor tiket permohonan">
+                                    <label for="permohonan_id">No. Tiket Permohonan (opsional)</label>
+                                    <input type="number" id="permohonan_id" name="permohonan_id" placeholder="Masukkan nomor tiket permohonan yang diajukan keberatan">
+                                    <small class="form-help">Isi jika keberatan terkait permohonan tertentu</small>
                                 </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="alamat_keberatan">Alamat *</label>
-                                <textarea id="alamat_keberatan" name="alamat_keberatan" required placeholder="Masukkan alamat lengkap Anda" rows="3"></textarea>
                             </div>
                             
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="no_telepon_keberatan">No. Telepon *</label>
-                                    <input type="tel" id="no_telepon_keberatan" name="no_telepon_keberatan" required placeholder="0812-3456-7890">
+                                    <label for="telepon">No. Telepon *</label>
+                                    <input type="tel" id="telepon" name="telepon" required placeholder="0812-3456-7890">
                                 </div>
-                                
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="alamat">Alamat *</label>
+                                <textarea id="alamat" name="alamat" required placeholder="Masukkan alamat lengkap Anda" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="form-row">
                                 <div class="form-group">
-                                    <label for="email_keberatan">Email *</label>
-                                    <input type="email" id="email_keberatan" name="email_keberatan" required placeholder="email@example.com">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" name="email" required placeholder="email@example.com">
                                 </div>
                             </div>
                         </div>
@@ -358,6 +385,29 @@
 
 .info-grid .info-box a:hover {
     text-decoration: underline;
+}
+
+.alert {
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
 }
 
 @media (max-width: 768px) {

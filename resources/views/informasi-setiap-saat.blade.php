@@ -14,78 +14,34 @@
         <h2>Informasi Setiap Saat PPID BBIA</h2>
         <p>Informasi setiap saat adalah informasi yang dapat diakses sewaktu-waktu oleh masyarakat sesuai dengan kebutuhan dan kepentingan.</p>
             
-            <div class="info-grid">
-                <div class="info-card">
-                    <div class="info-icon">
-                        <img src="{{ asset('images/statistik layanan.png') }}" alt="Statistik Layanan">
+            
+            <h2>Informasi Tersedia</h2>
+            <div class="info-list">
+                @forelse($kontens as $konten)
+                    <div class="info-item">
+                        <div class="info-header">
+                            <h3>{{ $konten->judul }}</h3>
+                            <span class="info-date">{{ $konten->tanggal_publikasi ? $konten->tanggal_publikasi->format('d F Y') : $konten->created_at->format('d F Y') }}</span>
+                        </div>
+                        <p>{{ $konten->deskripsi ?: 'Tidak ada deskripsi tersedia' }}</p>
+                        @if($konten->file_path)
+                            <a href="{{ asset($konten->file_path) }}" class="btn-link" target="_blank">Download PDF</a>
+                        @else
+                            <span class="btn-link" style="opacity: 0.5;">Tidak ada file</span>
+                        @endif
                     </div>
-                    <div class="info-content">
-                        <h3>Statistik Layanan</h3>
-                        <p>Data statistik real-time layanan informasi publik PPID BBIA.</p>
-                        <a href="#" class="info-link">Lihat Statistik →</a>
+                @empty
+                    <div class="info-item">
+                        <div class="info-header">
+                            <h3>Belum Ada Informasi Setiap Saat</h3>
+                            <span class="info-date">{{ now()->format('d F Y') }}</span>
+                        </div>
+                        <p>Saat ini belum ada informasi setiap saat yang tersedia. Silakan kembali lagi nanti.</p>
+                        <span class="btn-link" style="opacity: 0.5;">Belum Ada File</span>
                     </div>
-                </div>
-                
-                <div class="info-card">
-                    <div class="info-icon">
-                        <img src="{{ asset('images/kanal pengaduan.png') }}" alt="Kanal Pengaduan">
-                    </div>
-                    <div class="info-content">
-                        <h3>Status Permohonan</h3>
-                        <p>Cek status permohonan informasi yang sedang diproses.</p>
-                        <a href="#" class="info-link">Cek Status →</a>
-                    </div>
-                </div>
-                
-                <div class="info-card">
-                    <div class="info-icon">
-                        <img src="{{ asset('images/periksa keberatan.png') }}" alt="Periksa Keberatan">
-                    </div>
-                    <div class="info-content">
-                        <h3>Status Keberatan</h3>
-                        <p>Tracking status pengajuan keberatan informasi publik.</p>
-                        <a href="#" class="info-link">Lacak Keberatan →</a>
-                    </div>
-                </div>
-                
-                <div class="info-card">
-                    <div class="info-icon">
-                        <img src="{{ asset('images/open data.png') }}" alt="Open Data">
-                    </div>
-                    <div class="info-content">
-                        <h3>Data Terbuka</h3>
-                        <p>Akses data terbuka BBIA untuk penelitian dan pengembangan.</p>
-                        <a href="#" class="info-link">Akses Data →</a>
-                    </div>
-                </div>
+                @endforelse
             </div>
             
-            <h2>Informasi Real-Time</h2>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">1,234</div>
-                    <div class="stat-label">Total Permohonan</div>
-                    <div class="stat-period">Tahun 2026</div>
-                </div>
-                
-                <div class="stat-item">
-                    <div class="stat-number">1,189</div>
-                    <div class="stat-label">Permohonan Diproses</div>
-                    <div class="stat-period">Tahun 2026</div>
-                </div>
-                
-                <div class="stat-item">
-                    <div class="stat-number">45</div>
-                    <div class="stat-label">Keberatan Diterima</div>
-                    <div class="stat-period">Tahun 2026</div>
-                </div>
-                
-                <div class="stat-item">
-                    <div class="stat-number">98.5%</div>
-                    <div class="stat-label">Tingkat Kepuasan</div>
-                    <div class="stat-period">Tahun 2026</div>
-                </div>
-            </div>
             
             <h2>Kanal Akses Informasi</h2>
             <div class="channel-grid">
@@ -114,15 +70,6 @@
                 </div>
             </div>
             
-            <h2>Jadwal Update</h2>
-            <div class="schedule-box">
-                <h3>Waktu Update Informasi</h3>
-                <ul>
-                    <li><strong>Statistik Layanan:</strong> Update setiap hari (Real-time)</li>
-                    <li><strong>Status Permohonan:</strong> Update setiap 1 jam</li>
-                    <li><strong>Status Keberatan:</strong> Update setiap 2 jam</li>
-                    <li><strong>Data Terbuka:</strong> Update setiap minggu</li>
-                </ul>
             </div>
         </div>
     </div>
@@ -396,6 +343,56 @@
 
 .schedule-box li {
     margin-bottom: 10px;
+}
+
+.info-list {
+    margin: 30px 0;
+}
+
+.info-item {
+    background: #f8f9fa;
+    border: 2px solid #1a3a5f;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.info-header h3 {
+    color: #1a3a5f;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.info-date {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.info-item p {
+    margin-bottom: 15px;
+}
+
+.btn-link {
+    color: #1a3a5f;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 16px;
+    border: 1px solid #1a3a5f;
+    border-radius: 5px;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.btn-link:hover {
+    background: #1a3a5f;
+    color: white;
 }
 </style>
 

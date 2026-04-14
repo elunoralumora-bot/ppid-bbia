@@ -13,6 +13,31 @@
 
 <div class="content-section">
     <div class="content-full">
+        @if(session('success'))
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i>
+                {{ session('success') }}
+            </div>
+        @endif
+        
+        @if(session('error'))
+            <div class="alert alert-error">
+                <i class="fas fa-exclamation-circle"></i>
+                {{ session('error') }}
+            </div>
+        @endif
+        
+        @if($errors->any())
+            <div class="alert alert-error">
+                <i class="fas fa-exclamation-triangle"></i>
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        
         <p>Silakan isi formulir berikut untuk mengajukan permohonan informasi publik. Pastikan semua data yang Anda masukkan sudah benar dan lengkap.</p>
         
         <form class="permohonan-form" method="POST" action="{{ url('/submit-permohonan') }}">
@@ -29,8 +54,8 @@
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label for="pekerjaan">Pekerjaan *</label>
-                                    <input type="text" id="pekerjaan" name="pekerjaan" required placeholder="Masukkan pekerjaan Anda">
+                                    <label for="telepon">No. Telepon *</label>
+                                    <input type="tel" id="telepon" name="telepon" required placeholder="0812-3456-7890">
                                 </div>
                             </div>
                             
@@ -40,11 +65,6 @@
                             </div>
                             
                             <div class="form-row">
-                                <div class="form-group">
-                                    <label for="no_telepon">No. Telepon *</label>
-                                    <input type="tel" id="no_telepon" name="no_telepon" required placeholder="0812-3456-7890">
-                                </div>
-                                
                                 <div class="form-group">
                                     <label for="email">Email *</label>
                                     <input type="email" id="email" name="email" required placeholder="email@example.com">
@@ -57,13 +77,13 @@
                             <h3>📄 Rincian Informasi</h3>
                             
                             <div class="form-group">
-                                <label for="rincian_informasi">Rincian Informasi yang Dibutuhkan *</label>
-                                <textarea id="rincian_informasi" name="rincian_informasi" required placeholder="Jelaskan secara rinci informasi yang Anda butuhkan" rows="4"></textarea>
+                                <label for="informasi_diminta">Rincian Informasi yang Dibutuhkan *</label>
+                                <textarea id="informasi_diminta" name="informasi_diminta" required placeholder="Jelaskan secara rinci informasi yang Anda butuhkan" rows="4"></textarea>
                             </div>
                             
                             <div class="form-group">
-                                <label for="tujuan_penggunaan">Tujuan Penggunaan Informasi *</label>
-                                <textarea id="tujuan_penggunaan" name="tujuan_penggunaan" required placeholder="Jelaskan tujuan penggunaan informasi yang diminta" rows="3"></textarea>
+                                <label for="tujuan">Tujuan Penggunaan Informasi *</label>
+                                <textarea id="tujuan" name="tujuan" required placeholder="Jelaskan tujuan penggunaan informasi yang diminta" rows="3"></textarea>
                             </div>
                         </div>
 
@@ -72,25 +92,14 @@
                             <h3>🔍 Cara Memperoleh Informasi *</h3>
                             
                             <div class="form-group">
-                                <label>Pilih cara memperoleh informasi:</label>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="cara_memperoleh[]" value="melihat_membaca" required>
-                                        <span>Melihat/Membaca</span>
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="cara_memperoleh[]" value="mendengarkan">
-                                        <span>Mendengarkan</span>
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="cara_memperoleh[]" value="mencatat">
-                                        <span>Mencatat</span>
-                                    </label>
-                                    <label class="checkbox-label">
-                                        <input type="checkbox" name="cara_memperoleh[]" value="mendapatkan_salinan">
-                                        <span>Mendapatkan salinan informasi (hardcopy/softcopy)</span>
-                                    </label>
-                                </div>
+                                <label for="cara_perolehan">Cara Memperoleh Informasi *</label>
+                                <select id="cara_perolehan" name="cara_perolehan" required>
+                                    <option value="">Pilih cara memperoleh informasi</option>
+                                    <option value="melihat_membaca">Melihat/Membaca</option>
+                                    <option value="mendengarkan">Mendengarkan</option>
+                                    <option value="mencatat">Mencatat</option>
+                                    <option value="mendapatkan_salinan">Mendapatkan salinan informasi (hardcopy/softcopy)</option>
+                                </select>
                             </div>
                         </div>
 
@@ -310,7 +319,8 @@
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
     width: 100%;
     padding: 12px 16px;
     border: 2px solid #e1e5e9;
@@ -318,10 +328,12 @@
     font-size: 14px;
     transition: border-color 0.3s ease;
     font-family: 'Inter', sans-serif;
+    background-color: white;
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
     outline: none;
     border-color: #2c5282;
     box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.1);
@@ -437,6 +449,29 @@
 
 .info-grid .info-box a:hover {
     text-decoration: underline;
+}
+
+.alert {
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
 }
 
 @media (max-width: 768px) {

@@ -78,9 +78,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/struktur-organisasi', [ProfilController::class, 'editStrukturOrganisasi'])->name('admin.struktur-organisasi');
         Route::put('/struktur-organisasi', [ProfilController::class, 'updateStrukturOrganisasi'])->name('admin.struktur-organisasi.update');
         
-        Route::get('/profil-pejabat', [ProfilController::class, 'editProfilPejabat'])->name('admin.profil-pejabat');
-        Route::put('/profil-pejabat', [ProfilController::class, 'updateProfilPejabat'])->name('admin.profil-pejabat.update');
-        
+                
         Route::get('/visi-misi', [ProfilController::class, 'editVisiMisi'])->name('admin.visi-misi');
         Route::put('/visi-misi', [ProfilController::class, 'updateVisiMisi'])->name('admin.visi-misi.update');
         
@@ -305,7 +303,6 @@ Route::prefix('admin')->group(function () {
 // Profil Menu Routes
 Route::get('/tentang-ppid', [PublikController::class, 'tentangPpid']);
 Route::get('/struktur-organisasi', [PublikController::class, 'strukturOrganisasi']);
-Route::get('/profil-pejabat', [PublikController::class, 'profilPejabat']);
 Route::get('/visi-misi', [PublikController::class, 'visiMisi']);
 Route::get('/kontak-ppid', [PublikController::class, 'kontakPpid']);
 
@@ -371,9 +368,35 @@ Route::get('/form-permohonan', function () {
     return view('form-permohonan');
 });
 
+Route::post('/submit-permohonan', [PermohonanController::class, 'store'])->name('submit.permohonan');
+
 // Form Keberatan
 Route::get('/form-keberatan', function () {
     return view('form-keberatan');
+});
+
+Route::post('/submit-keberatan', [KeberatanController::class, 'store'])->name('submit.keberatan');
+
+// Debug route
+Route::get('/debug-form', function () {
+    return view('debug-form');
+});
+
+Route::post('/debug-submit', function (\Illuminate\Http\Request $request) {
+    \Log::info('Debug submission', $request->all());
+    return response()->json(['success' => true, 'data' => $request->all()]);
+});
+
+Route::get('/check-data', function () {
+    $permohonan = \App\Models\Permohonan::latest()->first();
+    $keberatan = \App\Models\Keberatan::latest()->first();
+    
+    return response()->json([
+        'total_permohonan' => \App\Models\Permohonan::count(),
+        'total_keberatan' => \App\Models\Keberatan::count(),
+        'latest_permohonan' => $permohonan,
+        'latest_keberatan' => $keberatan,
+    ]);
 });
 
 // Periksa Permohonan

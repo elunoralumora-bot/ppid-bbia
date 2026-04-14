@@ -1,7 +1,7 @@
 @extends('admin.layout')
 
 @section('title', 'Struktur Organisasi - PPID BBIA')
-@section('page-title', 'Edit Halaman Struktur Organisasi')
+@section('page-title', 'Struktur Organisasi')
 
 @push('styles')
 <style>

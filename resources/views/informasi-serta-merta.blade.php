@@ -13,47 +13,32 @@
     <div class="content-full">
         <h2>Informasi Serta Merta PPID BBIA</h2>
         <p>Informasi serta merta adalah informasi yang dapat mengancam hajat hidup orang banyak atau ketenteraman masyarakat yang harus segera disampaikan.</p>
-            
-            <div class="alert-box">
-                <h3>⚠️ Kategori Informasi Serta Merta</h3>
-                <p>Informasi yang termasuk kategori serta merta meliputi:</p>
-                <ul>
-                    <li>Bencana alam atau keadaan darurat</li>
-                    <li>Krisis kesehatan masyarakat</li>
-                    <li>Gangguan keamanan dan ketertiban</li>
-                    <li>Kebijakan darurat pemerintah</li>
-                    <li>Informasi lain yang dapat membahayakan keselamatan umum</li>
-                </ul>
-            </div>
-            
+                        
             <h2>Informasi Serta Merta Tersedia</h2>
             <div class="info-list">
-                <div class="info-item">
-                    <div class="info-header">
-                        <h3>Protokol Kesehatan COVID-19</h3>
-                        <span class="info-date">15 Februari 2026</span>
+                @forelse($kontens as $konten)
+                    <div class="info-item">
+                        <div class="info-header">
+                            <h3>{{ $konten->judul }}</h3>
+                            <span class="info-date">{{ $konten->tanggal_publikasi ? $konten->tanggal_publikasi->format('d F Y') : $konten->created_at->format('d F Y') }}</span>
+                        </div>
+                        <p>{{ $konten->deskripsi ?: 'Tidak ada deskripsi tersedia' }}</p>
+                        @if($konten->file_path)
+                            <a href="{{ asset($konten->file_path) }}" class="btn-link" target="_blank">Download PDF</a>
+                        @else
+                            <span class="btn-link" style="opacity: 0.5;">Tidak ada file</span>
+                        @endif
                     </div>
-                    <p>Panduan protokol kesehatan di lingkungan BBIA sesuai ketentuan pemerintah.</p>
-                    <a href="#" class="btn-link">Download PDF</a>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-header">
-                        <h3>Prosedur Evakuasi Darurat</h3>
-                        <span class="info-date">10 Februari 2026</span>
+                @empty
+                    <div class="info-item">
+                        <div class="info-header">
+                            <h3>Belum Ada Informasi Serta Merta</h3>
+                            <span class="info-date">{{ now()->format('d F Y') }}</span>
+                        </div>
+                        <p>Saat ini belum ada informasi serta merta yang tersedia. Silakan kembali lagi nanti.</p>
+                        <span class="btn-link" style="opacity: 0.5;">Belum Ada File</span>
                     </div>
-                    <p>Tata cara evakuasi darurat pengunjung dan pegawai BBIA dalam situasi bahaya.</p>
-                    <a href="#" class="btn-link">Download PDF</a>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-header">
-                        <h3>Kontak Darurat BBIA</h3>
-                        <span class="info-date">5 Februari 2026</span>
-                    </div>
-                    <p>Daftar kontak darurat dan nomor telepon penting di lingkungan BBIA.</p>
-                    <a href="#" class="btn-link">Download PDF</a>
-                </div>
+                @endforelse
             </div>
             
             <h2>Mekanisme Penyampaian</h2>

@@ -37,32 +37,50 @@ class KeberatanController extends Controller
             'ditolak' => Keberatan::where('status', 'ditolak')->count(),
         ];
         
-        return view('admin.keberatan', compact('keberatans', 'keberatanStats'))->with('request', $request);
+        return view('admin.keberatan.keberatan', compact('keberatans', 'keberatanStats'))->with('request', $request);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_pemohon' => 'required|string|max:255',
-            'email' => 'required|email',
-            'telepon' => 'required|string|max:20',
-            'alamat' => 'required|string',
-            'alasan_keberatan' => 'required|string',
-            'permohonan_id' => 'nullable|integer',
-        ]);
+        try {
+            \Log::info('Keberatan submission attempt', $request->all());
+            
+            $request->validate([
+                'nama_pemohon' => 'required|string|max:255',
+                'email' => 'required|email',
+                'telepon' => 'required|string|max:20',
+                'alamat' => 'required|string',
+                'alasan_keberatan' => 'required|string',
+                'permohonan_id' => 'nullable|integer',
+            ]);
 
-        Keberatan::create([
-            'nama_pemohon' => $request->nama_pemohon,
-            'email' => $request->email,
-            'telepon' => $request->telepon,
-            'alamat' => $request->alamat,
-            'alasan_keberatan' => $request->alasan_keberatan,
-            'permohonan_id' => $request->permohonan_id,
-            'status' => 'baru',
-            'tanggal_keberatan' => now(),
-        ]);
+            $keberatan = Keberatan::create([
+                'nama_pemohon' => $request->nama_pemohon,
+                'email' => $request->email,
+                'telepon' => $request->telepon,
+                'alamat' => $request->alamat,
+                'alasan_keberatan' => $request->alasan_keberatan,
+                'permohonan_id' => $request->permohonan_id ?: null,
+                'status' => 'baru',
+                'tanggal_keberatan' => now(),
+            ]);
 
-        return redirect()->back()->with('success', 'Pengajuan keberatan berhasil dikirim!');
+            \Log::info('Keberatan created successfully', ['id' => $keberatan->id]);
+
+            return redirect()->back()->with('success', 'Pengajuan keberatan berhasil dikirim! Nomor tiket: ' . $keberatan->id);
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Keberatan validation failed', ['errors' => $e->errors()]);
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->with('error', 'Validasi gagal. Silakan periksa kembali formulir Anda.')
+                ->withInput();
+        } catch (\Exception $e) {
+            \Log::error('Keberatan submission failed', ['error' => $e->getMessage()]);
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
     public function updateStatus(Request $request, $id)

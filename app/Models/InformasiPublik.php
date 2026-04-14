@@ -12,6 +12,19 @@ class InformasiPublik extends Model
         'konten',
         'file_path',
         'urutan',
-        'is_active'
+        'is_active',
+        'deskripsi',
+        'tanggal_publikasi',
+        'status'
+    ];
+
+    protected $casts = [
+        'tanggal_publikasi' => 'date',
+        'is_active' => 'boolean',
+    ];
+
+    // Accessor for default values
+    protected $attributes = [
+        'status' => 'draft',
     ];
 }

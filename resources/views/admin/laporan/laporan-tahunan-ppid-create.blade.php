@@ -1,6 +1,7 @@
 @extends('admin.layout')
 
 @section('title', 'Tambah Laporan Tahunan PPID - PPID BBIA')
+@section('page-title', 'Tambah Laporan Tahunan PPID')
 
 @section('content')
 <div class="content">

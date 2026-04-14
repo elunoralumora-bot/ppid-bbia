@@ -14,116 +14,68 @@
         <h2>Laporan Survey Kepuasan Masyarakat PPID BBIA</h2>
         <p>Berikut adalah laporan hasil survey kepuasan masyarakat terhadap layanan informasi publik PPID BBIA yang dilaksanakan secara berkala.</p>
             
-            <div class="survey-grid">
-                <div class="survey-item">
-                    <div class="survey-header">
-                        <h3>Survey Tahun 2025</h3>
-                        <span class="survey-period">Semester II 2025</span>
-                    </div>
-                    <div class="survey-stats">
-                        <div class="stat-item">
-                            <div class="stat-number">4.2</div>
-                            <div class="stat-label">Skor Kepuasan</div>
+            @forelse($kontens as $konten)
+            <div class="survey-item">
+                <div class="survey-header">
+                    <h3>{{ $konten->judul }}</h3>
+                    @if($konten->meta_data['periode'] ?? null)
+                        <span class="survey-period">{{ $konten->meta_data['periode'] }}</span>
+                    @endif
+                </div>
+                <div class="survey-content">
+                    @if($konten->meta_data['ringkasan'] ?? null)
+                        <div class="ringkasan-section">
+                            <h4>Ringkasan Hasil</h4>
+                            <p>{{ $konten->meta_data['ringkasan'] }}</p>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-number">85%</div>
-                            <div class="stat-label">Tingkat Kepuasan</div>
+                    @endif
+                    
+                    @if($konten->meta_data['kesimpulan'] ?? null)
+                        <div class="kesimpulan-section">
+                            <h4>Kesimpulan</h4>
+                            <p>{{ $konten->meta_data['kesimpulan'] }}</p>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-number">250</div>
-                            <div class="stat-label">Responden</div>
-                        </div>
-                    </div>
-                    <div class="survey-actions">
-                        <a href="#" class="btn-link">Download Lengkap →</a>
-                        <a href="#" class="btn-link">Ringkasan →</a>
-                    </div>
+                    @endif
                 </div>
                 
-                <div class="survey-item">
-                    <div class="survey-header">
-                        <h3>Survey Tahun 2024</h3>
-                        <span class="survey-period">Semester II 2024</span>
-                    </div>
-                    <div class="survey-stats">
+                <div class="survey-stats">
+                    @if($konten->meta_data['nilai_kepuasan'] ?? null)
                         <div class="stat-item">
-                            <div class="stat-number">4.1</div>
+                            <div class="stat-number">{{ $konten->meta_data['nilai_kepuasan'] }}</div>
                             <div class="stat-label">Skor Kepuasan</div>
                         </div>
+                    @endif
+                    
+                    @if($konten->meta_data['responden'] ?? null)
                         <div class="stat-item">
-                            <div class="stat-number">82%</div>
-                            <div class="stat-label">Tingkat Kepuasan</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">230</div>
+                            <div class="stat-number">{{ $konten->meta_data['responden'] }}</div>
                             <div class="stat-label">Responden</div>
                         </div>
-                    </div>
-                    <div class="survey-actions">
-                        <a href="#" class="btn-link">Download Lengkap →</a>
-                        <a href="#" class="btn-link">Ringkasan →</a>
-                    </div>
+                    @endif
                 </div>
                 
-                <div class="survey-item">
-                    <div class="survey-header">
-                        <h3>Survey Tahun 2023</h3>
-                        <span class="survey-period">Semester II 2023</span>
-                    </div>
-                    <div class="survey-stats">
-                        <div class="stat-item">
-                            <div class="stat-number">3.9</div>
-                            <div class="stat-label">Skor Kepuasan</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">78%</div>
-                            <div class="stat-label">Tingkat Kepuasan</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">210</div>
-                            <div class="stat-label">Responden</div>
-                        </div>
-                    </div>
-                    <div class="survey-actions">
-                        <a href="#" class="btn-link">Download Lengkap →</a>
-                        <a href="#" class="btn-link">Ringkasan →</a>
-                    </div>
+                <div class="survey-actions">
+                    @if($konten->meta_data['file_path'] ?? null)
+                        <a href="{{ asset('storage/' . $konten->meta_data['file_path']) }}" target="_blank" class="btn-link">
+                            <i class="fas fa-download me-2"></i>Download Laporan
+                        </a>
+                    @endif
+                    @if($konten->meta_data['ringkasan'] ?? null)
+                        <a href="#" class="btn-link">
+                            <i class="fas fa-file-text me-2"></i>Ringkasan
+                        </a>
+                    @endif
                 </div>
             </div>
-            
-            <h2>Trend Kepuasan</h2>
-            <div class="trend-chart">
-                <div class="chart-container">
-                    <h3>Grafik Kepuasan 2021-2025</h3>
-                    <div class="chart-bars">
-                        <div class="bar-item">
-                            <div class="bar" style="height: 78%"></div>
-                            <span>2021</span>
-                            <span class="value">3.9</span>
-                        </div>
-                        <div class="bar-item">
-                            <div class="bar" style="height: 82%"></div>
-                            <span>2022</span>
-                            <span class="value">4.1</span>
-                        </div>
-                        <div class="bar-item">
-                            <div class="bar" style="height: 85%"></div>
-                            <span>2023</span>
-                            <span class="value">4.2</span>
-                        </div>
-                        <div class="bar-item">
-                            <div class="bar" style="height: 78%"></div>
-                            <span>2024</span>
-                            <span class="value">4.1</span>
-                        </div>
-                        <div class="bar-item">
-                            <div class="bar" style="height: 85%"></div>
-                            <span>2025</span>
-                            <span class="value">4.2</span>
-                        </div>
-                    </div>
+        @empty
+            <div class="content-section">
+                <div class="content-full">
+                    <h2>Laporan Survey Kepuasan Masyarakat PPID BBIA</h2>
+                    <p>Belum ada data survey kepuasan masyarakat yang tersedia.</p>
+                    <p>Silakan kembali lagi nanti untuk melihat survey terbaru.</p>
                 </div>
             </div>
+        @endforelse
             
             <h2>Metodologi Survey</h2>
             <div class="methodology-section">

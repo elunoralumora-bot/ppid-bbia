@@ -1,6 +1,7 @@
 @extends('admin.layout')
 
 @section('title', 'Laporan Tahunan PPID - PPID BBIA')
+@section('page-title', 'Laporan Tahunan PPID')
 
 @section('content')
 <div class="content">
@@ -45,28 +46,24 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>
                                     <strong>{{ $item->judul ?? '-' }}</strong>
-                                    @if($item->deskripsi)
-                                        <br><small class="text-muted">{{ Str::limit($item->deskripsi, 100) }}</small>
+                                    @if($item->meta_data['deskripsi'] ?? null)
+                                        <br><small class="text-muted">{{ Str::limit($item->meta_data['deskripsi'], 100) }}</small>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->tahun)
-                                        <span class="badge bg-primary">{{ $item->tahun }}</span>
+                                    @if($item->meta_data['tahun'] ?? null)
+                                        <span class="badge bg-primary">{{ $item->meta_data['tahun'] }}</span>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->periode)
-                                        <span class="badge bg-info">{{ $item->periode }}</span>
-                                    @else
-                                        <span class="text-muted">-</span>
-                                    @endif
+                                    <span class="badge bg-info">Laporan Tahunan</span>
                                 </td>
-                                <td>{{ $item->tanggal_publikasi ? \Carbon\Carbon::parse($item->tanggal_publikasi)->format('d/m/Y') : '-' }}</td>
+                                <td>{{ $item->meta_data['tanggal_publikasi'] ? \Carbon\Carbon::parse($item->meta_data['tanggal_publikasi'])->format('d/m/Y') : '-' }}</td>
                                 <td>
-                                    @if($item->file_path)
-                                        <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank" class="btn btn-sm btn-outline-success">
+                                    @if($item->meta_data['file_path'] ?? null)
+                                        <a href="{{ asset('storage/' . $item->meta_data['file_path']) }}" target="_blank" class="btn btn-sm btn-outline-success">
                                             <i class="fas fa-file-pdf me-1"></i>Download
                                         </a>
                                     @else
@@ -74,9 +71,9 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->status == 'published')
+                                    @if(($item->meta_data['status'] ?? null) == 'published')
                                         <span class="badge bg-success">Dipublikasi</span>
-                                    @elseif($item->status == 'draft')
+                                    @elseif(($item->meta_data['status'] ?? null) == 'draft')
                                         <span class="badge bg-warning">Draft</span>
                                     @else
                                         <span class="badge bg-secondary">Arsip</span>

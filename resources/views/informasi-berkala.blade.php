@@ -13,89 +13,37 @@
     <div class="content-full">
         <h2>Informasi Berkala PPID BBIA</h2>
         <p>Informasi berkala adalah informasi yang harus disediakan dan diumumkan secara berkala sesuai dengan ketentuan perundang-undangan.</p>
-            
-            <div class="info-grid">
-                <div class="info-card">
-                    <div class="info-icon">
-                        <img src="{{ asset('images/informasi publik.png') }}" alt="Informasi Tahunan">
-                    </div>
-                    <div class="info-content">
-                        <h3>Informasi Tahunan</h3>
-                        <p>Laporan tahunan PPID BBIA yang berisi ringkasan kegiatan dan pencapaian kinerja.</p>
-                        <a href="#" class="info-link">Lihat Informasi Tahunan →</a>
-                    </div>
-                </div>
-                
-                <div class="info-card">
-                    <div class="info-icon">
-                        <img src="{{ asset('images/informasi publik.png') }}" alt="Informasi Semesteran">
-                    </div>
-                    <div class="info-content">
-                        <h3>Informasi Semesteran</h3>
-                        <p>Laporan semesteran PPID BBIA untuk periode Januari-Juni dan Juli-Desember.</p>
-                        <a href="#" class="info-link">Lihat Informasi Semesteran →</a>
-                    </div>
-                </div>
-                
-                <div class="info-card">
-                    <div class="info-icon">
-                        <img src="{{ asset('images/informasi publik.png') }}" alt="Informasi Triwulanan">
-                    </div>
-                    <div class="info-content">
-                        <h3>Informasi Triwulanan</h3>
-                        <p>Laporan triwulanan PPID BBIA untuk setiap periode 3 bulanan.</p>
-                        <a href="#" class="info-link">Lihat Informasi Triwulanan →</a>
-                    </div>
-                </div>
-                
-                <div class="info-card">
-                    <div class="info-icon">
-                        <img src="{{ asset('images/informasi publik.png') }}" alt="Informasi Bulanan">
-                    </div>
-                    <div class="info-content">
-                        <h3>Informasi Bulanan</h3>
-                        <p>Laporan bulanan PPID BBIA yang berisi statistik layanan informasi publik.</p>
-                        <a href="#" class="info-link">Lihat Informasi Bulanan →</a>
-                    </div>
-                </div>
-            </div>
-            
+                        
             <h2>Daftar Informasi Berkala</h2>
             <div class="table-container">
                 <table class="info-table">
                     <thead>
                         <tr>
-                            <th>Jenis Informasi</th>
-                            <th>Periode</th>
-                            <th>Tahun</th>
+                            <th>Judul</th>
+                            <th>Kategori</th>
+                            <th>Tanggal Publikasi</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Laporan Tahunan PPID</td>
-                            <td>2025</td>
-                            <td>Desember 2025</td>
-                            <td><a href="#" class="btn-link">Download</a></td>
-                        </tr>
-                        <tr>
-                            <td>Laporan Semesteran</td>
-                            <td>Genap 2025</td>
-                            <td>Desember 2025</td>
-                            <td><a href="#" class="btn-link">Download</a></td>
-                        </tr>
-                        <tr>
-                            <td>Laporan Triwulanan</td>
-                            <td>IV 2025</td>
-                            <td>Desember 2025</td>
-                            <td><a href="#" class="btn-link">Download</a></td>
-                        </tr>
-                        <tr>
-                            <td>Statistik Layanan</td>
-                            <td>November 2025</td>
-                            <td>2025</td>
-                            <td><a href="#" class="btn-link">Download</a></td>
-                        </tr>
+                        @forelse($kontens as $konten)
+                            <tr>
+                                <td>{{ $konten->judul }}</td>
+                                <td>{{ $konten->kategori }}</td>
+                                <td>{{ $konten->tanggal_publikasi ? $konten->tanggal_publikasi->format('d F Y') : $konten->created_at->format('d F Y') }}</td>
+                                <td>
+                                    @if($konten->file_path)
+                                        <a href="{{ asset($konten->file_path) }}" class="btn-link" target="_blank">Download</a>
+                                    @else
+                                        <span class="btn-link" style="opacity: 0.5;">Tidak ada file</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 20px;">Belum ada informasi berkala tersedia</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

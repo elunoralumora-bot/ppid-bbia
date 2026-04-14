@@ -11,9 +11,43 @@
 
 <div class="content-section">
     <div class="content-full">
-        @if($konten)
-            {!! $konten->konten !!}
-        @else
+                <h2>Laporan Tahunan PPID BBIA</h2>
+        <p>Berikut adalah laporan Tahunan PPID BBIA yang dilaksanakan secara berkala.</p>
+
+        @forelse($kontens as $konten)
+            <div class="report-item">
+                <div class="report-header">
+                    <h3>{{ $konten->judul }}</h3>
+                    @if($konten->meta_data['tahun'] ?? null)
+                        <span class="report-year">{{ $konten->meta_data['tahun'] }}</span>
+                    @endif
+                </div>
+                <div class="report-content">
+                    @if($konten->meta_data['deskripsi'] ?? null)
+                        <p><strong>Deskripsi:</strong> {{ $konten->meta_data['deskripsi'] }}</p>
+                    @endif
+                    
+                    @if($konten->meta_data['ringkasan'] ?? null)
+                        <div class="ringkasan-section">
+                            <h4>Ringkasan</h4>
+                            <p>{{ $konten->meta_data['ringkasan'] }}</p>
+                        </div>
+                    @endif
+                </div>
+                <div class="report-actions">
+                    @if($konten->meta_data['file_path'] ?? null)
+                        <a href="{{ asset('storage/' . $konten->meta_data['file_path']) }}" target="_blank" class="btn-link">
+                            <i class="fas fa-download me-2"></i>Download PDF
+                        </a>
+                    @endif
+                    @if($konten->meta_data['ringkasan'] ?? null)
+                        <a href="#" class="btn-link">
+                            <i class="fas fa-file-text me-2"></i>Ringkasan
+                        </a>
+                    @endif
+                </div>
+            </div>
+        @empty
             <!-- Fallback content jika tidak ada data di database -->
             <h2>Laporan Tahunan PPID BBIA</h2>
             <p>Berikut adalah laporan tahunan PPID BBIA yang berisi ringkasan kegiatan dan pencapaian kinerja dalam penyediaan layanan informasi publik.</p>

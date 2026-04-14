@@ -29,7 +29,6 @@
                         <ul class="dropdown-menu">
                             <li><a href="{{ url('/tentang-ppid') }}">Tentang PPID</a></li>
                             <li><a href="{{ url('/struktur-organisasi') }}">Struktur Organisasi</a></li>
-                            <li><a href="{{ url('/profil-pejabat') }}">Profil Pejabat</a></li>
                             <li><a href="{{ url('/visi-misi') }}">Visi Misi</a></li>
                             <li><a href="{{ url('/kontak-ppid') }}">Kontak PPID</a></li>
                             <li><a href="{{ url('/galeri-foto') }}">Galeri Foto</a></li>
@@ -41,19 +40,14 @@
                             <li><a href="{{ url('/informasi-berkala') }}">Informasi Berkala</a></li>
                             <li><a href="{{ url('/informasi-serta-merta') }}">Informasi Serta Merta</a></li>
                             <li><a href="{{ url('/informasi-setiap-saat') }}">Informasi Setiap Saat</a></li>
-                            <li><a href="{{ url('/daftar-informasi-publik') }}">Daftar Informasi Publik Online</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle">Standar Layanan</a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ url('/regulasi') }}">Regulasi</a></li>
                             <li><a href="{{ url('/prosedur-permohonan') }}">Prosedur Permohonan Informasi</a></li>
                             <li><a href="{{ url('/prosedur-keberatan') }}">Prosedur Pengajuan Keberatan</a></li>
                             <li><a href="{{ url('/mekanisme-sengketa') }}">Mekanisme Penanganan Sengketa Informasi</a></li>
-                            <li><a href="{{ url('/sop-ppid') }}">SOP PPID</a></li>
-                            <li><a href="{{ url('/kanal-layanan') }}">Kanal Layanan Informasi</a></li>
-                            <li><a href="{{ url('/waktu-biaya-layanan') }}">Waktu & Biaya Layanan</a></li>
                             <li><a href="{{ url('/maklumat-informasi-publik') }}">Maklumat Informasi Publik</a></li>
                         </ul>
                     </li>
@@ -114,51 +108,6 @@
                     <div class="divider-line"></div>
                 </div>
                 
-                <!-- Service Icons -->
-                <div class="service-icons">
-                    <div class="service-icon-item">
-                        <a href="{{ url('/informasi-publik') }}">
-                            <div class="icon-box">
-                                <img src="{{ asset('images/informasi publik.png') }}" alt="Informasi Publik">
-                            </div>
-                            <span>Informasi Publik</span>
-                        </a>
-                    </div>
-                    <div class="service-icon-item">
-                        <a href="{{ url('/periksa-permohonan') }}">
-                            <div class="icon-box">
-                                <img src="{{ asset('images/periksa permohonan.png') }}" alt="Periksa Permohonan">
-                            </div>
-                            <span>Periksa Permohonan</span>
-                        </a>
-                    </div>
-                    <div class="service-icon-item">
-                        <a href="{{ url('/periksa-keberatan') }}">
-                            <div class="icon-box">
-                                <img src="{{ asset('images/periksa keberatan.png') }}" alt="Periksa Keberatan">
-                            </div>
-                            <span>Periksa Keberatan</span>
-                        </a>
-                    </div>
-                    <div class="service-icon-item">
-                        <a href="{{ url('/statistik-layanan') }}">
-                            <div class="icon-box">
-                                <img src="{{ asset('images/statistik layanan.png') }}" alt="Statistik Layanan">
-                            </div>
-                            <span>Statistik Layanan</span>
-                        </a>
-                    </div>
-                    <div class="service-icon-item">
-                        <a href="{{ url('/kanal-pengaduan') }}">
-                            <div class="icon-box">
-                                <img src="{{ asset('images/kanal pengaduan.png') }}" alt="Kanal Pengaduan">
-                            </div>
-                            <span>Kanal Pengaduan</span>
-                        </a>
-                    </div>
-                </div>
-            </section>
-
             <!-- News Section -->
             <section class="news-section">
                 <h2>Berita Terkini</h2>

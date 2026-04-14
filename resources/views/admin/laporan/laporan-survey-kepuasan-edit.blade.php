@@ -1,14 +1,14 @@
 @extends('admin.layout')
 
-@section('title', 'Edit Laporan Tahunan PPID - PPID BBIA')
-@section('page-title', 'Edit Laporan Tahunan PPID')
+@section('title', 'Edit Laporan Survey Kepuasan - PPID BBIA')
+@section('page-title', 'Edit Laporan Survey Kepuasan')
 
 @section('content')
 <div class="content">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0">Edit Laporan Tahunan PPID</h1>
+        <h1 class="h3 mb-0">Edit Laporan Survey Kepuasan</h1>
         <div>
-            <a href="{{ route('admin.laporan-tahunan-ppid') }}" class="btn btn-secondary">
+            <a href="{{ route('admin.laporan-survey-kepuasan') }}" class="btn btn-secondary">
                 <i class="fas fa-arrow-left me-2"></i>Kembali
             </a>
         </div>
@@ -38,14 +38,14 @@
     @endif
 
     <div class="form-card">
-        <form action="{{ route('admin.laporan-tahunan-ppid.update', $id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.laporan-survey-kepuasan.update', $id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             
             <div class="row">
                 <div class="col-md-8">
                     <div class="mb-3">
-                        <label for="judul" class="form-label">Judul Laporan <span class="text-danger">*</span></label>
+                        <label for="judul" class="form-label">Judul Survey <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="judul" name="judul" value="{{ old('judul', $laporan->judul ?? '') }}" required>
                     </div>
 
@@ -55,14 +55,19 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="ringkasan" class="form-label">Ringkasan Eksekutif</label>
+                        <label for="ringkasan" class="form-label">Ringkasan Hasil</label>
                         <textarea class="form-control" id="ringkasan" name="ringkasan" rows="8">{{ old('ringkasan', $laporan->meta_data['ringkasan'] ?? '') }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="kesimpulan" class="form-label">Kesimpulan</label>
+                        <textarea class="form-control" id="kesimpulan" name="kesimpulan" rows="5">{{ old('kesimpulan', $laporan->meta_data['kesimpulan'] ?? '') }}</textarea>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label for="tahun" class="form-label">Tahun Laporan <span class="text-danger">*</span></label>
+                        <label for="tahun" class="form-label">Tahun Survey <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" id="tahun" name="tahun" value="{{ old('tahun', $laporan->meta_data['tahun'] ?? date('Y')) }}" min="2000" max="{{ date('Y') }}" required>
                     </div>
 
@@ -80,7 +85,17 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="file" class="form-label">File Laporan (PDF)</label>
+                        <label for="responden" class="form-label">Jumlah Responden</label>
+                        <input type="number" class="form-control" id="responden" name="responden" value="{{ old('responden', $laporan->meta_data['responden'] ?? '') }}" min="0">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nilai_kepuasan" class="form-label">Nilai Kepuasan (%)</label>
+                        <input type="number" class="form-control" id="nilai_kepuasan" name="nilai_kepuasan" value="{{ old('nilai_kepuasan', $laporan->meta_data['nilai_kepuasan'] ?? '') }}" min="0" max="100" step="0.1">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="file" class="form-label">File Survey (PDF)</label>
                         <input type="file" class="form-control" id="file" name="file" accept=".pdf">
                         <small class="text-muted">Maksimal 20MB. Kosongkan jika tidak ingin mengubah file.</small>
                         @if(isset($laporan->meta_data['file_path']) && $laporan->meta_data['file_path'])
@@ -107,7 +122,7 @@
             </div>
 
             <div class="d-flex justify-content-end gap-2">
-                <a href="{{ route('admin.laporan-tahunan-ppid') }}" class="btn btn-secondary">
+                <a href="{{ route('admin.laporan-survey-kepuasan') }}" class="btn btn-secondary">
                     <i class="fas fa-times me-2"></i>Batal
                 </a>
                 <button type="submit" class="btn btn-primary">

@@ -1,6 +1,7 @@
 @extends('admin.layout')
 
 @section('title', 'Mekanisme Penanganan Sengketa Informasi - PPID BBIA')
+@section('page-title', 'Mekanisme Penanganan Sengketa Informasi')
 
 @section('content')
 <div class="content">

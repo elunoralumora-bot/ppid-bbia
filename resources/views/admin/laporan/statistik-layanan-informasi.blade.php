@@ -1,6 +1,7 @@
 @extends('admin.layout')
 
 @section('title', 'Statistik Layanan Informasi Publik - PPID BBIA')
+@section('page-title', 'Statistik Layanan Informasi Publik')
 
 @section('content')
 <div class="content">
@@ -35,7 +36,7 @@
                             <th>Periode</th>
                             <th>Jumlah Permohonan</th>
                             <th>Permohonan Dipenuhi</th>
-                            <th>Waktu Respon</th>
+                            <th>Permohonan Ditolak</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -46,49 +47,49 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>
                                     <strong>{{ $item->judul ?? '-' }}</strong>
-                                    @if($item->deskripsi)
-                                        <br><small class="text-muted">{{ Str::limit($item->deskripsi, 100) }}</small>
+                                    @if($item->meta_data['deskripsi'] ?? null)
+                                        <br><small class="text-muted">{{ Str::limit($item->meta_data['deskripsi'], 100) }}</small>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->tahun)
-                                        <span class="badge bg-primary">{{ $item->tahun }}</span>
+                                    @if($item->meta_data['tahun'] ?? null)
+                                        <span class="badge bg-primary">{{ $item->meta_data['tahun'] }}</span>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->periode)
-                                        <span class="badge bg-info">{{ $item->periode }}</span>
+                                    @if($item->meta_data['periode'] ?? null)
+                                        <span class="badge bg-info">{{ $item->meta_data['periode'] }}</span>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->jumlah_permohonan)
-                                        <span class="badge bg-secondary">{{ $item->jumlah_permohonan }}</span>
+                                    @if($item->meta_data['total_permohonan'] ?? null)
+                                        <span class="badge bg-secondary">{{ $item->meta_data['total_permohonan'] }}</span>
                                     @else
                                         <span class="text-muted">0</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->permohonan_dipenuhi)
-                                        <span class="badge bg-success">{{ $item->permohonan_dipenuhi }}</span>
+                                    @if($item->meta_data['total_disetujui'] ?? null)
+                                        <span class="badge bg-success">{{ $item->meta_data['total_disetujui'] }}</span>
                                     @else
                                         <span class="text-muted">0</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->waktu_respon_rata)
-                                        <span class="badge bg-warning text-dark">{{ $item->waktu_respon_rata }} Hari</span>
+                                    @if($item->meta_data['total_ditolak'] ?? null)
+                                        <span class="badge bg-danger">{{ $item->meta_data['total_ditolak'] }}</span>
                                     @else
-                                        <span class="text-muted">-</span>
+                                        <span class="text-muted">0</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->status == 'published')
+                                    @if(($item->meta_data['status'] ?? null) == 'published')
                                         <span class="badge bg-success">Dipublikasi</span>
-                                    @elseif($item->status == 'draft')
+                                    @elseif(($item->meta_data['status'] ?? null) == 'draft')
                                         <span class="badge bg-warning">Draft</span>
                                     @else
                                         <span class="badge bg-secondary">Arsip</span>
@@ -99,11 +100,6 @@
                                         <a href="{{ route('admin.statistik-layanan-informasi.edit', $item->id) }}" class="btn btn-outline-primary" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        @if($item->file_path)
-                                            <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank" class="btn btn-outline-success" title="Download">
-                                                <i class="fas fa-download"></i>
-                                            </a>
-                                        @endif
                                         <button type="button" class="btn btn-outline-danger" onclick="confirmDelete('{{ $item->id }}')" title="Hapus">
                                             <i class="fas fa-trash"></i>
                                         </button>

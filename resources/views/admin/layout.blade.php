@@ -675,13 +675,9 @@
             <!-- Header -->
             <div class="sidebar-header">
                 <div class="bbia-icon">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 1L3 5V11C3 16 12 21 12 21S21 16 21 11V5L12 1Z" fill="currentColor"/>
-                        <text x="12" y="14" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="7" font-weight="bold">BB</text>
-                        <circle cx="12" cy="17" r="1" fill="white"/>
-                    </svg>
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo BBIA" style="width: 32px; height: 32px;">
                 </div>
-                <h2>PPID ADMIN</h2>
+                <h2>PPID BBIA ADMIN</h2>
             </div>
 
             <!-- Menu -->
@@ -710,7 +706,6 @@
                     $profilRoutes = [
                         'admin.tentang-ppid', 'admin.tentang-ppid.*',
                         'admin.struktur-organisasi', 'admin.struktur-organisasi.*',
-                        'admin.profil-pejabat', 'admin.profil-pejabat.*',
                         'admin.visi-misi', 'admin.visi-misi.*',
                         'admin.kontak-ppid', 'admin.kontak-ppid.*',
                         'admin.galeri.index', 'admin.galeri.*',
@@ -739,13 +734,6 @@
                                class="{{ request()->routeIs('admin.struktur-organisasi', 'admin.struktur-organisasi.*') ? 'active' : '' }}">
                                 <i class="fas fa-angle-right"></i>
                                 <span>Struktur Organisasi</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.profil-pejabat') }}"
-                               class="{{ request()->routeIs('admin.profil-pejabat', 'admin.profil-pejabat.*') ? 'active' : '' }}">
-                                <i class="fas fa-angle-right"></i>
-                                <span>Profil Pejabat</span>
                             </a>
                         </li>
                         <li>
@@ -778,7 +766,6 @@
                         'admin.informasi-berkala', 'admin.informasi-berkala.*',
                         'admin.informasi-serta-merta', 'admin.informasi-serta-merta.*',
                         'admin.informasi-setiap-saat', 'admin.informasi-setiap-saat.*',
-                        'admin.daftar-informasi-publik-online', 'admin.daftar-informasi-publik-online.*',
                     ];
                     $isInfoPubActive = request()->routeIs(...$infoPubRoutes);
                 @endphp
@@ -813,26 +800,15 @@
                                 <span>Informasi Setiap Saat</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="{{ route('admin.daftar-informasi-publik-online') }}"
-                               class="{{ request()->routeIs('admin.daftar-informasi-publik-online', 'admin.daftar-informasi-publik-online.*') ? 'active' : '' }}">
-                                <i class="fas fa-angle-right"></i>
-                                <span>Daftar Informasi Publik Online</span>
-                            </a>
-                        </li>
                     </ul>
                 </li>
 
                 <!-- STANDAR LAYANAN - Dropdown -->
                 @php
                     $standarRoutes = [
-                        'admin.regulasi', 'admin.regulasi.*',
                         'admin.prosedur-permohonan-informasi', 'admin.prosedur-permohonan-informasi.*',
                         'admin.prosedur-pengajuan-keberatan', 'admin.prosedur-pengajuan-keberatan.*',
                         'admin.mekanisme-sengketa-informasi', 'admin.mekanisme-sengketa-informasi.*',
-                        'admin.sop-ppid', 'admin.sop-ppid.*',
-                        'admin.kanal-layanan-informasi', 'admin.kanal-layanan-informasi.*',
-                        'admin.waktu-biaya-layanan', 'admin.waktu-biaya-layanan.*',
                         'admin.maklumat-informasi-publik', 'admin.maklumat-informasi-publik.*',
                     ];
                     $isStandarActive = request()->routeIs(...$standarRoutes);
@@ -847,13 +823,6 @@
                         <i class="fas fa-chevron-down dropdown-arrow" id="arrowStandar"></i>
                     </a>
                     <ul id="standarMenu" class="submenu {{ $isStandarActive ? 'show' : '' }}">
-                        <li>
-                            <a href="{{ route('admin.regulasi') }}"
-                               class="{{ request()->routeIs('admin.regulasi', 'admin.regulasi.*') ? 'active' : '' }}">
-                                <i class="fas fa-angle-right"></i>
-                                <span>Regulasi</span>
-                            </a>
-                        </li>
                         <li>
                             <a href="{{ route('admin.prosedur-permohonan-informasi') }}"
                                class="{{ request()->routeIs('admin.prosedur-permohonan-informasi', 'admin.prosedur-permohonan-informasi.*') ? 'active' : '' }}">
@@ -873,27 +842,6 @@
                                class="{{ request()->routeIs('admin.mekanisme-sengketa-informasi', 'admin.mekanisme-sengketa-informasi.*') ? 'active' : '' }}">
                                 <i class="fas fa-angle-right"></i>
                                 <span>Mekanisme Penanganan Sengketa Informasi</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.sop-ppid') }}"
-                               class="{{ request()->routeIs('admin.sop-ppid', 'admin.sop-ppid.*') ? 'active' : '' }}">
-                                <i class="fas fa-angle-right"></i>
-                                <span>SOP PPID</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.kanal-layanan-informasi') }}"
-                               class="{{ request()->routeIs('admin.kanal-layanan-informasi', 'admin.kanal-layanan-informasi.*') ? 'active' : '' }}">
-                                <i class="fas fa-angle-right"></i>
-                                <span>Kanal Layanan Informasi</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.waktu-biaya-layanan') }}"
-                               class="{{ request()->routeIs('admin.waktu-biaya-layanan', 'admin.waktu-biaya-layanan.*') ? 'active' : '' }}">
-                                <i class="fas fa-angle-right"></i>
-                                <span>Waktu & Biaya Layanan</span>
                             </a>
                         </li>
                         <li>

@@ -1,6 +1,7 @@
 @extends('admin.layout')
 
 @section('title', 'Laporan Survey Kepuasan Masyarakat - PPID BBIA')
+@section('page-title', 'Laporan Survey Kepuasan Masyarakat')
 
 @section('content')
 <div class="content">
@@ -46,43 +47,43 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>
                                     <strong>{{ $item->judul ?? '-' }}</strong>
-                                    @if($item->deskripsi)
-                                        <br><small class="text-muted">{{ Str::limit($item->deskripsi, 100) }}</small>
+                                    @if($item->meta_data['deskripsi'] ?? null)
+                                        <br><small class="text-muted">{{ Str::limit($item->meta_data['deskripsi'], 100) }}</small>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->tahun)
-                                        <span class="badge bg-primary">{{ $item->tahun }}</span>
+                                    @if($item->meta_data['tahun'] ?? null)
+                                        <span class="badge bg-primary">{{ $item->meta_data['tahun'] }}</span>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->periode)
-                                        <span class="badge bg-info">{{ $item->periode }}</span>
+                                    @if($item->meta_data['periode'] ?? null)
+                                        <span class="badge bg-info">{{ $item->meta_data['periode'] }}</span>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->jumlah_responden)
-                                        <span class="badge bg-success">{{ $item->jumlah_responden }} Orang</span>
+                                    @if($item->meta_data['responden'] ?? null)
+                                        <span class="badge bg-success">{{ $item->meta_data['responden'] }} Orang</span>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->nilai_kepuasan)
-                                        <span class="badge bg-warning text-dark">{{ $item->nilai_kepuasan }}%</span>
+                                    @if($item->meta_data['nilai_kepuasan'] ?? null)
+                                        <span class="badge bg-warning text-dark">{{ $item->meta_data['nilai_kepuasan'] }}%</span>
                                     @else
                                         <span class="text-muted">-</span>
                                     @endif
                                 </td>
-                                <td>{{ $item->tanggal_publikasi ? \Carbon\Carbon::parse($item->tanggal_publikasi)->format('d/m/Y') : '-' }}</td>
+                                <td>{{ $item->meta_data['tanggal_publikasi'] ? \Carbon\Carbon::parse($item->meta_data['tanggal_publikasi'])->format('d/m/Y') : '-' }}</td>
                                 <td>
-                                    @if($item->status == 'published')
+                                    @if(($item->meta_data['status'] ?? null) == 'published')
                                         <span class="badge bg-success">Dipublikasi</span>
-                                    @elseif($item->status == 'draft')
+                                    @elseif(($item->meta_data['status'] ?? null) == 'draft')
                                         <span class="badge bg-warning">Draft</span>
                                     @else
                                         <span class="badge bg-secondary">Arsip</span>
@@ -93,11 +94,6 @@
                                         <a href="{{ route('admin.laporan-survey-kepuasan.edit', $item->id) }}" class="btn btn-outline-primary" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        @if($item->file_path)
-                                            <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank" class="btn btn-outline-success" title="Download">
-                                                <i class="fas fa-download"></i>
-                                            </a>
-                                        @endif
                                         <button type="button" class="btn btn-outline-danger" onclick="confirmDelete('{{ $item->id }}')" title="Hapus">
                                             <i class="fas fa-trash"></i>
                                         </button>

@@ -1,7 +1,7 @@
 @extends('admin.layout')
 
 @section('title', 'Visi Misi - PPID BBIA')
-@section('page-title', 'Edit Halaman Visi dan Misi')
+@section('page-title', 'Visi dan Misi')
 
 @push('styles')
 <style>

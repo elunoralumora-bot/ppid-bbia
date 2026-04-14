@@ -32,8 +32,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="{{ url('/tentang-ppid') }}">Tentang PPID</a></li>
                             <li><a href="{{ url('/struktur-organisasi') }}">Struktur Organisasi</a></li>
-                            <li><a href="{{ url('/profil-pejabat') }}">Profil Pejabat</a></li>
-                            <li><a href="{{ url('/visi-misi') }}">Visi Misi</a></li>
+                                                        <li><a href="{{ url('/visi-misi') }}">Visi Misi</a></li>
                             <li><a href="{{ url('/kontak-ppid') }}">Kontak PPID</a></li>
                             <li><a href="{{ url('/galeri-foto') }}">Galeri Foto</a></li>
                         </ul>
@@ -44,19 +43,14 @@
                             <li><a href="{{ url('/informasi-berkala') }}">Informasi Berkala</a></li>
                             <li><a href="{{ url('/informasi-serta-merta') }}">Informasi Serta Merta</a></li>
                             <li><a href="{{ url('/informasi-setiap-saat') }}">Informasi Setiap Saat</a></li>
-                            <li><a href="{{ url('/daftar-informasi-publik') }}">Daftar Informasi Publik Online</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle">Standar Layanan</a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ url('/regulasi') }}">Regulasi</a></li>
                             <li><a href="{{ url('/prosedur-permohonan') }}">Prosedur Permohonan Informasi</a></li>
                             <li><a href="{{ url('/prosedur-keberatan') }}">Prosedur Pengajuan Keberatan</a></li>
                             <li><a href="{{ url('/mekanisme-sengketa') }}">Mekanisme Penanganan Sengketa Informasi</a></li>
-                            <li><a href="{{ url('/sop-ppid') }}">SOP PPID</a></li>
-                            <li><a href="{{ url('/kanal-layanan') }}">Kanal Layanan Informasi</a></li>
-                            <li><a href="{{ url('/waktu-biaya-layanan') }}">Waktu & Biaya Layanan</a></li>
                             <li><a href="{{ url('/maklumat-informasi-publik') }}">Maklumat Informasi Publik</a></li>
                         </ul>
                     </li>
