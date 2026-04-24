@@ -28,4 +28,4 @@ cmds = [
 ]
 
 [start]
-cmd = "sh -c 'php artisan migrate --force || true && php artisan db:seed --force || true && php artisan serve --host=0.0.0.0 --port=$PORT'"
+cmd = "sh -c 'php artisan view:clear && php artisan migrate --force || true && php artisan db:seed --force || true && php artisan serve --host=0.0.0.0 --port=$PORT'"
