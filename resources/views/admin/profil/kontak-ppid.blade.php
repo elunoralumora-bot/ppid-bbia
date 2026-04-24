@@ -4,98 +4,307 @@
 @section('page-title', 'Kontak PPID')
 
 @section('content')
-<div class="form-card">
-    <h2 style="margin: 0 0 1.5rem 0; color: #0f2338;">Edit Kontak PPID</h2>
+<!-- Success Alert -->
+@if(session('success'))
+    <div class="alert alert-success">
+        <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+    </div>
+@endif
+
+<!-- Daftar Kontak PPID Section -->
+@if($profils->count() > 0)
+<div class="card">
+    <h2>Daftar Kontak PPID</h2>
     
+    <div class="contact-list">
+        @foreach($profils as $item)
+            <div class="contact-item">
+                <div class="contact-info">
+                    <div class="contact-title">
+                        @if($item->judul == 'Telepon')
+                            <i class="fas fa-phone"></i>
+                        @elseif($item->judul == 'Email')
+                            <i class="fas fa-envelope"></i>
+                        @else
+                            <i class="fas fa-map-marker-alt"></i>
+                        @endif
+                        {{ $item->judul }}
+                    </div>
+                    <div class="contact-text">{{ Str::limit(strip_tags($item->konten), 60) }}</div>
+                </div>
+                <div class="contact-meta">
+                    <span class="status {{ $item->is_active ? 'active' : 'inactive' }}">
+                        {{ $item->is_active ? 'Aktif' : 'Tidak Aktif' }}
+                    </span>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+@endif
+
+<!-- Edit Kontak PPID Section -->
+<div class="card">
+    <h2>Edit Kontak PPID</h2>
+
     <form method="POST" action="{{ route('admin.kontak-ppid.update') }}">
         @csrf
         @method('PUT')
         
-        <div class="form-group">
-            <label for="alamat">Alamat</label>
-            <textarea id="alamat" name="alamat" rows="3" required>{{ old('alamat', $profil->alamat ?? '') }}</textarea>
+        <div class="form-grid">
+            <!-- Telepon Field -->
+            <div class="form-group">
+                <label for="telepon">
+                    <i class="fas fa-phone me-1"></i>Telepon
+                </label>
+                <textarea 
+                    id="telepon" 
+                    name="telepon" 
+                    rows="2" 
+                    placeholder="Masukkan nomor telepon..."
+                    required
+                >{{ old('telepon', $profils->where('judul', 'Telepon')->first()?->konten ?? '(0251) 8324068<br>Senin - Jumat, 08:00 - 16:00 WIB') }}</textarea>
+            </div>
+            
+            <!-- Email Field -->
+            <div class="form-group">
+                <label for="email">
+                    <i class="fas fa-envelope me-1"></i>Email
+                </label>
+                <textarea 
+                    id="email" 
+                    name="email" 
+                    rows="2" 
+                    placeholder="Masukkan alamat email..."
+                    required
+                >{{ old('email', $profils->where('judul', 'Email')->first()?->konten ?? 'cabi@bbia.go.id<br>ppid@bbia.go.id') }}</textarea>
+            </div>
+            
+            <!-- Alamat Field -->
+            <div class="form-group">
+                <label for="alamat">
+                    <i class="fas fa-map-marker-alt me-1"></i>Alamat
+                </label>
+                <textarea 
+                    id="alamat" 
+                    name="alamat" 
+                    rows="3" 
+                    placeholder="Masukkan alamat lengkap..."
+                    required
+                >{{ old('alamat', $profils->where('judul', 'Alamat')->first()?->konten ?? 'Jl. Ir. H. Juanda No. 11<br>Bogor 16122<br>Jawa Barat, Indonesia') }}</textarea>
+            </div>
         </div>
         
-        <div class="form-group">
-            <label for="telepon">Nomor Telepon</label>
-            <input type="tel" id="telepon" name="telepon" value="{{ old('telepon', $profil->telepon ?? '') }}" required>
-        </div>
+        <!-- Hidden fields untuk existing data -->
+        @foreach($profils as $profil)
+            <input type="hidden" name="existing_ids[]" value="{{ $profil->id }}">
+        @endforeach
         
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="{{ old('email', $profil->email ?? '') }}" required>
-        </div>
-        
-        <div class="form-group">
-            <label for="website">Website</label>
-            <input type="url" id="website" name="website" value="{{ old('website', $profil->website ?? '') }}">
-        </div>
-        
-        <div class="form-group">
-            <label for="jam_kerja">Jam Kerja</label>
-            <input type="text" id="jam_kerja" name="jam_kerja" value="{{ old('jam_kerja', $profil->jam_kerja ?? '') }}" placeholder="Contoh: Senin - Jumat, 08:00 - 16:00">
-        </div>
-        
-        <div class="form-group">
-            <label for="keterangan">Keterangan Tambahan</label>
-            <textarea id="keterangan" name="keterangan" rows="4">{{ old('keterangan', $profil->keterangan ?? '') }}</textarea>
-        </div>
-        
-        <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+        <div class="form-actions">
             <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Batal</a>
             <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i>
+                <i class="fas fa-save me-1"></i>
                 Simpan Perubahan
             </button>
         </div>
     </form>
 </div>
-
-@if($profils->count() > 0)
-<div class="table-container" style="margin-top: 2rem;">
-    <h3 style="margin: 0 0 1.5rem 0; color: #0f2338;">Daftar Kontak PPID</h3>
-    
-    <div style="padding: 0 1.5rem 1.5rem;">
-        <table>
-            <thead>
-                <tr>
-                    <th>Alamat</th>
-                    <th>Telepon</th>
-                    <th>Email</th>
-                    <th>Website</th>
-                    <th>Jam Kerja</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($profils as $item)
-                <tr>
-                    <td>{{ $item->alamat }}</td>
-                    <td>{{ $item->telepon }}</td>
-                    <td>{{ $item->email }}</td>
-                    <td>{{ $item->website ?? '-' }}</td>
-                    <td>{{ $item->jam_kerja ?? '-' }}</td>
-                    <td>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <a href="{{ route('admin.profil.edit', $item->id) }}" class="btn btn-sm btn-info">
-                                <i class="fas fa-edit"></i>
-                                Edit
-                            </a>
-                            <form action="{{ route('admin.profil.destroy', $item->id) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus kontak ini?')">
-                                    <i class="fas fa-trash"></i>
-                                    Hapus
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
-@endif
 @endsection
+
+<style>
+/* Card */
+.card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.card h2 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* Alert */
+.alert {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.alert-success {
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+}
+
+/* Contact List */
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+}
+
+.contact-info {
+    flex: 1;
+}
+
+.contact-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 4px;
+}
+
+.contact-title i {
+    color: #6b7280;
+    width: 16px;
+}
+
+.contact-text {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.contact-meta {
+    display: flex;
+    align-items: center;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status.active {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status.inactive {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+/* Form */
+.form-grid {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.form-group label i {
+    color: #6b7280;
+    margin-right: 8px;
+    width: 16px;
+}
+
+.form-group textarea {
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.15s ease;
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+}
+
+.btn-secondary {
+    background-color: #6b7280;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #4b5563;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .contact-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>

@@ -11,47 +11,60 @@
 
 <div class="content-section">
     <div class="content-full">
-        @if($konten)
-            {!! $konten->konten !!}
-        @else
+        @php
+            $profils = \App\Models\Profil::where('is_active', true)
+                ->where('kategori', 'Tentang PPID')
+                ->orderBy('urutan')
+                ->get();
+        @endphp
+        
+        @forelse($profils as $profil)
+            <h2>{{ $profil->judul }}</h2>
+            <div class="content-text">
+                {!! $profil->konten !!}
+            </div>
+        @empty
             <!-- Fallback content jika tidak ada data di database -->
             <h2>Apa itu PPID?</h2>
-            <p>Pejabat Pengelola Informasi dan Dokumentasi (PPID) adalah pejabat yang bertanggung jawab atas penyediaan layanan dan informasi publik di lingkungan Balai Besar Industri Agro (BBIA). PPID BBIA berfungsi sebagai jembatan antara institusi dengan masyarakat dalam hal akses informasi publik.</p>
+            <div class="content-text">
+                <p>Pejabat Pengelola Informasi dan Dokumentasi (PPID) adalah pejabat yang bertanggung jawab atas penyediaan layanan dan informasi publik di lingkungan Balai Besar Industri Agro (BBIA). PPID BBIA berfungsi sebagai jembatan antara institusi dengan masyarakat dalam hal akses informasi publik.</p>
+            </div>
             
             <h2>Tugas dan Tanggung Jawab</h2>
-            <p>Sesuai Peraturan Pemerintah No. 61 Tahun 2010 Tentang Pelaksanaan Undang-Undang No. 14 Tahun 2008, tugas dan tanggung jawab PPID adalah:</p>
-            
-            <ol>
-                <li>Penyediaan, penyimpanan, pendokumentasian dan pengamanan informasi;</li>
-                <li>Pelayanan Informasi Publik sesuai aturan yang berlaku;</li>
-                <li>Pelayanan Informasi Publik yang cepat, tepat, sederhana;</li>
-                <li>Penetapan prosedur operasional dalam penyebarluasan Informasi Publik;</li>
-                <li>Pengujian konsekuensi;</li>
-                <li>Pengklasifikasian informasi dan/atau pengubahannya;</li>
-                <li>Penetapan informasi yang dikecualikan yang telah habis jangka waktu pengecualiannya sebagai Informasi Publik yang dapat diakses; dan</li>
-                <li>Penetapan pertimbangan tertulis atas setiap kebijakan yang diambil untuk memenuhi hak setiap orang atas Informasi Publik.</li>
-            </ol>
+            <div class="content-text">
+                <p>Sesuai Peraturan Pemerintah No. 61 Tahun 2010 Tentang Pelaksanaan Undang-Undang No. 14 Tahun 2008, tugas dan tanggung jawab PPID adalah:</p>
+                
+                <ol>
+                    <li>Penyediaan, penyimpanan, pendokumentasian dan pengamanan informasi;</li>
+                    <li>Pelayanan Informasi Publik sesuai aturan yang berlaku;</li>
+                    <li>Pelayanan Informasi Publik yang cepat, tepat, sederhana;</li>
+                    <li>Penetapan prosedur operasional dalam penyebarluasan Informasi Publik;</li>
+                    <li>Pengujian konsekuensi;</li>
+                    <li>Pengklasifikasian informasi dan/atau pengubahannya;</li>
+                    <li>Penetapan informasi yang dikecualikan yang telah habis jangka waktu pengecualiannya sebagai Informasi Publik yang dapat diakses; dan</li>
+                    <li>Penetapan pertimbangan tertulis atas setiap kebijakan yang diambil untuk memenuhi hak setiap orang atas Informasi Publik.</li>
+                </ol>
+            </div>
             
             <h2>Operasional PPID</h2>
-            
-            <p>Pemohon informasi publik dapat memperoleh informasi publik secara langsung maupun melalui media, yaitu sebagai berikut:</p>
-            
-            <h3>Layanan Informasi Langsung</h3>
-            
-            <p>Untuk layanan langsung, pemohon Informasi Publik dapat datang langsung ke Desk Layanan Informasi Balai Besar Industri Agro di Ruang CSO (Customer Service Officer) Jl. Ir. H. Juanda No. 11, Bogor.</p>
-            
-            <h3>Layanan Informasi Melalui Media</h3>
-            
-            <p>Untuk Layanan Informasi melalui media, Pemohon Informasi Publik dapat menghubungi:</p>
-            
-            <div class="contact-info">
-                <p><strong>WA :</strong> 0812 1390 0044</p>
-                <p><strong>Telp. :</strong> (0251) 8324068</p>
-                <p><strong>Fax. :</strong> (0251) 8323339</p>
-                <p><strong>Email :</strong> cabi@bbia.go.id</p>
-                <p><strong>Website :</strong> http://www.bbia.go.id</p>
+            <div class="content-text">
+                <p>Pemohon informasi publik dapat memperoleh informasi publik secara langsung maupun melalui media, yaitu sebagai berikut:</p>
+                
+                <h3>Layanan Informasi Langsung</h3>
+                <p>Untuk layanan langsung, pemohon Informasi Publik dapat datang langsung ke Desk Layanan Informasi Balai Besar Industri Agro di Ruang CSO (Customer Service Officer) Jl. Ir. H. Juanda No. 11, Bogor.</p>
+                
+                <h3>Layanan Informasi Melalui Media</h3>
+                <p>Untuk Layanan Informasi melalui media, Pemohon Informasi Publik dapat menghubungi:</p>
+                
+                <div class="contact-info">
+                    <p><strong>WA :</strong> 0812 1390 0044</p>
+                    <p><strong>Telp. :</strong> (0251) 8324068</p>
+                    <p><strong>Fax. :</strong> (0251) 8323339</p>
+                    <p><strong>Email :</strong> cabi@bbia.go.id</p>
+                    <p><strong>Website :</strong> http://www.bbia.go.id</p>
+                </div>
             </div>
-        @endif
+        @endforelse
     </div>
 </div>
 
@@ -117,23 +130,46 @@
     margin-top: 0;
 }
 
-.content-full p {
-    color: #333;
-    line-height: 1.8;
-    margin-bottom: 20px;
-    font-size: 16px;
+.content-full h3 {
+    color: #2c5282;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    margin-top: 30px;
 }
 
-.content-full ul {
+.content-full .content-text {
     color: #333;
     line-height: 1.8;
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+.content-full .content-text p {
     margin-bottom: 20px;
+}
+
+.content-full .content-text ol {
+    margin: 20px 0;
     padding-left: 25px;
 }
 
-.content-full li {
+.content-full .content-text ol li {
     margin-bottom: 12px;
-    font-size: 16px;
+    line-height: 1.8;
+}
+
+.contact-info {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+.contact-info p {
+    margin-bottom: 10px;
+    line-height: 1.6;
 }
 </style>
 

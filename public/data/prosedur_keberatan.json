@@ -1,0 +1,19 @@
+{
+    "alasan_pengajuan": {
+        "konten": "Keberatan dapat diajukan karena alasan-alasan berikut:\r\n- Lewat Waktu: Permohonan informasi tidak ditanggapi dalam waktu 10 hari kerja\r\n- Ditolak: Permohonan informasi ditolak tanpa alasan yang jelas\r\n- Tidak Sesuai: Informasi yang diberikan tidak sesuai dengan yang diminta\r\n- Biaya Tidak Wajar: Biaya yang dibebankan tidak sesuai dengan ketentuan"
+    },
+    "tata_cara_pengajuan": {
+        "konten": "Pengajuan keberatan dilakukan dengan cara:\r\n1. Mengisi formulir keberatan yang tersedia\r\n2. Melampirkan dokumen pendukung (KTP, surat permohonan asli, dll)\r\n3. Menyertakan alasan keberatan secara jelas\r\n4. Mengajukan secara langsung atau melalui media elektronik"
+    },
+    "proses_penanganan": {
+        "konten": "Proses penanganan keberatan:\r\n- Penerimaan: Keberatan dicatat dan diberi nomor registrasi\r\n- Verifikasi: Kelengkapan dokumen dan keabsahan pengajuan\r\n- Evaluasi: Analisis alasan keberatan dan dokumen pendukung\r\n- Keputusan: Ditetapkan oleh Atasan PPID"
+    },
+    "hasil_keputusan": {
+        "diterima": "Keberatan diterima dan informasi disediakan sesuai permohonan",
+        "sebagian": "Informasi diberikan sebagian dengan alasan yang jelas",
+        "ditolak": "Keberatan ditolak dengan alasan sesuai undang-undang"
+    },
+    "pemberitahuan_hasil": {
+        "konten": "<strong>Email:<\/strong> Dokumen digital dalam format PDF\r\n<strong>Surat Resmi:<\/strong> Dokumen fisik dengan cap dan tanda tangan\r\n<strong>Preview:<\/strong> Informasi yang dapat diakses online"
+    }
+}

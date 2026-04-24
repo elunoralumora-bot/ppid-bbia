@@ -10,12 +10,120 @@ use App\Models\User;
 use App\Models\Permohonan;
 use App\Models\Keberatan;
 use App\Models\KontenWeb;
+use App\Models\Prosedur;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
         return view('admin.dashboard');
+    }
+
+    public function getRealTimeActivity()
+    {
+        // Ambil aktivitas terkini dari berbagai sumber
+        $activities = collect();
+        
+        // Permohonan terbaru
+        $permohonanTerbaru = \App\Models\Permohonan::latest()->take(3)->get();
+        foreach ($permohonanTerbaru as $permohonan) {
+            $activities->push([
+                'type' => 'permohonan',
+                'icon' => 'fa-file-alt',
+                'title' => 'Permohonan baru dari ' . $permohonan->nama_pemohon,
+                'description' => 'ID: ' . $permohonan->id . ' - Status: ' . ucfirst($permohonan->status),
+                'time' => $permohonan->created_at->diffForHumans(),
+                'timestamp' => $permohonan->created_at->timestamp,
+                'url' => route('admin.permohonan.show', $permohonan->id)
+            ]);
+        }
+        
+        // Berita terbaru
+        $beritaTerbaru = \App\Models\Berita::latest()->take(3)->get();
+        foreach ($beritaTerbaru as $berita) {
+            $activities->push([
+                'type' => 'berita',
+                'icon' => 'fa-newspaper',
+                'title' => 'Berita "' . $berita->judul . '" ' . ($berita->status == 'published' ? 'dipublikasikan' : 'dibuat'),
+                'description' => 'Status: ' . ucfirst($berita->status),
+                'time' => $berita->created_at->diffForHumans(),
+                'timestamp' => $berita->created_at->timestamp,
+                'url' => route('admin.berita.edit', $berita->id)
+            ]);
+        }
+        
+        // Keberatan terbaru
+        $keberatanTerbaru = \App\Models\Keberatan::latest()->take(3)->get();
+        foreach ($keberatanTerbaru as $keberatan) {
+            $activities->push([
+                'type' => 'keberatan',
+                'icon' => 'fa-exclamation-triangle',
+                'title' => 'Keberatan dari ' . $keberatan->nama_pemohon,
+                'description' => 'ID: ' . $keberatan->id . ' - Status: ' . ucfirst($keberatan->status),
+                'time' => $keberatan->created_at->diffForHumans(),
+                'timestamp' => $keberatan->created_at->timestamp,
+                'url' => route('admin.keberatan.show', $keberatan->id)
+            ]);
+        }
+        
+        // Update status permohonan
+        $permohonanUpdate = \App\Models\Permohonan::whereNotNull('tanggal_proses')
+            ->orWhereNotNull('tanggal_selesai')
+            ->latest('updated_at')
+            ->take(2)
+            ->get();
+            
+        foreach ($permohonanUpdate as $permohonan) {
+            $activities->push([
+                'type' => 'status_update',
+                'icon' => 'fa-sync',
+                'title' => 'Status permohonan ' . $permohonan->nama_pemohon . ' diperbarui',
+                'description' => 'Status: ' . ucfirst($permohonan->status),
+                'time' => $permohonan->updated_at->diffForHumans(),
+                'timestamp' => $permohonan->updated_at->timestamp,
+                'url' => route('admin.permohonan.show', $permohonan->id)
+            ]);
+        }
+        
+        // Update status keberatan
+        $keberatanUpdate = \App\Models\Keberatan::whereNotNull('tanggal_proses')
+            ->orWhereNotNull('tanggal_selesai')
+            ->latest('updated_at')
+            ->take(2)
+            ->get();
+            
+        foreach ($keberatanUpdate as $keberatan) {
+            $activities->push([
+                'type' => 'status_update',
+                'icon' => 'fa-sync',
+                'title' => 'Status keberatan ' . $keberatan->nama_pemohon . ' diperbarui',
+                'description' => 'Status: ' . ucfirst($keberatan->status),
+                'time' => $keberatan->updated_at->diffForHumans(),
+                'timestamp' => $keberatan->updated_at->timestamp,
+                'url' => route('admin.keberatan.show', $keberatan->id)
+            ]);
+        }
+        
+        // Sort by timestamp
+        $activities = $activities->sortByDesc('timestamp')->take(10)->values();
+        
+        return response()->json([
+            'activities' => $activities,
+            'stats' => [
+                'total_berita' => \App\Models\Berita::count(),
+                'berita_published' => \App\Models\Berita::where('status', 'published')->count(),
+                'berita_draft' => \App\Models\Berita::where('status', 'draft')->count(),
+                'total_permohonan' => \App\Models\Permohonan::count(),
+                'permohonan_baru' => \App\Models\Permohonan::where('status', 'baru')->count(),
+                'permohonan_diproses' => \App\Models\Permohonan::where('status', 'diproses')->count(),
+                'total_keberatan' => \App\Models\Keberatan::count(),
+                'keberatan_baru' => \App\Models\Keberatan::where('status', 'baru')->count(),
+                'keberatan_diproses' => \App\Models\Keberatan::where('status', 'diproses')->count(),
+                'total_foto' => \App\Models\GaleriFoto::count(),
+                'foto_aktif' => \App\Models\GaleriFoto::where('is_active', true)->count(),
+                'foto_tidak_aktif' => \App\Models\GaleriFoto::where('is_active', false)->count()
+            ]
+        ]);
     }
 
     public function berita()
@@ -72,6 +180,34 @@ class AdminController extends Controller
 
         $admin->delete();
         return redirect()->route('admin.users')->with('success', 'Admin berhasil dihapus');
+    }
+
+    public function editAdmin($id)
+    {
+        $admin = Admin::findOrFail($id);
+        return view('admin.edit-admin', compact('admin'));
+    }
+
+    public function updateAdmin(Request $request, $id)
+    {
+        $admin = Admin::findOrFail($id);
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:admins,email,'.$id,
+            'password' => 'nullable|string|min:6|confirmed',
+        ]);
+
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        
+        if ($request->filled('password')) {
+            $admin->password = Hash::make($request->password);
+        }
+        
+        $admin->save();
+
+        return redirect()->route('admin.users')->with('success', 'Admin berhasil diperbarui');
     }
 
     // Management for regular users
@@ -230,6 +366,91 @@ class AdminController extends Controller
     public function reports()
     {
         return view('admin.reports');
+    }
+
+    public function exportPDF()
+    {
+        $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        $currentYear = date('Y');
+        $data = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+            $monthName = $months[$i-1];
+            $permohonanBaru = \App\Models\Permohonan::whereMonth('tanggal_permohonan', $i)->whereYear('tanggal_permohonan', $currentYear)->count();
+            $diproses = \App\Models\Permohonan::where('status', 'diproses')->whereMonth('tanggal_proses', $i)->whereYear('tanggal_proses', $currentYear)->count();
+            $selesai = \App\Models\Permohonan::where('status', 'selesai')->whereMonth('tanggal_selesai', $i)->whereYear('tanggal_selesai', $currentYear)->count();
+            $ditolak = \App\Models\Permohonan::where('status', 'ditolak')->whereMonth('tanggal_selesai', $i)->whereYear('tanggal_selesai', $currentYear)->count();
+            $keberatan = \App\Models\Keberatan::whereMonth('tanggal_keberatan', $i)->whereYear('tanggal_keberatan', $currentYear)->count();
+            $total = $permohonanBaru;
+
+            $data[] = [
+                'bulan' => $monthName,
+                'permohonan_baru' => $permohonanBaru,
+                'diproses' => $diproses,
+                'selesai' => $selesai,
+                'ditolak' => $ditolak,
+                'keberatan' => $keberatan,
+                'total' => $total
+            ];
+        }
+
+        $totalRow = [
+            'bulan' => 'TOTAL',
+            'permohonan_baru' => \App\Models\Permohonan::whereYear('tanggal_permohonan', $currentYear)->count(),
+            'diproses' => \App\Models\Permohonan::where('status', 'diproses')->whereYear('tanggal_proses', $currentYear)->count(),
+            'selesai' => \App\Models\Permohonan::where('status', 'selesai')->whereYear('tanggal_selesai', $currentYear)->count(),
+            'ditolak' => \App\Models\Permohonan::where('status', 'ditolak')->whereYear('tanggal_selesai', $currentYear)->count(),
+            'keberatan' => \App\Models\Keberatan::whereYear('tanggal_keberatan', $currentYear)->count(),
+            'total' => \App\Models\Permohonan::whereYear('tanggal_permohonan', $currentYear)->count()
+        ];
+
+        return view('admin.export-pdf', compact('data', 'totalRow', 'currentYear'));
+    }
+
+    public function exportExcel()
+    {
+        $months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        $currentYear = date('Y');
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="laporan_ppid_' . $currentYear . '.csv"',
+        ];
+
+        $callback = function() use ($months, $currentYear) {
+            $file = fopen('php://output', 'w');
+            
+            // Header CSV
+            fputcsv($file, ['Bulan', 'Permohonan Baru', 'Sedang Diproses', 'Selesai', 'Ditolak', 'Keberatan', 'Total']);
+
+            // Data per bulan
+            for ($i = 1; $i <= 12; $i++) {
+                $monthName = $months[$i-1];
+                $permohonanBaru = \App\Models\Permohonan::whereMonth('tanggal_permohonan', $i)->whereYear('tanggal_permohonan', $currentYear)->count();
+                $diproses = \App\Models\Permohonan::where('status', 'diproses')->whereMonth('tanggal_proses', $i)->whereYear('tanggal_proses', $currentYear)->count();
+                $selesai = \App\Models\Permohonan::where('status', 'selesai')->whereMonth('tanggal_selesai', $i)->whereYear('tanggal_selesai', $currentYear)->count();
+                $ditolak = \App\Models\Permohonan::where('status', 'ditolak')->whereMonth('tanggal_selesai', $i)->whereYear('tanggal_selesai', $currentYear)->count();
+                $keberatan = \App\Models\Keberatan::whereMonth('tanggal_keberatan', $i)->whereYear('tanggal_keberatan', $currentYear)->count();
+                $total = $permohonanBaru;
+
+                fputcsv($file, [$monthName, $permohonanBaru, $diproses, $selesai, $ditolak, $keberatan, $total]);
+            }
+
+            // Total row
+            fputcsv($file, [
+                'TOTAL',
+                \App\Models\Permohonan::whereYear('tanggal_permohonan', $currentYear)->count(),
+                \App\Models\Permohonan::where('status', 'diproses')->whereYear('tanggal_proses', $currentYear)->count(),
+                \App\Models\Permohonan::where('status', 'selesai')->whereYear('tanggal_selesai', $currentYear)->count(),
+                \App\Models\Permohonan::where('status', 'ditolak')->whereYear('tanggal_selesai', $currentYear)->count(),
+                \App\Models\Keberatan::whereYear('tanggal_keberatan', $currentYear)->count(),
+                \App\Models\Permohonan::whereYear('tanggal_permohonan', $currentYear)->count()
+            ]);
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
     public function galeri()
@@ -404,12 +625,47 @@ class AdminController extends Controller
 
     public function editInformasiSertaMerta($id)
     {
-        return view('admin.informasi-publik.informasi-serta-merta-edit', compact('id'));
+        $informasi = \App\Models\InformasiPublik::findOrFail($id);
+        return view('admin.informasi-publik.informasi-serta-merta-edit', compact('informasi'));
     }
 
     public function updateInformasiSertaMerta(Request $request, $id)
     {
-        // Implementasi update logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'isi' => 'nullable|string',
+            'file' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+            'tanggal_publikasi' => 'nullable|date',
+            'status' => 'required|in:draft,published,archived',
+        ]);
+
+        $informasi = \App\Models\InformasiPublik::findOrFail($id);
+        
+        $data = [
+            'judul' => $request->judul,
+            'konten' => $request->isi ?? '',
+            'kategori' => 'Informasi Serta Merta',
+            'deskripsi' => $request->deskripsi,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status' => $request->status,
+            'is_active' => $request->status == 'published' ? 1 : 0,
+        ];
+
+        // Handle file upload
+        if ($request->hasFile('file')) {
+            // Delete old file
+            if ($informasi->file_path && file_exists(public_path($informasi->file_path))) {
+                unlink(public_path($informasi->file_path));
+            }
+            
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('files/informasi'), $filename);
+            $data['file_path'] = 'files/informasi/' . $filename;
+        }
+
+        $informasi->update($data);
         return redirect()->route('admin.informasi-serta-merta')->with('success', 'Informasi serta merta berhasil diperbarui');
     }
 
@@ -471,12 +727,47 @@ class AdminController extends Controller
 
     public function editInformasiSetiapSaat($id)
     {
-        return view('admin.informasi-publik.informasi-setiap-saat-edit', compact('id'));
+        $informasi = \App\Models\InformasiPublik::findOrFail($id);
+        return view('admin.informasi-publik.informasi-setiap-saat-edit', compact('informasi'));
     }
 
     public function updateInformasiSetiapSaat(Request $request, $id)
     {
-        // Implementasi update logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'isi' => 'nullable|string',
+            'file' => 'nullable|file|mimes:pdf,doc,docx|max:10240',
+            'tanggal_publikasi' => 'nullable|date',
+            'status' => 'required|in:draft,published,archived',
+        ]);
+
+        $informasi = \App\Models\InformasiPublik::findOrFail($id);
+        
+        $data = [
+            'judul' => $request->judul,
+            'konten' => $request->isi ?? '',
+            'kategori' => 'Informasi Setiap Saat',
+            'deskripsi' => $request->deskripsi,
+            'tanggal_publikasi' => $request->tanggal_publikasi,
+            'status' => $request->status,
+            'is_active' => $request->status == 'published' ? 1 : 0,
+        ];
+
+        // Handle file upload
+        if ($request->hasFile('file')) {
+            // Delete old file
+            if ($informasi->file_path && file_exists(public_path($informasi->file_path))) {
+                unlink(public_path($informasi->file_path));
+            }
+            
+            $file = $request->file('file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('files/informasi'), $filename);
+            $data['file_path'] = 'files/informasi/' . $filename;
+        }
+
+        $informasi->update($data);
         return redirect()->route('admin.informasi-setiap-saat')->with('success', 'Informasi setiap saat berhasil diperbarui');
     }
 
@@ -555,7 +846,8 @@ class AdminController extends Controller
 
     public function prosedurPermohonanInformasi()
     {
-        return view('admin.standar-layanan.prosedur-permohonan-informasi');
+        $prosedurPermohonan = Prosedur::byKategori('Prosedur Permohonan Informasi')->aktif()->ordered()->get();
+        return view('admin.standar-layanan.prosedur-permohonan-informasi', compact('prosedurPermohonan'));
     }
 
     public function createProsedurPermohonanInformasi()
@@ -565,30 +857,79 @@ class AdminController extends Controller
 
     public function storeProsedurPermohonanInformasi(Request $request)
     {
-        // Implementasi store logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'konten' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $maxUrutan = Prosedur::byKategori('Prosedur Permohonan Informasi')->max('urutan') ?? 0;
+
+        $prosedur = Prosedur::create([
+            'kategori' => 'Prosedur Permohonan Informasi',
+            'judul' => $request->judul,
+            'konten' => $request->konten,
+            'urutan' => $maxUrutan + 1,
+            'is_active' => true,
+        ]);
+
+        if ($request->hasFile('gambar')) {
+            $gambar = $request->file('gambar');
+            $gambarName = time() . '_' . $gambar->getClientOriginalName();
+            $gambar->move(public_path('images'), $gambarName);
+            $prosedur->gambar = $gambarName;
+            $prosedur->save();
+        }
+
         return redirect()->route('admin.prosedur-permohonan-informasi')->with('success', 'Prosedur permohonan informasi berhasil ditambahkan');
     }
 
     public function editProsedurPermohonanInformasi($id)
     {
-        return view('admin.standar-layanan.prosedur-permohonan-informasi-edit', compact('id'));
+        $prosedur = Prosedur::findOrFail($id);
+        return view('admin.standar-layanan.prosedur-permohonan-informasi-edit', compact('prosedur'));
     }
 
-    public function updateProsedurPermohonanInformasi(Request $request, $id)
+    public function updateProsedurPermohonanInformasi(Request $request)
     {
-        // Implementasi update logic
-        return redirect()->route('admin.prosedur-permohonan-informasi')->with('success', 'Prosedur permohonan informasi berhasil diperbarui');
+        try {
+            $prosedurData = $request->input('prosedur', []);
+            
+            // Simpan ke file atau database sesuai kebutuhan
+            // Untuk sekarang, kita simpan ke file JSON sebagai contoh
+            $dataFile = public_path('data/prosedur_permohonan.json');
+            $dataDir = dirname($dataFile);
+            
+            if (!is_dir($dataDir)) {
+                mkdir($dataDir, 0755, true);
+            }
+            
+            file_put_contents($dataFile, json_encode($prosedurData, JSON_PRETTY_PRINT));
+            
+            return redirect()->route('admin.prosedur-permohonan-informasi')->with('success', 'Prosedur permohonan informasi berhasil diperbarui');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.prosedur-permohonan-informasi')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function destroyProsedurPermohonanInformasi($id)
     {
-        // Implementasi delete logic
+        $prosedur = Prosedur::findOrFail($id);
+        
+        // Hapus gambar jika ada
+        if ($prosedur->gambar && file_exists(public_path('images/' . $prosedur->gambar))) {
+            unlink(public_path('images/' . $prosedur->gambar));
+        }
+        
+        $prosedur->delete();
+        
         return redirect()->route('admin.prosedur-permohonan-informasi')->with('success', 'Prosedur permohonan informasi berhasil dihapus');
     }
 
     public function prosedurPengajuanKeberatan()
     {
-        return view('admin.standar-layanan.prosedur-pengajuan-keberatan');
+        $prosedurKeberatan = Prosedur::byKategori('Prosedur Pengajuan Keberatan')->aktif()->ordered()->get();
+        return view('admin.standar-layanan.prosedur-pengajuan-keberatan', compact('prosedurKeberatan'));
     }
 
     public function createProsedurPengajuanKeberatan()
@@ -598,58 +939,72 @@ class AdminController extends Controller
 
     public function storeProsedurPengajuanKeberatan(Request $request)
     {
-        // Implementasi store logic
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'konten' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $maxUrutan = Prosedur::byKategori('Prosedur Pengajuan Keberatan')->max('urutan') ?? 0;
+
+        $prosedur = Prosedur::create([
+            'kategori' => 'Prosedur Pengajuan Keberatan',
+            'judul' => $request->judul,
+            'konten' => $request->konten,
+            'urutan' => $maxUrutan + 1,
+            'is_active' => true,
+        ]);
+
+        if ($request->hasFile('gambar')) {
+            $gambar = $request->file('gambar');
+            $gambarName = time() . '_' . $gambar->getClientOriginalName();
+            $gambar->move(public_path('images'), $gambarName);
+            $prosedur->gambar = $gambarName;
+            $prosedur->save();
+        }
+
         return redirect()->route('admin.prosedur-pengajuan-keberatan')->with('success', 'Prosedur pengajuan keberatan berhasil ditambahkan');
     }
 
     public function editProsedurPengajuanKeberatan($id)
     {
-        return view('admin.standar-layanan.prosedur-pengajuan-keberatan-edit', compact('id'));
+        $prosedur = Prosedur::findOrFail($id);
+        return view('admin.standar-layanan.prosedur-pengajuan-keberatan-edit', compact('prosedur'));
     }
 
-    public function updateProsedurPengajuanKeberatan(Request $request, $id)
+    public function updateProsedurPengajuanKeberatan(Request $request)
     {
-        // Implementasi update logic
-        return redirect()->route('admin.prosedur-pengajuan-keberatan')->with('success', 'Prosedur pengajuan keberatan berhasil diperbarui');
+        try {
+            $prosedurData = $request->input('prosedur', []);
+            
+            // Simpan ke file JSON
+            $dataFile = public_path('data/prosedur_keberatan.json');
+            $dataDir = dirname($dataFile);
+            
+            if (!is_dir($dataDir)) {
+                mkdir($dataDir, 0755, true);
+            }
+            
+            file_put_contents($dataFile, json_encode($prosedurData, JSON_PRETTY_PRINT));
+            
+            return redirect()->route('admin.prosedur-pengajuan-keberatan')->with('success', 'Prosedur pengajuan keberatan berhasil diperbarui');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.prosedur-pengajuan-keberatan')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function destroyProsedurPengajuanKeberatan($id)
     {
-        // Implementasi delete logic
+        $prosedur = Prosedur::findOrFail($id);
+        
+        // Hapus gambar jika ada
+        if ($prosedur->gambar && file_exists(public_path('images/' . $prosedur->gambar))) {
+            unlink(public_path('images/' . $prosedur->gambar));
+        }
+        
+        $prosedur->delete();
+        
         return redirect()->route('admin.prosedur-pengajuan-keberatan')->with('success', 'Prosedur pengajuan keberatan berhasil dihapus');
-    }
-
-    public function mekanismeSengketaInformasi()
-    {
-        return view('admin.standar-layanan.mekanisme-sengketa-informasi');
-    }
-
-    public function createMekanismeSengketaInformasi()
-    {
-        return view('admin.standar-layanan.mekanisme-sengketa-informasi-create');
-    }
-
-    public function storeMekanismeSengketaInformasi(Request $request)
-    {
-        // Implementasi store logic
-        return redirect()->route('admin.mekanisme-sengketa-informasi')->with('success', 'Mekanisme sengketa informasi berhasil ditambahkan');
-    }
-
-    public function editMekanismeSengketaInformasi($id)
-    {
-        return view('admin.standar-layanan.mekanisme-sengketa-informasi-edit', compact('id'));
-    }
-
-    public function updateMekanismeSengketaInformasi(Request $request, $id)
-    {
-        // Implementasi update logic
-        return redirect()->route('admin.mekanisme-sengketa-informasi')->with('success', 'Mekanisme sengketa informasi berhasil diperbarui');
-    }
-
-    public function destroyMekanismeSengketaInformasi($id)
-    {
-        // Implementasi delete logic
-        return redirect()->route('admin.mekanisme-sengketa-informasi')->with('success', 'Mekanisme sengketa informasi berhasil dihapus');
     }
 
     public function sopPpid()
@@ -753,35 +1108,44 @@ class AdminController extends Controller
 
     public function maklumatInformasiPublik()
     {
-        return view('admin.standar-layanan.maklumat-informasi-publik');
+        $konten = \App\Models\KontenWeb::standarLayanan()->where('slug', 'maklumat-informasi-publik')->first();
+        return view('admin.standar-layanan.maklumat-informasi-publik', compact('konten'));
     }
 
-    public function createMaklumatInformasiPublik()
+    public function updateMaklumatImage(Request $request)
     {
-        return view('admin.standar-layanan.maklumat-informasi-publik-create');
-    }
+        $request->validate([
+            'gambar' => 'required|image|mimes:jpg,jpeg,png|max:5120',
+        ]);
 
-    public function storeMaklumatInformasiPublik(Request $request)
-    {
-        // Implementasi store logic
-        return redirect()->route('admin.maklumat-informasi-publik')->with('success', 'Maklumat informasi publik berhasil ditambahkan');
-    }
+        $konten = \App\Models\KontenWeb::standarLayanan()->where('slug', 'maklumat-informasi-publik')->first();
 
-    public function editMaklumatInformasiPublik($id)
-    {
-        return view('admin.standar-layanan.maklumat-informasi-publik-edit', compact('id'));
-    }
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $filename = 'maklumat-' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images'), $filename);
 
-    public function updateMaklumatInformasiPublik(Request $request, $id)
-    {
-        // Implementasi update logic
-        return redirect()->route('admin.maklumat-informasi-publik')->with('success', 'Maklumat informasi publik berhasil diperbarui');
-    }
+            // Hapus gambar lama jika ada
+            if ($konten && $konten->gambar && file_exists(public_path('images/' . $konten->gambar))) {
+                unlink(public_path('images/' . $konten->gambar));
+            }
 
-    public function destroyMaklumatInformasiPublik($id)
-    {
-        // Implementasi delete logic
-        return redirect()->route('admin.maklumat-informasi-publik')->with('success', 'Maklumat informasi publik berhasil dihapus');
+            if ($konten) {
+                $konten->gambar = $filename;
+                $konten->save();
+            } else {
+                \App\Models\KontenWeb::create([
+                    'jenis_konten' => 'standar_layanan',
+                    'slug' => 'maklumat-informasi-publik',
+                    'judul' => 'Maklumat Informasi Publik',
+                    'konten' => '',
+                    'gambar' => $filename,
+                    'is_active' => true,
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.maklumat-informasi-publik')->with('success', 'Gambar maklumat berhasil diperbarui');
     }
 
     // Laporan Methods

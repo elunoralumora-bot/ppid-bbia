@@ -16,28 +16,51 @@
         <h2>Prosedur Permohonan Informasi Publik PPID BBIA</h2>
         <p>Berikut adalah prosedur lengkap untuk mengajukan permohonan informasi publik kepada PPID BBIA sesuai dengan Peraturan Komisi Informasi Nomor 1 Tahun 2010.</p>
         
-        <div class="infografis-container">
-            <img src="{{ asset('images/permohonan informasi.jpg') }}" alt="Prosedur Permohonan Informasi" class="infografis-img">
-        </div>
+        @php
+        // Baca data dari file JSON yang disimpan oleh admin
+        $dataFile = public_path('data/prosedur_permohonan.json');
+        $prosedurData = [];
+        
+        if (file_exists($dataFile)) {
+            $jsonContent = file_get_contents($dataFile);
+            $prosedurData = json_decode($jsonContent, true) ?: [];
+        }
+        @endphp
         
         <div class="procedure-flow">
+            <div class="infografis-container">
+                <img src="{{ asset('images/permohonan informasi.jpg') }}" alt="Prosedur Permohonan Informasi" class="infografis-img">
+            </div>
+            
             <div class="flow-step">
                 <div class="step-number">1</div>
                 <div class="step-content">
                     <h3>Pengisian Formulir Permohonan</h3>
                     <p>Pemohon mengisi formulir permohonan informasi publik secara lengkap dan benar:</p>
-                    <ul>
-                        <li>Formulir dapat diisi secara online melalui website PPID BBIA</li>
-                        <li>Formulir dapat diisi langsung di kantor PPID BBIA</li>
-                        <li>Formulir dapat diunduh dan diisi kemudian dikirim via email</li>
-                    </ul>
+                    <div class="form-group">
+                        @if(isset($prosedurData['pengisian_formulir']['konten']))
+                            {!! nl2br($prosedurData['pengisian_formulir']['konten']) !!}
+                        @else
+                            <ul>
+                                <li>Formulir dapat diisi secara online melalui website PPID BBIA</li>
+                                <li>Formulir dapat diisi langsung di kantor PPID BBIA</li>
+                                <li>Formulir dapat diunduh dan diisi kemudian dikirim via email</li>
+                            </ul>
+                        @endif
+                    </div>
                     <div class="required-docs">
                         <h4>Dokumen yang Diperlukan:</h4>
-                        <ul>
-                            <li>Fotokopi KTP/SIM/Paspor yang masih berlaku</li>
-                            <li>Surat kuasa (jika diwakilkan)</li>
-                            <li>Dokumen pendukung lainnya (jika diperlukan)</li>
-                        </ul>
+                        <div class="form-group">
+                            @if(isset($prosedurData['pengisian_formulir']['dokumen']))
+                                {!! nl2br($prosedurData['pengisian_formulir']['dokumen']) !!}
+                            @else
+                                <ul>
+                                    <li>Fotokopi KTP/SIM/Paspor yang masih berlaku</li>
+                                    <li>Surat kuasa (jika diwakilkan)</li>
+                                    <li>Dokumen pendukung lainnya (jika diperlukan)</li>
+                                </ul>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -47,12 +70,18 @@
                 <div class="step-content">
                     <h3>Verifikasi dan Registrasi</h3>
                     <p>PPID BBIA akan melakukan verifikasi terhadap permohonan yang masuk:</p>
-                    <ul>
-                        <li>Kelengkapan data pemohon</li>
-                        <li>Kesesuaian format permohonan</li>
-                        <li>Klarifikasi informasi yang diminta (jika diperlukan)</li>
-                        <li>Pemberian nomor registrasi/tiket permohonan</li>
-                    </ul>
+                    <div class="form-group">
+                        @if(isset($prosedurData['verifikasi_registrasi']['konten']))
+                            {!! nl2br($prosedurData['verifikasi_registrasi']['konten']) !!}
+                        @else
+                            <ul>
+                                <li>Kelengkapan data pemohon</li>
+                                <li>Kesesuaian format permohonan</li>
+                                <li>Klarifikasi informasi yang diminta (jika diperlukan)</li>
+                                <li>Pemberian nomor registrasi/tiket permohonan</li>
+                            </ul>
+                        @endif
+                    </div>
                     <div class="timeline-info">
                         <strong>Waktu Verifikasi:</strong> Maksimal 2 hari kerja
                     </div>
@@ -64,12 +93,18 @@
                 <div class="step-content">
                     <h3>Proses Permohonan</h3>
                     <p>Setelah verifikasi, permohonan akan diproses sesuai dengan jenis informasi yang diminta:</p>
-                    <ul>
-                        <li>Informasi yang tersedia langsung: 1-2 hari kerja</li>
-                        <li>Informasi perlu konsolidasi: 3-5 hari kerja</li>
-                        <li>Informasi kompleks: maksimal 10 hari kerja</li>
-                        <li>Perpanjangan waktu: maksimal 7 hari kerja (diberitahukan tertulis)</li>
-                    </ul>
+                    <div class="form-group">
+                        @if(isset($prosedurData['proses_permohonan']['konten']))
+                            {!! nl2br($prosedurData['proses_permohonan']['konten']) !!}
+                        @else
+                            <ul>
+                                <li>Informasi yang tersedia langsung: 1-2 hari kerja</li>
+                                <li>Informasi perlu konsolidasi: 3-5 hari kerja</li>
+                                <li>Informasi kompleks: maksimal 10 hari kerja</li>
+                                <li>Perpanjangan waktu: maksimal 7 hari kerja (diberitahukan tertulis)</li>
+                            </ul>
+                        @endif
+                    </div>
                     <div class="note-box">
                         <p><strong>Catatan:</strong> Pemohon akan diberikan informasi mengenai estimasi waktu penyelesaian permohonan.</p>
                     </div>
@@ -83,16 +118,34 @@
                     <p>Permohonan dapat diselesaikan dengan beberapa cara:</p>
                     <div class="outcome-options">
                         <div class="outcome-item">
-                            <h4>✅ Disetujui</h4>
-                            <p>Informasi diberikan sesuai permohonan dalam bentuk hard copy/soft copy</p>
+                            <h4>Disetujui</h4>
+                            <p>
+                                @if(isset($prosedurData['penyelesaian']['disetujui']))
+                                    {!! $prosedurData['penyelesaian']['disetujui'] !!}
+                                @else
+                                    Informasi diberikan sesuai permohonan dalam bentuk hard copy/soft copy
+                                @endif
+                            </p>
                         </div>
                         <div class="outcome-item">
-                            <h4>🔄 Diberikan Sebagian</h4>
-                            <p>Informasi diberikan sebagian dengan alasan yang jelas</p>
+                            <h4>Diberikan Sebagian</h4>
+                            <p>
+                                @if(isset($prosedurData['penyelesaian']['sebagian']))
+                                    {!! $prosedurData['penyelesaian']['sebagian'] !!}
+                                @else
+                                    Informasi diberikan sebagian dengan alasan yang jelas
+                                @endif
+                            </p>
                         </div>
                         <div class="outcome-item">
-                            <h4>❌ Ditolak</h4>
-                            <p>Permohonan ditolak dengan alasan sesuai undang-undang</p>
+                            <h4>Ditolak</h4>
+                            <p>
+                                @if(isset($prosedurData['penyelesaian']['ditolak']))
+                                    {!! $prosedurData['penyelesaian']['ditolak'] !!}
+                                @else
+                                    Permohonan ditolak dengan alasan sesuai undang-undang
+                                @endif
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -102,86 +155,45 @@
                 <div class="step-number">5</div>
                 <div class="step-content">
                     <h3>Pemberitahuan Hasil</h3>
-                    <p>PPID BBIA akan memberitahukan hasil permohonan kepada pemohon:</p>
-                    <ul>
-                        <li>Surat pemberitahuan hasil permohonan</li>
-                        <li>Informasi yang diminta (jika disetujui)</li>
-                        <li>Alasan penolakan/pembatasan (jika ditolak/sebagian)</li>
-                        <li>Informasi mengenai hak mengajukan keberatan</li>
-                    </ul>
-                    <div class="contact-info">
-                        <strong>Informasi lebih lanjut:</strong><br>
-                        📞 (0251) 8323880<br>
-                        📧 ppid.bbia@kemenperin.go.id
+                    <p>Hasil permohonan akan disampaikan kepada pemohon melalui:</p>
+                    <div class="form-group">
+                        @if(isset($prosedurData['pemberitahuan_hasil']['konten']))
+                            {!! nl2br($prosedurData['pemberitahuan_hasil']['konten']) !!}
+                        @else
+                            <ul>
+                                <li><strong>Email:</strong> Dokumen digital dalam format PDF</li>
+                                <li><strong>Surat Resmi:</strong> Dokumen fisik dengan cap dan tanda tangan</li>
+                                <li><strong>Preview:</strong> Informasi yang dapat diakses online</li>
+                            </ul>
+                        @endif
+                    </div>
+                    <div class="timeline-info">
+                        <strong>Batas Waktu Penyelesaian:</strong> 10 hari kerja sejak permohonan lengkap
                     </div>
                 </div>
-            </div>
-        </div>
-        
-        <div class="info-grid">
-            <div class="info-box">
-                <h3>📋 Syarat Permohonan</h3>
-                <ul>
-                    <li>Warga negara Indonesia atau badan hukum Indonesia</li>
-                    <li>Usia minimal 18 tahun atau sudah menikah</li>
-                    <li>Mengisi formulir permohonan dengan lengkap</li>
-                    <li>Menyertakan identitas diri yang valid</li>
-                    <li>Mencantumkan tujuan penggunaan informasi</li>
-                </ul>
-            </div>
-            
-            <div class="info-box">
-                <h3>⏰ Waktu Layanan</h3>
-                <ul>
-                    <li><strong>Penerimaan:</strong> Senin - Jumat, 08:00 - 16:00 WIB</li>
-                    <li><strong>Proses:</strong> Maksimal 10 hari kerja</li>
-                    <li><strong>Perpanjangan:</strong> Maksimal 7 hari kerja</li>
-                    <li><strong>Keberatan:</strong> 20 hari kerja setelah pemberitahuan</li>
-                </ul>
-            </div>
-            
-            <div class="info-box">
-                <h3>💰 Biaya Layanan</h3>
-                <ul>
-                    <li><strong>Permohonan dasar:</strong> Gratis</li>
-                    <li><strong>Penyalinan hard copy:</strong> Rp 200 per halaman</li>
-                    <li><strong>CD/DVD:</strong> Rp 5.000 per keping</li>
-                    <li><strong>Flashdisk:</strong> Sesuai harga pasar</li>
-                    <li><strong>Jasa kurir:</strong> Sesuai tarif yang berlaku</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="action-section">
-            <h3>📝 Ajukan Permohonan Sekarang</h3>
-            <p style="color: white;">Silakan ajukan permohonan informasi publik melalui formulir online kami:</p>
-            <div class="action-buttons">
-                <a href="{{ url('/form-permohonan') }}" class="btn btn-action">
-                    <i class="fas fa-file-alt"></i>
-                    Formulir Online
-                </a>
-                <a href="{{ url('/kontak-ppid') }}" class="btn btn-action">
-                    <i class="fas fa-phone"></i>
-                    Hubungi Kami
-                </a>
-                <a href="{{ url('/periksa-permohonan') }}" class="btn btn-action">
-                    <i class="fas fa-search"></i>
-                    Cek Status
-                </a>
             </div>
         </div>
     </div>
 </div>
 
 <style>
+/* Page Header */
 .page-header {
-    background: linear-gradient(135deg, #0f2338 0%, #2c5282 35%, #1a3a5f 100%);
+    background: linear-gradient(135deg, #1a3a5f 0%, #2c5282 100%);
     color: white;
-    padding: 40px 0;
-    margin: 0 0 40px 0;
-    width: 100%;
+    padding: 60px 0;
+    position: relative;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
+    background: url('{{ asset("images/pattern.png") }}') repeat;
+    opacity: 0.1;
 }
 
 .page-header-content {
@@ -210,6 +222,7 @@
     text-decoration: underline;
 }
 
+/* Content Section */
 .content-section {
     width: 100%;
     padding: 0 20px;
@@ -228,83 +241,52 @@
     font-size: 28px;
     font-weight: 600;
     margin-bottom: 20px;
-    margin-top: 40px;
-}
-
-.content-full h2:first-child {
-    margin-top: 0;
 }
 
 .content-full p {
-    color: #333;
-    line-height: 1.8;
-    margin-bottom: 20px;
+    color: #64748b;
     font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 40px;
 }
 
-.infografis-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin: 30px auto;
-    padding: 20px;
-    background: transparent;
-    border-radius: 15px;
-    box-shadow: none;
-    border: none;
-    text-align: center;
-}
-
-.infografis-img {
-    max-width: 100%;
-    max-height: 600px;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    object-position: center;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-    display: block;
-}
-
-.infografis-img:hover {
-    transform: scale(1.02);
-}
-
+/* Procedure Flow */
 .procedure-flow {
-    margin: 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .flow-step {
     display: flex;
-    gap: 30px;
-    margin-bottom: 40px;
-    padding: 30px;
-    background: rgba(26, 58, 95, 0.02);
-    border: 1px solid rgba(26, 58, 95, 0.1);
-    border-radius: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
 }
 
 .flow-step:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .step-number {
-    flex-shrink: 0;
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     background: linear-gradient(135deg, #2c5282 0%, #1a3a5f 100%);
-    color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    color: white;
+    font-size: 18px;
     font-weight: 700;
+    flex-shrink: 0;
 }
 
 .step-content {
@@ -313,234 +295,183 @@
 
 .step-content h3 {
     color: #1a3a5f;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .step-content p {
-    margin-bottom: 15px;
+    color: #374151;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    font-size: 16px;
 }
 
-.step-content ul {
-    margin-bottom: 20px;
-    padding-left: 20px;
+.step-content ul,
+.step-content ol {
+    margin: 8px 0;
+    padding-left: 22px;
 }
 
 .step-content li {
-    margin-bottom: 8px;
-    color: #333;
-    line-height: 1.6;
+    margin-bottom: 6px;
+    line-height: 1.5;
+    font-size: 16px;
 }
 
-.required-docs, .timeline-info, .note-box, .contact-info {
-    background: rgba(44, 82, 130, 0.05);
+/* Infografis Container */
+.infografis-container {
+    margin: 0 0 15px 0;
+    text-align: center;
+}
+
+.infografis-img {
+    max-width: 40%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* Required Docs */
+.required-docs {
+    background: #f8fafc;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 8px 0;
     border-left: 4px solid #2c5282;
-    padding: 15px 20px;
-    margin: 20px 0;
-    border-radius: 0 8px 8px 0;
 }
 
-.required-docs h4, .timeline-info strong, .contact-info strong {
+.required-docs h4 {
     color: #1a3a5f;
+    font-size: 14px;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 
+/* Timeline Info */
+.timeline-info {
+    background: white;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-top: 12px;
+    font-size: 15px;
+    color: #374151;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #2c5282;
+    transition: all 0.2s ease;
+}
+
+.timeline-info:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+/* Note Box */
+.note-box {
+    background: #fef3c7;
+    padding: 8px;
+    border-radius: 6px;
+    margin-top: 8px;
+    border-left: 4px solid #f59e0b;
+}
+
+.note-box p {
+    margin: 0;
+    color: #92400e;
+}
+
+/* Outcome Options */
 .outcome-options {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin: 20px 0;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
 }
 
 .outcome-item {
     background: white;
-    border: 1px solid #e1e5e9;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #2c5282;
+    transition: all 0.2s ease;
+}
+
+.outcome-item:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .outcome-item h4 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin: 40px 0;
-}
-
-.info-box {
-    background: rgba(26, 58, 95, 0.02);
-    border: 1px solid rgba(26, 58, 95, 0.1);
-    border-radius: 10px;
-    padding: 25px;
-}
-
-.info-box h3 {
     color: #1a3a5f;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-.info-box ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.info-box li {
-    margin-bottom: 10px;
-    color: #333;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.info-box li strong {
-    color: #1a3a5f;
-}
-
-.action-section {
-    background: linear-gradient(135deg, #2c5282 0%, #1a3a5f 100%);
-    color: white;
-    padding: 40px;
-    border-radius: 15px;
-    text-align: center;
-    margin: 40px 0;
-}
-
-.action-section h3 {
-    font-size: 24px;
-    margin-bottom: 15px;
-}
-
-.action-section p {
-    margin-bottom: 30px;
-    opacity: 0.9;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn {
-    padding: 12px 24px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-action {
-    background-color: white;
-    color: #1a3a5f;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
     font-size: 16px;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    min-width: 180px;
-    height: 50px;
+    font-weight: 600;
+    margin-bottom: 8px;
 }
 
-.btn-action:hover {
-    background-color: #f8f9fa;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+.outcome-item p {
+    color: #374151;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
 }
 
-.btn-primary {
-    background-color: white;
-    color: #1a3a5f;
-}
-
-.btn-primary:hover {
-    background-color: #f8f9fa;
-    transform: translateY(-1px);
-}
-
-.btn-outline {
-    background-color: transparent;
-    color: white;
-    border: 2px solid white;
-}
-
-.btn-outline:hover {
-    background-color: white;
-    color: #1a3a5f;
-    transform: translateY(-1px);
-}
-
+/* Responsive */
 @media (max-width: 768px) {
     .page-header-content {
         padding: 0 20px;
     }
     
     .content-full {
-        padding: 40px 20px;
+        padding: 30px 20px;
     }
     
     .flow-step {
         flex-direction: column;
-        gap: 20px;
-        padding: 20px;
+        gap: 12px;
+        padding: 16px;
     }
     
     .step-number {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-        align-self: center;
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+    
+    .step-content h3 {
+        font-size: 18px;
+    }
+    
+    .step-content p {
+        font-size: 15px;
+    }
+    
+    .step-content li {
+        font-size: 15px;
     }
     
     .outcome-options {
         grid-template-columns: 1fr;
+        gap: 10px;
     }
     
-    .action-buttons {
-        flex-direction: column;
-        align-items: center;
+    .outcome-item {
+        padding: 12px;
     }
     
-    .btn {
-        width: 200px;
-        justify-content: center;
+    .outcome-item h4 {
+        font-size: 15px;
     }
     
-    .btn-action {
-        width: 100%;
-        max-width: 200px;
-        padding: 12px 20px;
+    .outcome-item p {
         font-size: 14px;
-        min-width: 150px;
-        height: 45px;
     }
     
-    .infografis-container {
-        padding: 10px;
-        margin: 30px auto;
-    }
-    
-    .infografis-img {
-        border-radius: 8px;
+    .timeline-info {
+        padding: 12px 14px;
+        font-size: 14px;
     }
 }
 </style>

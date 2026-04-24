@@ -38,7 +38,7 @@
     @endif
 
     <div class="form-card">
-        <form action="{{ route('admin.informasi-serta-merta.update', $id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.informasi-serta-merta.update', $informasi->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             
@@ -46,17 +46,17 @@
                 <div class="col-md-8">
                     <div class="mb-3">
                         <label for="judul" class="form-label">Judul Informasi <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="judul" name="judul" value="{{ old('judul', $data->judul ?? '') }}" required>
+                        <input type="text" class="form-control" id="judul" name="judul" value="{{ old('judul', $informasi->judul ?? '') }}" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="deskripsi" class="form-label">Deskripsi</label>
-                        <textarea class="form-control" id="deskripsi" name="deskripsi" rows="5">{{ old('deskripsi', $data->deskripsi ?? '') }}</textarea>
+                        <textarea class="form-control" id="deskripsi" name="deskripsi" rows="5">{{ old('deskripsi', $informasi->deskripsi ?? '') }}</textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="isi" class="form-label">Isi Lengkap</label>
-                        <textarea class="form-control" id="isi" name="isi" rows="10">{{ old('isi', $data->isi ?? '') }}</textarea>
+                        <textarea class="form-control" id="isi" name="isi" rows="10">{{ old('isi', $informasi->konten ?? '') }}</textarea>
                     </div>
                 </div>
 
@@ -64,11 +64,11 @@
                     <div class="mb-3">
                         <label for="kategori" class="form-label">Kategori</label>
                         <select class="form-control" id="kategori" name="kategori">
-                            <option value="Informasi Serta Merta" {{ (old('kategori', $data->kategori ?? '') == 'Informasi Serta Merta') ? 'selected' : '' }}>Informasi Serta Merta</option>
-                            <option value="Bencana Alam" {{ (old('kategori', $data->kategori ?? '') == 'Bencana Alam') ? 'selected' : '' }}>Bencana Alam</option>
-                            <option value="Darurat Kesehatan" {{ (old('kategori', $data->kategori ?? '') == 'Darurat Kesehatan') ? 'selected' : '' }}>Darurat Kesehatan</option>
-                            <option value="Keamanan" {{ (old('kategori', $data->kategori ?? '') == 'Keamanan') ? 'selected' : '' }}>Keamanan</option>
-                            <option value="Lainnya" {{ (old('kategori', $data->kategori ?? '') == 'Lainnya') ? 'selected' : '' }}>Lainnya</option>
+                            <option value="Informasi Serta Merta" {{ (old('kategori', $informasi->kategori ?? '') == 'Informasi Serta Merta') ? 'selected' : '' }}>Informasi Serta Merta</option>
+                            <option value="Bencana Alam" {{ (old('kategori', $informasi->kategori ?? '') == 'Bencana Alam') ? 'selected' : '' }}>Bencana Alam</option>
+                            <option value="Darurat Kesehatan" {{ (old('kategori', $informasi->kategori ?? '') == 'Darurat Kesehatan') ? 'selected' : '' }}>Darurat Kesehatan</option>
+                            <option value="Keamanan" {{ (old('kategori', $informasi->kategori ?? '') == 'Keamanan') ? 'selected' : '' }}>Keamanan</option>
+                            <option value="Lainnya" {{ (old('kategori', $informasi->kategori ?? '') == 'Lainnya') ? 'selected' : '' }}>Lainnya</option>
                         </select>
                     </div>
 
@@ -76,30 +76,30 @@
                         <label for="file" class="form-label">File Dokumen (PDF/DOC/DOCX)</label>
                         <input type="file" class="form-control" id="file" name="file" accept=".pdf,.doc,.docx">
                         <small class="text-muted">Maksimal 10MB. Kosongkan jika tidak ingin mengubah file.</small>
-                        @if(isset($data->file_path) && $data->file_path)
+                        @if(isset($informasi->file_path) && $informasi->file_path)
                             <br><small class="text-success">
-                                <i class="fas fa-file me-1"></i>File saat ini: {{ basename($data->file_path) }}
+                                <i class="fas fa-file me-1"></i>File saat ini: {{ basename($informasi->file_path) }}
                             </small>
                         @endif
                     </div>
 
                     <div class="mb-3">
                         <label for="tanggal_publikasi" class="form-label">Tanggal Publikasi</label>
-                        <input type="date" class="form-control" id="tanggal_publikasi" name="tanggal_publikasi" value="{{ old('tanggal_publikasi', $data->tanggal_publikasi ?? date('Y-m-d')) }}">
+                        <input type="date" class="form-control" id="tanggal_publikasi" name="tanggal_publikasi" value="{{ old('tanggal_publikasi', $informasi->tanggal_publikasi ? $informasi->tanggal_publikasi->format('Y-m-d') : date('Y-m-d')) }}">
                     </div>
 
                     <div class="mb-3">
                         <label for="tanggal_kadaluarsa" class="form-label">Tanggal Kadaluarsa</label>
-                        <input type="date" class="form-control" id="tanggal_kadaluarsa" name="tanggal_kadaluarsa" value="{{ old('tanggal_kadaluarsa', $data->tanggal_kadaluarsa ?? '') }}">
+                        <input type="date" class="form-control" id="tanggal_kadaluarsa" name="tanggal_kadaluarsa" value="{{ old('tanggal_kadaluarsa', '') }}">
                         <small class="text-muted">Kosongkan jika tidak ada kadaluarsa</small>
                     </div>
 
                     <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
                         <select class="form-control" id="status" name="status">
-                            <option value="draft" {{ (old('status', $data->status ?? '') == 'draft') ? 'selected' : '' }}>Draft</option>
-                            <option value="published" {{ (old('status', $data->status ?? '') == 'published') ? 'selected' : '' }}>Dipublikasi</option>
-                            <option value="archived" {{ (old('status', $data->status ?? '') == 'archived') ? 'selected' : '' }}>Arsip</option>
+                            <option value="draft" {{ (old('status', $informasi->status ?? '') == 'draft') ? 'selected' : '' }}>Draft</option>
+                            <option value="published" {{ (old('status', $informasi->status ?? '') == 'published') ? 'selected' : '' }}>Dipublikasi</option>
+                            <option value="archived" {{ (old('status', $informasi->status ?? '') == 'archived') ? 'selected' : '' }}>Arsip</option>
                         </select>
                     </div>
                 </div>

@@ -72,6 +72,23 @@
                             
                             <div class="form-row">
                                 <div class="form-group">
+                                    <label for="usia">Usia *</label>
+                                    <input type="number" id="usia" name="usia" required placeholder="Masukkan usia Anda" min="1" max="120">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="pendidikan_terakhir">Pendidikan Terakhir *</label>
+                                    <input type="text" id="pendidikan_terakhir" name="pendidikan_terakhir" required placeholder="Contoh: S1, SMA, dll">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pekerjaan">Pekerjaan *</label>
+                                <input type="text" id="pekerjaan" name="pekerjaan" required placeholder="Masukkan pekerjaan Anda">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
                                     <label for="email">Email *</label>
                                     <input type="email" id="email" name="email" required placeholder="email@example.com">
                                 </div>

@@ -9,8 +9,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 2rem;
-        padding: 1.5rem 0;
+        margin-bottom: 0rem;
+        padding: 0.5rem 0;
     }
     
     .gallery-title {
@@ -23,14 +23,14 @@
     .gallery-subtitle {
         color: #6b7280;
         font-size: 0.95rem;
-        margin: 0.5rem 0 0 0;
+        margin: 0;
     }
     
     .stats-container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1.5rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
     }
     
     .stat-card {
@@ -62,10 +62,10 @@
     }
     
     .controls-section {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         margin-bottom: 2rem;
         border: 1px solid #e5e7eb;
         display: flex;
@@ -77,39 +77,58 @@
     
     .search-box {
         display: flex;
-        gap: 0.75rem;
         flex: 1;
-        max-width: 400px;
+        max-width: 600px;
+        align-items: center;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        background: white;
+        overflow: hidden;
+        height: 44px;
+        transition: all 0.3s ease;
     }
     
     .search-input {
         flex: 1;
         padding: 0.75rem 1rem;
-        border: 2px solid #e5e7eb;
-        border-radius: 8px;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
+        border: none;
+        font-size: 0.9rem;
+        background: transparent;
+        outline: none;
     }
     
-    .search-input:focus {
-        outline: none;
+    .search-box:focus-within {
         border-color: #3b82f6;
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
     
     .filter-select {
         padding: 0.75rem 1rem;
+        padding-right: 2.5rem;
         border: 2px solid #e5e7eb;
-        border-radius: 8px;
-        font-size: 0.95rem;
+        border-radius: 10px;
+        font-size: 0.9rem;
         background: white;
         cursor: pointer;
         transition: all 0.3s ease;
+        height: 44px;
+        min-width: 150px;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+        background-position: right 0.75rem center;
+        background-repeat: no-repeat;
+        background-size: 1rem;
     }
     
     .filter-select:focus {
         outline: none;
         border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        background-color: #fafbfc;
+    }
+    
+    .filter-select:hover {
+        border-color: #d1d5db;
     }
     
     .bulk-actions {
@@ -127,17 +146,19 @@
     
     .gallery-item {
         background: white;
-        border-radius: 12px;
+        border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         border: 1px solid #e5e7eb;
         transition: all 0.3s ease;
         position: relative;
+        min-height: 400px;
     }
     
     .gallery-item:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transform: translateY(-6px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        border-color: #3b82f6;
     }
     
     .gallery-item.selected {
@@ -159,9 +180,9 @@
     .image-container {
         position: relative;
         width: 100%;
-        height: 200px;
+        height: 220px;
         overflow: hidden;
-        background: #f8fafc;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     }
     
     .gallery-image {
@@ -212,6 +233,8 @@
     
     .item-content {
         padding: 1.5rem;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-top: 1px solid #f1f5f9;
     }
     
     .item-title {
@@ -248,17 +271,20 @@
     }
     
     .btn-sm {
-        padding: 0.5rem 0.75rem;
+        padding: 0.5rem 1rem;
         font-size: 0.8rem;
         border-radius: 6px;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 0.375rem;
         transition: all 0.2s ease;
         border: none;
         cursor: pointer;
         font-weight: 500;
+        min-width: 80px;
+        height: 36px;
     }
     
     .btn-edit {
@@ -349,13 +375,6 @@
 @section('content')
 <!-- Header Section -->
 <div class="gallery-header">
-    <div>
-        <h1 class="gallery-title">Manajemen Galeri Foto</h1>
-        <p class="gallery-subtitle">Kelola foto-foto yang akan ditampilkan di website publik PPID BBIA</p>
-    </div>
-    <a href="{{ route('admin.galeri.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus"></i> Tambah Foto Baru
-    </a>
 </div>
 
 <!-- Statistics Section -->
@@ -376,26 +395,32 @@
 
 <!-- Controls Section -->
 <div class="controls-section">
-    <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+    <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; justify-content: space-between; width: 100%;">
         <div class="search-box">
             <input type="text" id="searchInput" class="search-input" placeholder="Cari foto...">
-            <button onclick="searchPhotos()" class="btn btn-outline">
+            <button onclick="searchPhotos()" style="border: none; background: transparent; color: #6b7280; padding: 0.75rem 1rem; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;">
                 <i class="fas fa-search"></i>
             </button>
         </div>
         
-        <select id="categoryFilter" class="filter-select" onchange="filterByCategory()">
-            <option value="">Semua Kategori</option>
-            @foreach($galeri->pluck('kategori')->unique()->sort() as $kategori)
-                <option value="{{ $kategori }}">{{ $kategori }}</option>
-            @endforeach
-        </select>
-        
-        <select id="statusFilter" class="filter-select" onchange="filterByStatus()">
-            <option value="">Semua Status</option>
-            <option value="active">Aktif</option>
-            <option value="inactive">Tidak Aktif</option>
-        </select>
+        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <select id="categoryFilter" class="filter-select" onchange="filterByCategory()">
+                <option value="">Semua Kategori</option>
+                @foreach($galeri->pluck('kategori')->unique()->sort() as $kategori)
+                    <option value="{{ $kategori }}">{{ $kategori }}</option>
+                @endforeach
+            </select>
+            
+            <select id="statusFilter" class="filter-select" onchange="filterByStatus()">
+                <option value="">Semua Status</option>
+                <option value="active">Aktif</option>
+                <option value="inactive">Tidak Aktif</option>
+            </select>
+            
+            <a href="{{ route('admin.galeri.create') }}" class="btn btn-primary" style="height: 44px; padding: 0.75rem 1.5rem; border-radius: 10px; font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);">
+                <i class="fas fa-plus"></i> Tambah Foto Baru
+            </a>
+        </div>
     </div>
     
     <div class="bulk-actions" id="bulkActions" style="display: none;">

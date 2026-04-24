@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\GaleriFoto;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
 
 class GaleriFotoController extends Controller
 {
@@ -44,6 +43,10 @@ class GaleriFotoController extends Controller
                 $file = $request->file('foto');
                 $fileName = time() . '_' . Str::slug($request->judul) . '.' . $file->getClientOriginalExtension();
                 
+                // Get file info before moving
+                $fileSize = $file->getSize();
+                $mimeType = $file->getMimeType();
+                
                 // Create directory if not exists
                 $uploadPath = public_path('images/galeri');
                 if (!file_exists($uploadPath)) {
@@ -60,9 +63,8 @@ class GaleriFotoController extends Controller
                     mkdir($thumbnailPath, 0755, true);
                 }
                 
-                Image::make($uploadPath . '/' . $fileName)
-                    ->fit(300, 300)
-                    ->save($thumbnailPath . '/' . $fileName);
+                // Copy original image as thumbnail (basic approach)
+                copy($uploadPath . '/' . $fileName, $thumbnailPath . '/' . $fileName);
                 
                 GaleriFoto::create([
                     'judul' => $request->judul,
@@ -70,8 +72,8 @@ class GaleriFotoController extends Controller
                     'kategori' => $request->kategori,
                     'file_path' => $filePath,
                     'file_name' => $fileName,
-                    'file_size' => $file->getSize(),
-                    'mime_type' => $file->getMimeType(),
+                    'file_size' => $fileSize,
+                    'mime_type' => $mimeType,
                     'urutan' => $request->urutan,
                     'is_active' => $request->boolean('is_active', true),
                 ]);
@@ -130,19 +132,21 @@ class GaleriFotoController extends Controller
                 $file = $request->file('foto');
                 $fileName = time() . '_' . Str::slug($request->judul) . '.' . $file->getClientOriginalExtension();
                 
+                // Get file info before moving
+                $fileSize = $file->getSize();
+                $mimeType = $file->getMimeType();
+                
                 $uploadPath = public_path('images/galeri');
                 $file->move($uploadPath, $fileName);
                 $filePath = 'images/galeri/' . $fileName;
                 
                 // Create new thumbnail
-                Image::make($uploadPath . '/' . $fileName)
-                    ->fit(300, 300)
-                    ->save(public_path('images/galeri/thumbnails/' . $fileName));
+                copy($uploadPath . '/' . $fileName, public_path('images/galeri/thumbnails/' . $fileName));
                 
                 $updateData['file_path'] = $filePath;
                 $updateData['file_name'] = $fileName;
-                $updateData['file_size'] = $file->getSize();
-                $updateData['mime_type'] = $file->getMimeType();
+                $updateData['file_size'] = $fileSize;
+                $updateData['mime_type'] = $mimeType;
             }
 
             $foto->update($updateData);
@@ -192,6 +196,11 @@ class GaleriFotoController extends Controller
     {
         $action = $request->action;
         $selectedIds = $request->selected_ids;
+        
+        // Convert comma-separated string to array
+        if (is_string($selectedIds)) {
+            $selectedIds = explode(',', $selectedIds);
+        }
         
         if (empty($selectedIds)) {
             return back()->with('error', 'Pilih minimal satu foto');

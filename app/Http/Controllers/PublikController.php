@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\KontenWeb;
 use App\Models\InformasiPublik;
+use App\Models\Profil;
+use App\Models\Prosedur;
 
 class PublikController extends Controller
 {
     public function tentangPpid()
     {
-        $konten = KontenWeb::profil()->where('slug', 'tentang-ppid')->active()->first();
-        return view('tentang-ppid', compact('konten'));
+        $profils = \App\Models\Profil::where('is_active', true)
+            ->where('kategori', 'Tentang PPID')
+            ->orderBy('urutan')
+            ->get();
+        
+        return view('tentang-ppid', compact('profils'));
     }
 
     public function informasiPublik()
@@ -37,21 +43,33 @@ class PublikController extends Controller
 
     public function visiMisi()
     {
-        $konten = KontenWeb::profil()->where('slug', 'visi-misi')->active()->first();
-        return view('visi-misi', compact('konten'));
+        $profils = \App\Models\Profil::where('is_active', true)
+            ->where('kategori', 'Visi Misi')
+            ->orderBy('urutan')
+            ->get();
+        
+        return view('visi-misi', compact('profils'));
     }
 
     public function strukturOrganisasi()
     {
-        $konten = KontenWeb::profil()->where('slug', 'struktur-organisasi')->active()->first();
-        return view('struktur-organisasi', compact('konten'));
+        $profils = \App\Models\Profil::where('is_active', true)
+            ->where('kategori', 'Struktur Organisasi')
+            ->orderBy('urutan')
+            ->get();
+        
+        return view('struktur-organisasi', compact('profils'));
     }
 
     
     public function kontakPpid()
     {
-        $konten = KontenWeb::profil()->where('slug', 'kontak-ppid')->active()->first();
-        return view('kontak-ppid', compact('konten'));
+        $profils = Profil::where('is_active', true)
+            ->where('kategori', 'Kontak PPID')
+            ->orderBy('urutan')
+            ->get();
+        
+        return view('kontak-ppid', compact('profils'));
     }
 
     public function informasiBerkala()
@@ -98,20 +116,14 @@ class PublikController extends Controller
 
     public function prosedurPermohonan()
     {
-        $konten = KontenWeb::standarLayanan()->where('slug', 'prosedur-permohonan')->active()->first();
-        return view('prosedur-permohonan', compact('konten'));
+        $prosedurPermohonan = Prosedur::byKategori('Prosedur Permohonan Informasi')->aktif()->ordered()->get();
+        return view('prosedur-permohonan', compact('prosedurPermohonan'));
     }
 
     public function prosedurKeberatan()
     {
-        $konten = KontenWeb::standarLayanan()->where('slug', 'prosedur-keberatan')->active()->first();
-        return view('prosedur-keberatan', compact('konten'));
-    }
-
-    public function mekanismeSengketa()
-    {
-        $konten = KontenWeb::standarLayanan()->where('slug', 'mekanisme-sengketa')->active()->first();
-        return view('mekanisme-sengketa', compact('konten'));
+        $prosedurKeberatan = Prosedur::byKategori('Prosedur Pengajuan Keberatan')->aktif()->ordered()->get();
+        return view('prosedur-keberatan', compact('prosedurKeberatan'));
     }
 
     public function sopPpid()

@@ -5,14 +5,6 @@
 
 @section('content')
 <div class="content">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0">Maklumat Informasi Publik</h1>
-        <div>
-            <a href="{{ route('admin.maklumat-informasi-publik.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Tambah Maklumat
-            </a>
-        </div>
-    </div>
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -21,110 +13,133 @@
         </div>
     @endif
 
-    @if(session('error'))
+    @if($errors->any())
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
 
     <div class="card">
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Judul Maklumat</th>
-                            <th>Nomor</th>
-                            <th>Tahun</th>
-                            <th>Tanggal Terbit</th>
-                            <th>Dokumen</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($maklumatInformasiPublik ?? [] as $index => $item)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>
-                                    <strong>{{ $item->judul ?? '-' }}</strong>
-                                    @if($item->deskripsi)
-                                        <br><small class="text-muted">{{ Str::limit($item->deskripsi, 100) }}</small>
-                                    @endif
-                                </td>
-                                <td>{{ $item->nomor ?? '-' }}</td>
-                                <td>{{ $item->tahun ?? '-' }}</td>
-                                <td>{{ $item->tanggal_terbit ? \Carbon\Carbon::parse($item->tanggal_terbit)->format('d/m/Y') : '-' }}</td>
-                                <td>
-                                    @if($item->file_path)
-                                        <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank" class="btn btn-sm btn-outline-success">
-                                            <i class="fas fa-file-pdf me-1"></i>Download
-                                        </a>
-                                    @else
-                                        <span class="text-muted">Tidak ada</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($item->status == 'published')
-                                        <span class="badge bg-success">Dipublikasi</span>
-                                    @elseif($item->status == 'draft')
-                                        <span class="badge bg-warning">Draft</span>
-                                    @else
-                                        <span class="badge bg-secondary">Arsip</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <a href="{{ route('admin.maklumat-informasi-publik.edit', $item->id) }}" class="btn btn-outline-primary" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <button type="button" class="btn btn-outline-danger" onclick="confirmDelete('{{ $item->id }}')" title="Hapus">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="8" class="text-center py-4">
-                                    <i class="fas fa-file-contract fa-3x text-muted mb-3"></i>
-                                    <p class="text-muted">Belum ada data maklumat informasi publik</p>
-                                    <a href="{{ route('admin.maklumat-informasi-publik.create') }}" class="btn btn-primary">
-                                        <i class="fas fa-plus me-2"></i>Tambah Maklumat
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            @if(isset($maklumatInformasiPublik) && $maklumatInformasiPublik->hasPages())
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <small class="text-muted">Menampilkan {{ $maklumatInformasiPublik->firstItem() }} - {{ $maklumatInformasiPublik->lastItem() }} dari {{ $maklumatInformasiPublik->total() }} data</small>
-                    {{ $maklumatInformasiPublik->links() }}
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="maklumat-preview-container">
+                        <h5 class="mb-3">Preview Gambar</h5>
+                        @if($konten && $konten->gambar)
+                            <div class="image-preview-wrapper">
+                                <img src="{{ asset('images/' . $konten->gambar) }}" alt="Maklumat Informasi Publik" class="img-fluid preview-image">
+                            </div>
+                        @else
+                            <div class="empty-preview text-center">
+                                <i class="fas fa-image fa-5x text-muted mb-4"></i>
+                                <h5 class="text-muted">Belum ada gambar maklumat</h5>
+                                <p class="text-muted small">Upload gambar untuk menampilkan maklumat informasi publik</p>
+                            </div>
+                        @endif
+                    </div>
                 </div>
-            @endif
+
+                <div class="col-lg-5">
+                    <div class="upload-form-container">
+                        <h5 class="mb-3">Upload Gambar</h5>
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <form action="{{ route('admin.maklumat-informasi-publik.update-image') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="mb-4">
+                                        <label for="gambar" class="form-label fw-semibold">Pilih Gambar</label>
+                                        <div class="file-upload-wrapper">
+                                            <input type="file" class="form-control" id="gambar" name="gambar" accept="image/*" required>
+                                        </div>
+                                        <div class="form-text mt-2">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            Format yang didukung: JPG, JPEG, PNG. Maksimal 5MB.
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-upload me-2"></i>Upload Gambar
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<form id="deleteForm" action="{{ route('admin.maklumat-informasi-publik.destroy', ['id' => ':id']) }}" method="POST" style="display: none;">
-    @csrf
-    @method('DELETE')
-    <input type="hidden" name="id" id="deleteId">
-</form>
+<style>
+.maklumat-preview-container {
+    padding-right: 20px;
+}
 
-<script>
-function confirmDelete(id) {
-    if(confirm('Apakah Anda yakin ingin menghapus maklumat ini?')) {
-        document.getElementById('deleteId').value = id;
-        const form = document.getElementById('deleteForm');
-        form.action = form.action.replace(':id', id);
-        form.submit();
+.image-preview-wrapper {
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-image {
+    max-height: 500px;
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.empty-preview {
+    padding: 60px 20px;
+}
+
+.upload-form-container {
+    padding-left: 20px;
+}
+
+.file-upload-wrapper input[type="file"] {
+    padding: 12px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    background: white;
+}
+
+.file-upload-wrapper input[type="file"]:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.info-box {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.info-box ul {
+    margin: 0;
+}
+
+.info-box li {
+    margin-bottom: 5px;
+}
+
+@media (max-width: 991px) {
+    .maklumat-preview-container,
+    .upload-form-container {
+        padding: 0 0 20px 0;
     }
 }
-</script>
+</style>
 @endsection

@@ -48,25 +48,25 @@
                 <div class="channel-item">
                     <h3>🌐 Website</h3>
                     <p>Akses informasi melalui website resmi PPID BBIA</p>
-                    <a href="#" class="channel-link">ppid.bbia.go.id</a>
+                    <span class="channel-link">ppid.bbia.go.id</span>
                 </div>
                 
                 <div class="channel-item">
                     <h3>📧 Email</h3>
                     <p>Kirim permohonan melalui email resmi PPID</p>
-                    <a href="#" class="channel-link">ppid@bbia.go.id</a>
+                    <span class="channel-link">ppid@bbia.go.id</span>
                 </div>
                 
                 <div class="channel-item">
                     <h3>📱 WhatsApp</h3>
                     <p>Layanan informasi melalui WhatsApp</p>
-                    <a href="#" class="channel-link">+62 812-3456-7890</a>
+                    <span class="channel-link">+62 812-3456-7890</span>
                 </div>
                 
                 <div class="channel-item">
                     <h3>📞 Telepon</h3>
                     <p>Layanan telepon informasi langsung</p>
-                    <a href="#" class="channel-link">(0251) 8324068</a>
+                    <span class="channel-link">(0251) 8324068</span>
                 </div>
             </div>
             
@@ -315,10 +315,7 @@
     text-decoration: none;
     font-weight: 600;
     font-size: 14px;
-}
-
-.channel-link:hover {
-    text-decoration: underline;
+    cursor: default;
 }
 
 .schedule-box {

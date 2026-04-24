@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png?v=' . time()) }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     @stack('styles')
     <style>
@@ -238,13 +238,9 @@
         }
 
         .admin-info {
-            opacity: 0;
+            opacity: 1;
             transition: opacity 0.2s ease;
             overflow: hidden;
-        }
-
-        .sidebar:hover .admin-info {
-            opacity: 1;
         }
 
         .admin-name {
@@ -808,7 +804,6 @@
                     $standarRoutes = [
                         'admin.prosedur-permohonan-informasi', 'admin.prosedur-permohonan-informasi.*',
                         'admin.prosedur-pengajuan-keberatan', 'admin.prosedur-pengajuan-keberatan.*',
-                        'admin.mekanisme-sengketa-informasi', 'admin.mekanisme-sengketa-informasi.*',
                         'admin.maklumat-informasi-publik', 'admin.maklumat-informasi-publik.*',
                     ];
                     $isStandarActive = request()->routeIs(...$standarRoutes);
@@ -835,13 +830,6 @@
                                class="{{ request()->routeIs('admin.prosedur-pengajuan-keberatan', 'admin.prosedur-pengajuan-keberatan.*') ? 'active' : '' }}">
                                 <i class="fas fa-angle-right"></i>
                                 <span>Prosedur Pengajuan Keberatan</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('admin.mekanisme-sengketa-informasi') }}"
-                               class="{{ request()->routeIs('admin.mekanisme-sengketa-informasi', 'admin.mekanisme-sengketa-informasi.*') ? 'active' : '' }}">
-                                <i class="fas fa-angle-right"></i>
-                                <span>Mekanisme Penanganan Sengketa Informasi</span>
                             </a>
                         </li>
                         <li>
@@ -928,12 +916,12 @@
                     </a>
                 </li>
 
-                <!-- Pengguna -->
+                <!-- Admin -->
                 <li>
                     <a href="{{ route('admin.users') }}"
                        class="{{ request()->routeIs('admin.users') ? 'active' : '' }}">
                         <i class="fas fa-user-cog"></i>
-                        <span>Pengguna</span>
+                        <span>Admin</span>
                     </a>
                 </li>
 

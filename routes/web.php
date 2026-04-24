@@ -14,6 +14,7 @@ use App\Http\Controllers\MenuProfilController;
 use App\Http\Controllers\KontenWebController;
 use App\Http\Controllers\PublikController;
 use App\Http\Controllers\GaleriFotoController;
+use App\Http\Controllers\KomentarBeritaController;
 
 // Guest Routes
 Route::get('/', function () {
@@ -40,6 +41,7 @@ Route::prefix('admin')->group(function () {
     // Protected Admin Routes
     Route::middleware('admin.auth')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/api/realtime-activity', [AdminController::class, 'getRealTimeActivity'])->name('admin.api.realtime-activity');
         Route::resource('/berita', BeritaController::class)->names([
             'index' => 'admin.berita.index',
             'create' => 'admin.berita.create',
@@ -77,8 +79,8 @@ Route::prefix('admin')->group(function () {
         
         Route::get('/struktur-organisasi', [ProfilController::class, 'editStrukturOrganisasi'])->name('admin.struktur-organisasi');
         Route::put('/struktur-organisasi', [ProfilController::class, 'updateStrukturOrganisasi'])->name('admin.struktur-organisasi.update');
+        Route::put('/unit-pelaksana', [ProfilController::class, 'updateUnitPelaksana'])->name('admin.unit-pelaksana.update');
         
-                
         Route::get('/visi-misi', [ProfilController::class, 'editVisiMisi'])->name('admin.visi-misi');
         Route::put('/visi-misi', [ProfilController::class, 'updateVisiMisi'])->name('admin.visi-misi.update');
         
@@ -161,22 +163,15 @@ Route::prefix('admin')->group(function () {
         Route::get('/prosedur-permohonan-informasi/create', [AdminController::class, 'createProsedurPermohonanInformasi'])->name('admin.prosedur-permohonan-informasi.create');
         Route::post('/prosedur-permohonan-informasi', [AdminController::class, 'storeProsedurPermohonanInformasi'])->name('admin.prosedur-permohonan-informasi.store');
         Route::get('/prosedur-permohonan-informasi/{id}/edit', [AdminController::class, 'editProsedurPermohonanInformasi'])->name('admin.prosedur-permohonan-informasi.edit');
-        Route::put('/prosedur-permohonan-informasi/{id}', [AdminController::class, 'updateProsedurPermohonanInformasi'])->name('admin.prosedur-permohonan-informasi.update');
+        Route::put('/prosedur-permohonan-informasi', [AdminController::class, 'updateProsedurPermohonanInformasi'])->name('admin.prosedur-permohonan-informasi.update');
         Route::delete('/prosedur-permohonan-informasi/{id}', [AdminController::class, 'destroyProsedurPermohonanInformasi'])->name('admin.prosedur-permohonan-informasi.destroy');
         
         Route::get('/prosedur-pengajuan-keberatan', [AdminController::class, 'prosedurPengajuanKeberatan'])->name('admin.prosedur-pengajuan-keberatan');
         Route::get('/prosedur-pengajuan-keberatan/create', [AdminController::class, 'createProsedurPengajuanKeberatan'])->name('admin.prosedur-pengajuan-keberatan.create');
         Route::post('/prosedur-pengajuan-keberatan', [AdminController::class, 'storeProsedurPengajuanKeberatan'])->name('admin.prosedur-pengajuan-keberatan.store');
         Route::get('/prosedur-pengajuan-keberatan/{id}/edit', [AdminController::class, 'editProsedurPengajuanKeberatan'])->name('admin.prosedur-pengajuan-keberatan.edit');
-        Route::put('/prosedur-pengajuan-keberatan/{id}', [AdminController::class, 'updateProsedurPengajuanKeberatan'])->name('admin.prosedur-pengajuan-keberatan.update');
+        Route::put('/prosedur-pengajuan-keberatan', [AdminController::class, 'updateProsedurPengajuanKeberatan'])->name('admin.prosedur-pengajuan-keberatan.update');
         Route::delete('/prosedur-pengajuan-keberatan/{id}', [AdminController::class, 'destroyProsedurPengajuanKeberatan'])->name('admin.prosedur-pengajuan-keberatan.destroy');
-        
-        Route::get('/mekanisme-sengketa-informasi', [AdminController::class, 'mekanismeSengketaInformasi'])->name('admin.mekanisme-sengketa-informasi');
-        Route::get('/mekanisme-sengketa-informasi/create', [AdminController::class, 'createMekanismeSengketaInformasi'])->name('admin.mekanisme-sengketa-informasi.create');
-        Route::post('/mekanisme-sengketa-informasi', [AdminController::class, 'storeMekanismeSengketaInformasi'])->name('admin.mekanisme-sengketa-informasi.store');
-        Route::get('/mekanisme-sengketa-informasi/{id}/edit', [AdminController::class, 'editMekanismeSengketaInformasi'])->name('admin.mekanisme-sengketa-informasi.edit');
-        Route::put('/mekanisme-sengketa-informasi/{id}', [AdminController::class, 'updateMekanismeSengketaInformasi'])->name('admin.mekanisme-sengketa-informasi.update');
-        Route::delete('/mekanisme-sengketa-informasi/{id}', [AdminController::class, 'destroyMekanismeSengketaInformasi'])->name('admin.mekanisme-sengketa-informasi.destroy');
         
         Route::get('/sop-ppid', [AdminController::class, 'sopPpid'])->name('admin.sop-ppid');
         Route::get('/sop-ppid/create', [AdminController::class, 'createSopPpid'])->name('admin.sop-ppid.create');
@@ -200,11 +195,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('/waktu-biaya-layanan/{id}', [AdminController::class, 'destroyWaktuBiayaLayanan'])->name('admin.waktu-biaya-layanan.destroy');
         
         Route::get('/maklumat-informasi-publik', [AdminController::class, 'maklumatInformasiPublik'])->name('admin.maklumat-informasi-publik');
-        Route::get('/maklumat-informasi-publik/create', [AdminController::class, 'createMaklumatInformasiPublik'])->name('admin.maklumat-informasi-publik.create');
-        Route::post('/maklumat-informasi-publik', [AdminController::class, 'storeMaklumatInformasiPublik'])->name('admin.maklumat-informasi-publik.store');
-        Route::get('/maklumat-informasi-publik/{id}/edit', [AdminController::class, 'editMaklumatInformasiPublik'])->name('admin.maklumat-informasi-publik.edit');
-        Route::put('/maklumat-informasi-publik/{id}', [AdminController::class, 'updateMaklumatInformasiPublik'])->name('admin.maklumat-informasi-publik.update');
-        Route::delete('/maklumat-informasi-publik/{id}', [AdminController::class, 'destroyMaklumatInformasiPublik'])->name('admin.maklumat-informasi-publik.destroy');
+        Route::post('/maklumat-informasi-publik/update-image', [AdminController::class, 'updateMaklumatImage'])->name('admin.maklumat-informasi-publik.update-image');
         
         Route::get('/laporan-publik', [LaporanPublikController::class, 'index'])->name('admin.laporan-publik');
         Route::get('/laporan-publik/create', [LaporanPublikController::class, 'create'])->name('admin.laporan-publik.create');
@@ -237,6 +228,8 @@ Route::prefix('admin')->group(function () {
         
         Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
         Route::post('/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
+        Route::get('/users/{id}/edit', [AdminController::class, 'editAdmin'])->name('admin.users.edit');
+        Route::put('/users/{id}', [AdminController::class, 'updateAdmin'])->name('admin.users.update');
         Route::delete('/users/{id}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
         
         // User Management Routes
@@ -261,6 +254,8 @@ Route::prefix('admin')->group(function () {
         
         Route::get('/settings', [AdminController::class, 'settings'])->name('admin.settings');
         Route::get('/reports', [AdminController::class, 'reports'])->name('admin.reports');
+        Route::get('/reports/export-pdf', [AdminController::class, 'exportPDF'])->name('admin.reports.export-pdf');
+        Route::get('/reports/export-excel', [AdminController::class, 'exportExcel'])->name('admin.reports.export-excel');
         
         // Konten Web Management Routes
         Route::prefix('konten-web')->group(function () {
@@ -319,14 +314,12 @@ Route::get('/informasi-publik', [PublikController::class, 'informasiPublik']);
 Route::get('/informasi-berkala', [PublikController::class, 'informasiBerkala']);
 Route::get('/informasi-serta-merta', [PublikController::class, 'informasiSertaMerta']);
 Route::get('/informasi-setiap-saat', [PublikController::class, 'informasiSetiapSaat']);
-Route::get('/daftar-informasi-publik', [PublikController::class, 'daftarInformasiPublik']);
 
 // Standar Layanan Menu Routes
 Route::get('/standar-layanan', [PublikController::class, 'standarLayanan']);
 Route::get('/regulasi', [PublikController::class, 'regulasi']);
 Route::get('/prosedur-permohonan', [PublikController::class, 'prosedurPermohonan']);
 Route::get('/prosedur-keberatan', [PublikController::class, 'prosedurKeberatan']);
-Route::get('/mekanisme-sengketa', [PublikController::class, 'mekanismeSengketa']);
 Route::get('/sop-ppid', [PublikController::class, 'sopPpid']);
 Route::get('/kanal-layanan', [PublikController::class, 'kanalLayanan']);
 Route::get('/waktu-biaya-layanan', [PublikController::class, 'waktuBiayaLayanan']);
@@ -412,4 +405,8 @@ Route::get('/periksa-keberatan', function () {
 });
 
 Route::post('/cek-status-keberatan', [KeberatanController::class, 'cekStatus'])->name('cek.status.keberatan');
+
+// Komentar Berita Routes
+Route::post('/komentar-berita', [KomentarBeritaController::class, 'store'])->name('komentar.berita.store');
+Route::get('/komentar-berita/{beritaId}', [KomentarBeritaController::class, 'getByBerita'])->name('komentar.berita.get');
 

@@ -50,12 +50,18 @@ class KeberatanController extends Controller
                 'email' => 'required|email',
                 'telepon' => 'required|string|max:20',
                 'alamat' => 'required|string',
+                'usia' => 'required|integer|min:1|max:120',
+                'pendidikan_terakhir' => 'required|string|max:255',
+                'pekerjaan' => 'required|string|max:255',
                 'alasan_keberatan' => 'required|string',
                 'permohonan_id' => 'nullable|integer',
             ]);
 
             $keberatan = Keberatan::create([
                 'nama_pemohon' => $request->nama_pemohon,
+                'usia' => $request->usia,
+                'pendidikan_terakhir' => $request->pendidikan_terakhir,
+                'pekerjaan' => $request->pekerjaan,
                 'email' => $request->email,
                 'telepon' => $request->telepon,
                 'alamat' => $request->alamat,
@@ -104,7 +110,7 @@ class KeberatanController extends Controller
                 try {
                     Mail::send('emails.keberatan-reply', [
                         'keberatan' => $keberatan,
-                        'message' => $request->message,
+                        'pesan' => $request->message,
                     ], function ($message) use ($keberatan, $request) {
                         $message->to($keberatan->email, $keberatan->nama_pemohon)
                                 ->subject($request->subject);
@@ -139,7 +145,7 @@ class KeberatanController extends Controller
 
             Mail::send('emails.keberatan-reply', [
                 'keberatan' => $keberatan,
-                'message' => $request->message,
+                'pesan' => $request->message,
                 'attachment' => $attachment,
             ], function ($message) use ($keberatan, $request, $attachment) {
                 $message->to($keberatan->email, $keberatan->nama_pemohon)
@@ -162,7 +168,7 @@ class KeberatanController extends Controller
     public function show($id)
     {
         $keberatan = Keberatan::with('permohonan')->findOrFail($id);
-        return view('admin.keberatan-detail', compact('keberatan'));
+        return view('admin.keberatan.keberatan-detail', compact('keberatan'));
     }
 
     public function cekStatus(Request $request)

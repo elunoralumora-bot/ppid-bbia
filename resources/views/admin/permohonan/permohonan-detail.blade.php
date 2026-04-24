@@ -69,6 +69,18 @@
                 <label style="font-weight: 600; color: #374151; font-size: 0.875rem; margin-bottom: 0.5rem;">Alamat</label>
                 <div style="color: #1f2937; font-size: 1rem;">{{ $permohonan->alamat ?? '-' }}</div>
             </div>
+            <div>
+                <label style="font-weight: 600; color: #374151; font-size: 0.875rem; margin-bottom: 0.5rem;">Usia</label>
+                <div style="color: #1f2937; font-size: 1rem;">{{ $permohonan->usia ? $permohonan->usia . ' Tahun' : '-' }}</div>
+            </div>
+            <div>
+                <label style="font-weight: 600; color: #374151; font-size: 0.875rem; margin-bottom: 0.5rem;">Pendidikan Terakhir</label>
+                <div style="color: #1f2937; font-size: 1rem;">{{ $permohonan->pendidikan_terakhir ?? '-' }}</div>
+            </div>
+            <div>
+                <label style="font-weight: 600; color: #374151; font-size: 0.875rem; margin-bottom: 0.5rem;">Pekerjaan</label>
+                <div style="color: #1f2937; font-size: 1rem;">{{ $permohonan->pekerjaan ?? '-' }}</div>
+            </div>
         </div>
     </div>
 

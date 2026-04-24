@@ -177,11 +177,11 @@
                     <input type="password" name="password_confirmation" class="form-control" required style="padding: 0.75rem; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 0.875rem; width: 100%;">
                 </div>
                 
-                <div style="display: flex; gap: 1rem; margin-top: 1rem; justify-content: flex-end;">
-                    <button type="button" class="btn btn-outline" onclick="hideAddAdminModal()" style="padding: 0.75rem 1.5rem; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 0.875rem;">
+                <div style="display: flex; gap: 1rem; margin-top: 1rem; justify-content: flex-end; align-items: center;">
+                    <button type="button" class="btn btn-outline" onclick="hideAddAdminModal()" style="padding: 0.75rem 1.5rem; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 0.875rem; min-width: 100px; height: 44px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; color: #374151; margin-top: -2px;">
                         Batal
                     </button>
-                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.5rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-width: 100px; height: 44px; box-sizing: border-box;">
                         <i class="fas fa-save"></i>
                         Simpan
                     </button>
@@ -201,8 +201,7 @@ function hideAddAdminModal() {
 }
 
 function editAdmin(id) {
-    // TODO: Implement edit admin functionality
-    alert('Fitur edit admin akan segera tersedia');
+    window.location.href = '{{ route('admin.users.edit', ':id') }}'.replace(':id', id);
 }
 
 function deleteAdmin(id, name) {

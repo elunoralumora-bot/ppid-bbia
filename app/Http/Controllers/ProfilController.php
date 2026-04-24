@@ -62,37 +62,19 @@ class ProfilController extends Controller
     public function editTentangPPID()
     {
         $profils = Profil::where('is_active', true)
-            ->where('kategori', '!=', 'Pengantar')
-            ->orderBy('kategori')
+            ->where('kategori', 'Tentang PPID')
             ->orderBy('urutan')
-            ->get()
-            ->groupBy('kategori');
+            ->get();
         
-        $pengantarDb = Profil::where('kategori', 'Pengantar')->where('judul', 'Tentang PPID')->first();
-        $pengantar = $pengantarDb ? $pengantarDb->konten : "Pejabat Pengelola Informasi dan Dokumentasi (PPID) adalah pejabat yang bertanggung jawab atas penyediaan layanan dan informasi publik di lingkungan Balai Besar Industri Agro (BBIA). PPID BBIA berfungsi sebagai jembatan antara institusi dengan masyarakat dalam hal akses informasi publik.";
-        
-        return view('admin.profil.tentang-ppid', compact('profils', 'pengantar'));
+        return view('admin.profil.tentang-ppid', compact('profils'));
     }
 
     public function updateTentangPPID(Request $request)
     {
-        // Update pengantar
-        $pengantarText = $request->input('pengantar');
-        if ($pengantarText) {
-            $pengantarDb = Profil::firstOrCreate(
-                ['kategori' => 'Pengantar', 'judul' => 'Tentang PPID'],
-                ['urutan' => 0, 'is_active' => true, 'konten' => $pengantarText]
-            );
-            if (!$pengantarDb->wasRecentlyCreated) {
-                $pengantarDb->konten = $pengantarText;
-                $pengantarDb->save();
-            }
-        }
-
-        // Update all profil items
+        // Update existing structures
         foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'profil_') === 0) {
-                $profilId = str_replace('profil_', '', $key);
+            if (strpos($key, 'tentang_') === 0) {
+                $profilId = str_replace('tentang_', '', $key);
                 $profil = Profil::find($profilId);
                 if ($profil) {
                     $profil->konten = $value;
@@ -142,18 +124,82 @@ class ProfilController extends Controller
 
     public function updateStrukturOrganisasi(Request $request)
     {
-        foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'konten_') === 0) {
-                $profilId = str_replace('konten_', '', $key);
-                $profil = Profil::find($profilId);
-                if ($profil) {
-                    $profil->konten = $value;
-                    $profil->save();
-                }
-            }
+        $request->validate([
+            'kepala_bbia' => 'required|string',
+            'ppid' => 'required|string',
+            'koordinator' => 'required|string',
+            'staf' => 'required|string',
+        ]);
+
+        // Data struktur organisasi yang akan diupdate/created
+        $strukturData = [
+            [
+                'kategori' => 'Struktur Organisasi',
+                'judul' => 'Kepala BBIA',
+                'konten' => $request->kepala_bbia,
+                'urutan' => 1,
+                'is_active' => true,
+            ],
+            [
+                'kategori' => 'Struktur Organisasi',
+                'judul' => 'Pejabat Pengelola Informasi dan Dokumentasi',
+                'konten' => $request->ppid,
+                'urutan' => 2,
+                'is_active' => true,
+            ],
+            [
+                'kategori' => 'Struktur Organisasi',
+                'judul' => 'Koordinator PPID',
+                'konten' => $request->koordinator,
+                'urutan' => 3,
+                'is_active' => true,
+            ],
+            [
+                'kategori' => 'Struktur Organisasi',
+                'judul' => 'Staf PPID',
+                'konten' => $request->staf,
+                'urutan' => 4,
+                'is_active' => true,
+            ],
+        ];
+
+        foreach ($strukturData as $data) {
+            // Update atau create data struktur organisasi
+            Profil::updateOrCreate(
+                ['kategori' => $data['kategori'], 'judul' => $data['judul']],
+                $data
+            );
         }
 
         return redirect()->route('admin.struktur-organisasi')->with('success', 'Halaman Struktur Organisasi berhasil diperbarui');
+    }
+
+    public function updateUnitPelaksana(Request $request)
+    {
+        $request->validate([
+            'unit_pelaksana' => 'required|string',
+        ]);
+
+        // Data unit pelaksana yang akan diupdate/created
+        $unitData = [
+            [
+                'kategori' => 'Unit Pelaksana',
+                'judul' => 'Unit Pelaksana PPID',
+                'konten' => $request->unit_pelaksana,
+                'urutan' => 1,
+                'is_active' => true,
+            ],
+        ];
+
+        foreach ($unitData as $data) {
+            // Update atau create data unit pelaksana
+            Profil::updateOrCreate(
+                ['kategori' => $data['kategori'], 'judul' => $data['judul']],
+                $data
+            );
+        }
+
+        return redirect()->route('admin.struktur-organisasi')->with('success', 'Unit Pelaksana PPID berhasil diperbarui');
     }
 
 
@@ -169,15 +215,35 @@ class ProfilController extends Controller
 
     public function updateVisiMisi(Request $request)
     {
-        foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'konten_') === 0) {
-                $profilId = str_replace('konten_', '', $key);
-                $profil = Profil::find($profilId);
-                if ($profil) {
-                    $profil->konten = $value;
-                    $profil->save();
-                }
-            }
+        $request->validate([
+            'visi' => 'required|string',
+            'misi' => 'required|string',
+        ]);
+
+        // Data visi misi yang akan diupdate/created
+        $visiMisiData = [
+            [
+                'kategori' => 'Visi Misi',
+                'judul' => 'Visi',
+                'konten' => $request->visi,
+                'urutan' => 1,
+                'is_active' => true,
+            ],
+            [
+                'kategori' => 'Visi Misi',
+                'judul' => 'Misi',
+                'konten' => $request->misi,
+                'urutan' => 2,
+                'is_active' => true,
+            ],
+        ];
+
+        foreach ($visiMisiData as $data) {
+            // Update atau create data visi misi
+            Profil::updateOrCreate(
+                ['kategori' => $data['kategori'], 'judul' => $data['judul']],
+                $data
+            );
         }
 
         return redirect()->route('admin.visi-misi')->with('success', 'Halaman Visi dan Misi berhasil diperbarui');
@@ -195,15 +261,43 @@ class ProfilController extends Controller
 
     public function updateKontakPPID(Request $request)
     {
-        foreach ($request->all() as $key => $value) {
-            if (strpos($key, 'konten_') === 0) {
-                $profilId = str_replace('konten_', '', $key);
-                $profil = Profil::find($profilId);
-                if ($profil) {
-                    $profil->konten = $value;
-                    $profil->save();
-                }
-            }
+        $request->validate([
+            'telepon' => 'required|string',
+            'email' => 'required|string',
+            'alamat' => 'required|string',
+        ]);
+
+        // Data kontak yang akan diupdate/created
+        $kontakData = [
+            [
+                'kategori' => 'Kontak PPID',
+                'judul' => 'Telepon',
+                'konten' => $request->telepon,
+                'urutan' => 1,
+                'is_active' => true,
+            ],
+            [
+                'kategori' => 'Kontak PPID',
+                'judul' => 'Email',
+                'konten' => $request->email,
+                'urutan' => 2,
+                'is_active' => true,
+            ],
+            [
+                'kategori' => 'Kontak PPID',
+                'judul' => 'Alamat',
+                'konten' => $request->alamat,
+                'urutan' => 3,
+                'is_active' => true,
+            ],
+        ];
+
+        foreach ($kontakData as $data) {
+            // Update atau create data kontak
+            Profil::updateOrCreate(
+                ['kategori' => $data['kategori'], 'judul' => $data['judul']],
+                $data
+            );
         }
 
         return redirect()->route('admin.kontak-ppid')->with('success', 'Halaman Kontak PPID berhasil diperbarui');

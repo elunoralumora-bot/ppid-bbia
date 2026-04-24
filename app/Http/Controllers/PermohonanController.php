@@ -50,6 +50,9 @@ class PermohonanController extends Controller
                 'email' => 'required|email',
                 'telepon' => 'required|string|max:20',
                 'alamat' => 'required|string',
+                'usia' => 'required|integer|min:1|max:120',
+                'pendidikan_terakhir' => 'required|string|max:255',
+                'pekerjaan' => 'required|string|max:255',
                 'informasi_diminta' => 'required|string',
                 'tujuan' => 'required|string',
                 'cara_perolehan' => 'required|string',
@@ -57,6 +60,9 @@ class PermohonanController extends Controller
 
             $permohonan = Permohonan::create([
                 'nama_pemohon' => $request->nama_pemohon,
+                'usia' => $request->usia,
+                'pendidikan_terakhir' => $request->pendidikan_terakhir,
+                'pekerjaan' => $request->pekerjaan,
                 'email' => $request->email,
                 'telepon' => $request->telepon,
                 'alamat' => $request->alamat,
@@ -106,7 +112,7 @@ class PermohonanController extends Controller
                 try {
                     Mail::send('emails.permohonan-reply', [
                         'permohonan' => $permohonan,
-                        'message' => $request->message,
+                        'pesan' => $request->message,
                     ], function ($message) use ($permohonan, $request) {
                         $message->to($permohonan->email, $permohonan->nama_pemohon)
                                 ->subject($request->subject);
@@ -141,7 +147,7 @@ class PermohonanController extends Controller
 
             Mail::send('emails.permohonan-reply', [
                 'permohonan' => $permohonan,
-                'message' => $request->message,
+                'pesan' => $request->message,
                 'attachment' => $attachment,
             ], function ($message) use ($permohonan, $request, $attachment) {
                 $message->to($permohonan->email, $permohonan->nama_pemohon)
@@ -164,7 +170,7 @@ class PermohonanController extends Controller
     public function show($id)
     {
         $permohonan = Permohonan::findOrFail($id);
-        return view('admin.permohonan-detail', compact('permohonan'));
+        return view('admin.permohonan.permohonan-detail', compact('permohonan'));
     }
 
     public function cekStatus(Request $request)

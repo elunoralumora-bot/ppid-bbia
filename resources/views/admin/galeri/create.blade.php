@@ -368,7 +368,7 @@
                 <button type="submit" class="btn btn-primary" id="submitBtn">
                     <i class="fas fa-upload"></i> Upload Foto
                 </button>
-                <a href="{{ route('admin.galeri.index') }}" class="btn btn-outline">
+                <a href="{{ route('admin.galeri.index') }}" class="btn btn-secondary" style="background-color: #6b7280; color: white; border: 2px solid #6b7280; padding: 12px 24px; border-radius: 8px; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease; text-decoration: none;">
                     <i class="fas fa-arrow-left"></i> Kembali ke Galeri
                 </a>
             </div>

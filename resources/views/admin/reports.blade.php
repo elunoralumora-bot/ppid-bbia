@@ -12,10 +12,6 @@
                 <i class="fas fa-file-pdf"></i>
                 Export PDF
             </button>
-            <button class="btn btn-warning" onclick="exportExcel()">
-                <i class="fas fa-file-excel"></i>
-                Export Excel
-            </button>
         </div>
     </div>
     
@@ -114,13 +110,11 @@
 
 <script>
 function exportPDF() {
-    alert('Export PDF akan segera tersedia');
-    // Implementasi export PDF
+    window.open('{{ route('admin.reports.export-pdf') }}', '_blank');
 }
 
 function exportExcel() {
-    alert('Export Excel akan segera tersedia');
-    // Implementasi export Excel
+    window.location.href = '{{ route('admin.reports.export-excel') }}';
 }
 </script>
 

@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             KontenWebSeeder::class,
             GaleriFotoSeeder::class,
             ProfilSeeder::class,
+            ProsedurSeeder::class,
         ]);
     }
 }

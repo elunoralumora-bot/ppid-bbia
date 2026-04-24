@@ -60,12 +60,7 @@
                             <i class="fas fa-download me-2"></i>Download Laporan
                         </a>
                     @endif
-                    @if($konten->meta_data['ringkasan'] ?? null)
-                        <a href="#" class="btn-link">
-                            <i class="fas fa-file-text me-2"></i>Ringkasan
-                        </a>
-                    @endif
-                </div>
+                                    </div>
             </div>
         @empty
             <div class="content-section">
@@ -128,7 +123,7 @@
                 <p>Untuk informasi lebih lanjut mengenai survey kepuasan masyarakat, hubungi:</p>
                 <ul>
                     <li><strong>Telepon:</strong> (0251) 8324068</li>
-                    <li><strong>Email:</strong> ppid@bbia.go.id</li>
+                    <li><strong>Email:</strong> cabi@bbia.go.id</li>
                     <li><strong>WhatsApp:</strong> +62 812-3456-7890</li>
                     <li><strong>Alamat:</strong> Jl. Ir. H. Juanda No. 11, Bogor</li>
                 </ul>

@@ -1,0 +1,20 @@
+{
+    "pengisian_formulir": {
+        "konten": "Formulir dapat diisi secara online melalui website PPID BBIA\r\nFormulir dapat diisi langsung di kantor PPID BBIA\r\nFormulir dapat diunduh dan diisi kemudian dikirim via email",
+        "dokumen": "Fotokopi KTP\/SIM\/Paspor yang masih berlaku\r\nSurat kuasa (jika diwakilkan)\r\nDokumen pendukung lainnya (jika diperlukan)"
+    },
+    "verifikasi_registrasi": {
+        "konten": "Kelengkapan data pemohon\r\nKesesuaian format permohonan\r\nKlarifikasi informasi yang diminta (jika diperlukan)\r\nPemberian nomor registrasi\/tiket permohonan"
+    },
+    "proses_permohonan": {
+        "konten": "Informasi yang tersedia langsung: 1-2 hari kerja\r\nInformasi perlu konsolidasi: 3-5 hari kerja\r\nInformasi kompleks: maksimal 10 hari kerja\r\nPerpanjangan waktu: maksimal 7 hari kerja (diberitahukan tertulis)"
+    },
+    "penyelesaian": {
+        "disetujui": "Informasi diberikan sesuai permohonan dalam bentuk hard copy\/soft copy",
+        "sebagian": "Informasi diberikan sebagian dengan alasan yang jelas",
+        "ditolak": "Permohonan ditolak dengan alasan sesuai undang-undang"
+    },
+    "pemberitahuan_hasil": {
+        "konten": "<strong>Email:</strong> Dokumen digital dalam format PDF\n<strong>Surat Resmi:</strong> Dokumen fisik dengan cap dan tanda tangan\n<strong>Preview:</strong> Informasi yang dapat diakses online"
+    }
+}

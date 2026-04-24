@@ -45,16 +45,16 @@
                 </div>
             </div>
         </div>
-        <div class="stat-card konten-card">
+        <div class="stat-card foto-card">
             <div class="stat-icon">
-                <i class="fas fa-database"></i>
+                <i class="fas fa-camera"></i>
             </div>
             <div class="stat-content">
-                <h3>Total Konten</h3>
-                <div class="number">{{ App\Models\Profil::count() + App\Models\InformasiPublik::count() + App\Models\StandarLayanan::count() + App\Models\LaporanPublik::count() }}</div>
+                <h3>Total Foto</h3>
+                <div class="number">{{ App\Models\GaleriFoto::count() }}</div>
                 <div class="stat-detail">
-                    <span class="profil">{{ App\Models\Profil::count() }} Profil</span>
-                    <span class="informasi">{{ App\Models\InformasiPublik::count() }} Informasi</span>
+                    <span class="foto-aktif">{{ App\Models\GaleriFoto::where('is_active', true)->count() }} Aktif</span>
+                    <span class="foto-tidak-aktif">{{ App\Models\GaleriFoto::where('is_active', false)->count() }} Tidak Aktif</span>
                 </div>
             </div>
         </div>
@@ -65,69 +65,15 @@
         <div class="section-header">
             <h2><i class="fas fa-clock"></i> Aktivitas Terkini</h2>
         </div>
-        <ul class="activity-list">
-            <!-- Permohonan Terbaru -->
-            @php
-                $permohonanTerbaru = App\Models\Permohonan::latest()->first();
-            @endphp
-            @if($permohonanTerbaru)
-                <li>
-                    <div class="activity-item">
-                        <div class="activity-icon permohonan-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <div class="activity-content">
-                            <span class="activity-title">Permohonan baru dari {{ $permohonanTerbaru->nama_pemohon }}</span>
-                            <span class="activity-date">{{ $permohonanTerbaru->created_at->diffForHumans() }}</span>
-                        </div>
-                    </div>
-                </li>
-            @endif
-            
-            <!-- Berita Terbaru -->
-            @php
-                $beritaTerbaru = App\Models\Berita::latest()->first();
-            @endphp
-            @if($beritaTerbaru)
-                <li>
-                    <div class="activity-item">
-                        <div class="activity-icon berita-icon">
-                            <i class="fas fa-newspaper"></i>
-                        </div>
-                        <div class="activity-content">
-                            <span class="activity-title">Berita "{{ $beritaTerbaru->judul }}" {{ $beritaTerbaru->status == 'published' ? 'dipublikasikan' : 'dibuat' }}</span>
-                            <span class="activity-date">{{ $beritaTerbaru->created_at->diffForHumans() }}</span>
-                        </div>
-                    </div>
-                </li>
-            @endif
-            
-            <!-- Keberatan Terbaru -->
-            @php
-                $keberatanTerbaru = App\Models\Keberatan::latest()->first();
-            @endphp
-            @if($keberatanTerbaru)
-                <li>
-                    <div class="activity-item">
-                        <div class="activity-icon keberatan-icon">
-                            <i class="fas fa-exclamation-triangle"></i>
-                        </div>
-                        <div class="activity-content">
-                            <span class="activity-title">Keberatan dari {{ $keberatanTerbaru->nama_pemohon }}</span>
-                            <span class="activity-date">{{ $keberatanTerbaru->created_at->diffForHumans() }}</span>
-                        </div>
-                    </div>
-                </li>
-            @endif
-            
-            <!-- Statistik Quick Info -->
-            <li>
+        <ul class="activity-list" id="activity-list">
+            <!-- Activities will be loaded dynamically -->
+            <li class="loading-activity">
                 <div class="activity-item">
                     <div class="activity-icon info-icon">
-                        <i class="fas fa-info-circle"></i>
+                        <i class="fas fa-spinner fa-spin"></i>
                     </div>
                     <div class="activity-content">
-                        <span class="activity-title">Total {{ App\Models\LaporanPublik::count() }} Laporan Publik & {{ App\Models\StandarLayanan::count() }} Standar Layanan tersedia</span>
+                        <span class="activity-title">Memuat aktivitas terkini...</span>
                         <span class="activity-date">Sekarang</span>
                     </div>
                 </div>
@@ -210,7 +156,7 @@
     .berita-card { border-left-color: #28a745; }
     .permohonan-card { border-left-color: #007bff; }
     .keberatan-card { border-left-color: #ffc107; }
-    .konten-card { border-left-color: #6f42c1; }
+    .foto-card { border-left-color: #17a2b8; }
     
     .stat-icon {
         width: 48px;
@@ -227,7 +173,7 @@
     .berita-card .stat-icon { background: linear-gradient(135deg, #28a745, #20c997); }
     .permohonan-card .stat-icon { background: linear-gradient(135deg, #007bff, #0056b3); }
     .keberatan-card .stat-icon { background: linear-gradient(135deg, #ffc107, #e0a800); }
-    .konten-card .stat-icon { background: linear-gradient(135deg, #6f42c1, #5a2d82); }
+    .foto-card .stat-icon { background: linear-gradient(135deg, #17a2b8, #138496); }
     
     .stat-content {
         flex: 1;
@@ -268,8 +214,8 @@
     .draft { background: rgba(255, 193, 7, 0.3) !important; color: white !important; }
     .baru { background: rgba(220, 53, 69, 0.3) !important; color: white !important; }
     .proses { background: rgba(23, 162, 184, 0.3) !important; color: white !important; }
-    .profil { background: rgba(111, 66, 193, 0.3) !important; color: white !important; }
-    .informasi { background: rgba(108, 117, 125, 0.3) !important; color: white !important; }
+    .foto-aktif { background: rgba(40, 167, 69, 0.3) !important; color: white !important; }
+    .foto-tidak-aktif { background: rgba(220, 53, 69, 0.3) !important; color: white !important; }
     
     /* Recent Activity */
     .recent-activity {
@@ -298,6 +244,11 @@
     
     .section-header h2 i {
         color: #007bff;
+    }
+    
+        
+    .loading-activity {
+        opacity: 0.7;
     }
     
     .activity-list {
@@ -483,4 +434,194 @@
         }
     }
     </style>
+    
+    <script>
+    // Dashboard Update System
+    class Dashboard {
+        constructor() {
+            this.init();
+        }
+
+        init() {
+            this.loadInitialData();
+        }
+
+        async loadInitialData() {
+            try {
+                const response = await fetch('/admin/api/realtime-activity');
+                const data = await response.json();
+                this.updateDashboard(data);
+            } catch (error) {
+                console.error('Error loading initial data:', error);
+            }
+        }
+
+        updateDashboard(data) {
+            // Update stats
+            this.updateStats(data.stats);
+            
+            // Update activities
+            this.updateActivities(data.activities);
+        }
+
+        updateStats(stats) {
+            // Update berita stats
+            this.updateStatCard('.berita-card .number', stats.total_berita);
+            this.updateStatDetail('.published', stats.berita_published + ' Dipublikasikan');
+            this.updateStatDetail('.draft', stats.berita_draft + ' Draft');
+
+            // Update permohonan stats
+            this.updateStatCard('.permohonan-card .number', stats.total_permohonan);
+            this.updateStatDetail('.baru', stats.permohonan_baru + ' Baru');
+            this.updateStatDetail('.proses', stats.permohonan_diproses + ' Diproses');
+
+            // Update keberatan stats
+            this.updateStatCard('.keberatan-card .number', stats.total_keberatan);
+            const keberatanBaruElements = document.querySelectorAll('.keberatan-card .baru');
+            const keberatanProsesElements = document.querySelectorAll('.keberatan-card .proses');
+            if (keberatanBaruElements[0]) keberatanBaruElements[0].textContent = stats.keberatan_baru + ' Baru';
+            if (keberatanProsesElements[0]) keberatanProsesElements[0].textContent = stats.keberatan_diproses + ' Diproses';
+
+            // Update foto stats
+            this.updateStatCard('.foto-card .number', stats.total_foto);
+            this.updateStatDetail('.foto-aktif', stats.foto_aktif + ' Aktif');
+            this.updateStatDetail('.foto-tidak-aktif', stats.foto_tidak_aktif + ' Tidak Aktif');
+        }
+
+        updateStatCard(selector, value) {
+            const element = document.querySelector(selector);
+            if (element) {
+                const currentValue = parseInt(element.textContent);
+                const newValue = parseInt(value);
+                
+                // Animate number change
+                if (currentValue !== newValue) {
+                    this.animateNumber(element, currentValue, newValue);
+                }
+            }
+        }
+
+        updateStatDetail(selector, text) {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.textContent = text;
+            }
+        }
+
+        animateNumber(element, from, to) {
+            const duration = 1000;
+            const start = Date.now();
+            
+            const animate = () => {
+                const elapsed = Date.now() - start;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                const current = Math.floor(from + (to - from) * this.easeOutQuad(progress));
+                element.textContent = current;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+            
+            animate();
+        }
+
+        easeOutQuad(t) {
+            return t * (2 - t);
+        }
+
+        updateActivities(activities) {
+            const activityList = document.getElementById('activity-list');
+            if (!activityList || !activities) return;
+
+            // Clear existing activities
+            activityList.innerHTML = '';
+
+            // Add new activities
+            activities.forEach((activity, index) => {
+                const activityItem = this.createActivityItem(activity);
+                activityList.appendChild(activityItem);
+                
+                // Add fade-in animation
+                setTimeout(() => {
+                    activityItem.style.opacity = '1';
+                    activityItem.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }
+
+        createActivityItem(activity) {
+            const li = document.createElement('li');
+            li.style.opacity = '0';
+            li.style.transform = 'translateY(20px)';
+            li.style.transition = 'all 0.5s ease';
+            
+            const iconClass = this.getActivityIconClass(activity.type);
+            
+            li.innerHTML = `
+                <div class="activity-item">
+                    <div class="activity-icon ${iconClass}">
+                        <i class="fas ${activity.icon}"></i>
+                    </div>
+                    <div class="activity-content">
+                        <a href="${activity.url}" class="activity-title">${activity.title}</a>
+                        <span class="activity-description">${activity.description}</span>
+                        <span class="activity-date">${activity.time}</span>
+                    </div>
+                </div>
+            `;
+            
+            return li;
+        }
+
+        getActivityIconClass(type) {
+            const iconClasses = {
+                'permohonan': 'permohonan-icon',
+                'berita': 'berita-icon',
+                'keberatan': 'keberatan-icon',
+                'status_update': 'info-icon'
+            };
+            return iconClasses[type] || 'info-icon';
+        }
+    }
+
+    // Initialize dashboard when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        new Dashboard();
+    });
+
+    // Add styles for activity description
+    const style = document.createElement('style');
+    style.textContent = `
+        .activity-description {
+            display: block;
+            color: #6c757d;
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .activity-title {
+            color: #2c3e50;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .activity-title:hover {
+            color: #34495e;
+            text-decoration: underline;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .stat-card.updating {
+            animation: pulse 0.3s ease;
+        }
+    `;
+    document.head.appendChild(style);
+    </script>
 @endsection

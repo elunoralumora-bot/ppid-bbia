@@ -4,6 +4,27 @@
 @section('page-title', 'Kelola Berita')
 
 @section('content')
+<style>
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.btn i {
+    margin: 0;
+    vertical-align: middle;
+}
+
+.btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+</style>
 <div class="table-container">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 1.5rem 1.5rem 0;">
         <h2 style="margin: 0; color: #0f2338; font-size: 1.25rem; font-weight: 700;">Daftar Berita</h2>

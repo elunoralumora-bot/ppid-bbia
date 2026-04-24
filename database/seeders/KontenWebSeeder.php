@@ -106,7 +106,6 @@ class KontenWebSeeder extends Seeder
         <ul>
             <li><strong>Pemohonan Informasi:</strong> Maksimal 10 hari kerja sejak permohonan diterima</li>
             <li><strong>Keberatan:</strong> Maksimal 14 hari kerja sejak permohonan keberatan diterima</li>
-            <li><strong>Sengketa Informasi:</strong> Maksimal 100 hari kerja sejak pengajuan sengketa informasi ke Komisi Informasi</li>
             <li><strong>Biaya:</strong> Tidak dipungut biaya untuk pemohonan informasi publik</li>
         </ul>
     </div>

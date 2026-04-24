@@ -16,36 +16,41 @@
         <h2>Prosedur Pengajuan Keberatan Atas Layanan Informasi Publik</h2>
         <p>Berikut adalah prosedur lengkap untuk mengajukan keberatan atas layanan informasi publik PPID BBIA sesuai dengan Peraturan Komisi Informasi Nomor 1 Tahun 2013.</p>
         
-        <div class="infografis-container">
-            <img src="{{ asset('images/pengajuan keberatan.png') }}" alt="Prosedur Pengajuan Keberatan" class="infografis-img">
-        </div>
+        @php
+        // Baca data dari file JSON yang disimpan oleh admin
+        $dataFile = public_path('data/prosedur_keberatan.json');
+        $prosedurData = [];
+        
+        if (file_exists($dataFile)) {
+            $jsonContent = file_get_contents($dataFile);
+            $prosedurData = json_decode($jsonContent, true) ?: [];
+        }
+        @endphp
         
         <div class="procedure-flow">
+            <div class="infografis-container">
+                <img src="{{ asset('images/pengajuan keberatan.png') }}" alt="Prosedur Pengajuan Keberatan" class="infografis-img">
+            </div>
+            
             <div class="flow-step">
                 <div class="step-number">1</div>
                 <div class="step-content">
                     <h3>Alasan Pengajuan Keberatan</h3>
                     <p>Keberatan dapat diajukan karena alasan-alasan berikut:</p>
-                    <div class="reason-options">
-                        <div class="reason-item">
-                            <h4>⏰ Lewat Waktu</h4>
-                            <p>Permohonan informasi tidak ditanggapi dalam waktu 10 hari kerja</p>
-                        </div>
-                        <div class="reason-item">
-                            <h4>❌ Ditolak</h4>
-                            <p>Permohonan informasi ditolak tanpa alasan yang jelas</p>
-                        </div>
-                        <div class="reason-item">
-                            <h4>🔄 Tidak Sesuai</h4>
-                            <p>Informasi yang diberikan tidak sesuai dengan yang diminta</p>
-                        </div>
-                        <div class="reason-item">
-                            <h4>💰 Biaya Tidak Wajar</h4>
-                            <p>Biaya yang dibebankan tidak sesuai dengan ketentuan</p>
-                        </div>
+                    <div class="form-group">
+                        @if(isset($prosedurData['alasan_pengajuan']['konten']))
+                            {!! nl2br(str_replace("\r\n", "\n", $prosedurData['alasan_pengajuan']['konten'])) !!}
+                        @else
+                            <ul>
+                                <li>Lewat Waktu: Permohonan informasi tidak ditanggapi dalam waktu 10 hari kerja</li>
+                                <li>Ditolak: Permohonan informasi ditolak tanpa alasan yang jelas</li>
+                                <li>Tidak Sesuai: Informasi yang diberikan tidak sesuai dengan yang diminta</li>
+                                <li>Biaya Tidak Wajar: Biaya yang dibebankan tidak sesuai dengan ketentuan</li>
+                            </ul>
+                        @endif
                     </div>
-                    <div class="note-box">
-                        <p><strong>Catatan:</strong> Keberatan diajukan paling lambat 30 hari setelah menerima pemberitahuan hasil permohonan.</p>
+                    <div class="timeline-info">
+                        <strong>Batas Waktu:</strong> 30 hari setelah menerima hasil permohonan
                     </div>
                 </div>
             </div>
@@ -53,22 +58,22 @@
             <div class="flow-step">
                 <div class="step-number">2</div>
                 <div class="step-content">
-                    <h3>Pengisian Formulir Keberatan</h3>
-                    <p>Pemohon mengisi formulir keberatan informasi publik secara lengkap:</p>
-                    <ul>
-                        <li>Formulir dapat diisi secara online melalui website PPID BBIA</li>
-                        <li>Formulir dapat diisi langsung di kantor PPID BBIA</li>
-                        <li>Formulir dapat diunduh dan diisi kemudian dikirim via email</li>
-                    </ul>
-                    <div class="required-docs">
-                        <h4>Dokumen yang Diperlukan:</h4>
-                        <ul>
-                            <li>Fotokopi KTP/SIM/Paspor pemohon</li>
-                            <li>Surat pemberitahuan hasil permohonan asli</li>
-                            <li>Bukti pengajuan permohonan awal (jika ada)</li>
-                            <li>Surat kuasa (jika diwakilkan)</li>
-                            <li>Dokumen pendukung lainnya (jika diperlukan)</li>
-                        </ul>
+                    <h3>Tata Cara Pengajuan</h3>
+                    <p>Pengajuan keberatan dilakukan dengan cara:</p>
+                    <div class="form-group">
+                        @if(isset($prosedurData['tata_cara_pengajuan']['konten']))
+                            {!! nl2br(str_replace("\r\n", "\n", $prosedurData['tata_cara_pengajuan']['konten'])) !!}
+                        @else
+                            <ul>
+                                <li>Mengisi formulir keberatan yang tersedia</li>
+                                <li>Melampirkan dokumen pendukung (KTP, surat permohonan asli, dll)</li>
+                                <li>Menyertakan alasan keberatan secara jelas</li>
+                                <li>Mengajukan secara langsung atau melalui media elektronik</li>
+                            </ul>
+                        @endif
+                    </div>
+                    <div class="timeline-info">
+                        <strong>Tempat:</strong> PPID BBIA di Ruang CSO Jl. Ir. H. Juanda No. 11, Bogor
                     </div>
                 </div>
             </div>
@@ -76,16 +81,22 @@
             <div class="flow-step">
                 <div class="step-number">3</div>
                 <div class="step-content">
-                    <h3>Verifikasi dan Registrasi</h3>
-                    <p>PPID BBIA akan melakukan verifikasi terhadap pengajuan keberatan:</p>
-                    <ul>
-                        <li>Kelengkapan data dan dokumen pemohon</li>
-                        <li>Kesesuaian format dan waktu pengajuan</li>
-                        <li>Klarifikasi alasan keberatan (jika diperlukan)</li>
-                        <li>Pemberian nomor registrasi/tiket keberatan</li>
-                    </ul>
+                    <h3>Proses Penanganan</h3>
+                    <p>Proses penanganan keberatan:</p>
+                    <div class="form-group">
+                        @if(isset($prosedurData['proses_penanganan']['konten']))
+                            {!! nl2br(str_replace("\r\n", "\n", $prosedurData['proses_penanganan']['konten'])) !!}
+                        @else
+                            <ul>
+                                <li><strong>Penerimaan:</strong> Keberatan dicatat dan diberi nomor registrasi</li>
+                                <li><strong>Verifikasi:</strong> Kelengkapan dokumen dan keabsahan pengajuan</li>
+                                <li><strong>Evaluasi:</strong> Analisis alasan keberatan dan dokumen pendukung</li>
+                                <li><strong>Keputusan:</strong> Ditetapkan oleh Atasan PPID</li>
+                            </ul>
+                        @endif
+                    </div>
                     <div class="timeline-info">
-                        <strong>Waktu Verifikasi:</strong> Maksimal 3 hari kerja
+                        <strong>Waktu Proses:</strong> Maksimal 30 hari kerja
                     </div>
                 </div>
             </div>
@@ -93,19 +104,39 @@
             <div class="flow-step">
                 <div class="step-number">4</div>
                 <div class="step-content">
-                    <h3>Proses Keberatan</h3>
-                    <p>Setelah verifikasi, keberatan akan diproses dengan tahapan:</p>
-                    <ul>
-                        <li><strong>Analisis Keberatan:</strong> 2-3 hari kerja</li>
-                        <li><strong>Review Permohonan Awal:</strong> 2-3 hari kerja</li>
-                        <li><strong>Konsultasi Internal:</strong> 3-5 hari kerja</li>
-                        <li><strong>Penyusunan Jawaban:</strong> 2-3 hari kerja</li>
-                    </ul>
-                    <div class="timeline-info">
-                        <strong>Total Waktu Proses:</strong> Maksimal 30 hari kerja
-                    </div>
-                    <div class="note-box">
-                        <p><strong>Catatan:</strong> Jika diperlukan, waktu dapat diperpanjang maksimal 14 hari kerja dengan pemberitahuan tertulis.</p>
+                    <h3>Hasil Keputusan</h3>
+                    <p>Hasil keputusan keberatan dapat berupa:</p>
+                    <div class="outcome-options">
+                        <div class="outcome-item">
+                            <h4>Diterima</h4>
+                            <p>
+                                @if(isset($prosedurData['hasil_keputusan']['diterima']))
+                                    {!! $prosedurData['hasil_keputusan']['diterima'] !!}
+                                @else
+                                    Keberatan diterima dan informasi disediakan sesuai permohonan
+                                @endif
+                            </p>
+                        </div>
+                        <div class="outcome-item">
+                            <h4>Diberikan Sebagian</h4>
+                            <p>
+                                @if(isset($prosedurData['hasil_keputusan']['sebagian']))
+                                    {!! $prosedurData['hasil_keputusan']['sebagian'] !!}
+                                @else
+                                    Informasi diberikan sebagian dengan alasan yang jelas
+                                @endif
+                            </p>
+                        </div>
+                        <div class="outcome-item">
+                            <h4>Ditolak</h4>
+                            <p>
+                                @if(isset($prosedurData['hasil_keputusan']['ditolak']))
+                                    {!! $prosedurData['hasil_keputusan']['ditolak'] !!}
+                                @else
+                                    Keberatan ditolak dengan alasan sesuai undang-undang
+                                @endif
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -113,153 +144,46 @@
             <div class="flow-step">
                 <div class="step-number">5</div>
                 <div class="step-content">
-                    <h3>Penyelesaian Keberatan</h3>
-                    <p>Keberatan dapat diselesaikan dengan beberapa hasil:</p>
-                    <div class="outcome-options">
-                        <div class="outcome-item">
-                            <h4>✅ Diterima</h4>
-                            <p>Keberatan diterima dan informasi diberikan sesuai permohonan awal</p>
-                        </div>
-                        <div class="outcome-item">
-                            <h4>🔄 Diterima Sebagian</h4>
-                            <p>Keberatan diterima sebagian dengan alasan yang jelas</p>
-                        </div>
-                        <div class="outcome-item">
-                            <h4>❌ Ditolak</h4>
-                            <p>Keberatan ditolak dengan alasan sesuai undang-undang</p>
-                        </div>
+                    <h3>Pemberitahuan Hasil</h3>
+                    <p>Hasil keberatan akan disampaikan kepada pemohon melalui:</p>
+                    <div class="form-group">
+                        @if(isset($prosedurData['pemberitahuan_hasil']['konten']))
+                            {!! nl2br(str_replace("\r\n", "\n", $prosedurData['pemberitahuan_hasil']['konten'])) !!}
+                        @else
+                            <ul>
+                                <li><strong>Email:</strong> Dokumen digital dalam format PDF</li>
+                                <li><strong>Surat Resmi:</strong> Dokumen fisik dengan cap dan tanda tangan</li>
+                                <li><strong>Preview:</strong> Informasi yang dapat diakses online</li>
+                            </ul>
+                        @endif
                     </div>
-                    <div class="next-steps">
-                        <h4>Langkah Selanjutnya:</h4>
-                        <ul>
-                            <li>Jika keberatan ditolak, pemohon dapat mengajukan sengketa ke Komisi Informasi</li>
-                            <li>Pengajuan sengketa dilakukan paling lambat 14 hari setelah pemberitahuan keberatan</li>
-                        </ul>
+                    <div class="timeline-info">
+                        <strong>Batas Waktu Penyelesaian:</strong> 30 hari kerja sejak keberatan lengkap
                     </div>
                 </div>
-            </div>
-            
-            <div class="flow-step">
-                <div class="step-number">6</div>
-                <div class="step-content">
-                    <h3>Pemberitahuan Hasil Keberatan</h3>
-                    <p>PPID BBIA akan memberitahukan hasil keberatan kepada pemohon:</p>
-                    <ul>
-                        <li>Surat keputusan atas keberatan</li>
-                        <li>Informasi yang diminta (jika keberatan diterima)</li>
-                        <li>Alasan penolakan keberatan (jika ditolak)</li>
-                        <li>Informasi mengenai hak mengajukan sengketa informasi</li>
-                        <li>Prosedur pengajuan sengketa ke Komisi Informasi</li>
-                    </ul>
-                    <div class="contact-info">
-                        <strong>Informasi lebih lanjut:</strong><br>
-                        📞 (0251) 8323880<br>
-                        📧 ppid.bbia@kemenperin.go.id
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="info-grid">
-            <div class="info-box">
-                <h3>📋 Syarat Pengajuan Keberatan</h3>
-                <ul>
-                    <li>Pernah mengajukan permohonan informasi ke PPID BBIA</li>
-                    <li>Menerima pemberitahuan hasil permohonan</li>
-                    <li>Mengajukan keberatan paling lambat 30 hari</li>
-                    <li>Menyertakan dokumen pendukung yang lengkap</li>
-                    <li>Mencantumkan alasan keberatan yang jelas</li>
-                </ul>
-            </div>
-            
-            <div class="info-box">
-                <h3>⏰ Waktu Layanan Keberatan</h3>
-                <ul>
-                    <li><strong>Penerimaan:</strong> Senin - Jumat, 08:00 - 16:00 WIB</li>
-                    <li><strong>Verifikasi:</strong> Maksimal 3 hari kerja</li>
-                    <li><strong>Proses:</strong> Maksimal 30 hari kerja</li>
-                    <li><strong>Perpanjangan:</strong> Maksimal 14 hari kerja</li>
-                    <li><strong>Sengketa:</strong> 14 hari setelah keputusan keberatan</li>
-                </ul>
-            </div>
-            
-            <div class="info-box">
-                <h3>⚖️ Sengketa Informasi</h3>
-                <ul>
-                    <li>Diajukan ke Komisi Informasi</li>
-                    <li>Maksimal 14 hari setelah keputusan keberatan</li>
-                    <li>Menggunakan formulir pengaduan resmi</li>
-                    <li>Menyertakan semua dokumen terkait</li>
-                    <li>Gratis tanpa biaya administrasi</li>
-                </ul>
-            </div>
-        </div>
-        
-        <div class="comparison-table">
-            <h3>📊 Perbandingan Permohonan vs Keberatan</h3>
-            <table class="comparison">
-                <thead>
-                    <tr>
-                        <th>Aspek</th>
-                        <th>Permohonan Informasi</th>
-                        <th>Keberatan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Tujuan</strong></td>
-                        <td>Mendapatkan informasi</td>
-                        <td>Menanggapi hasil permohonan</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Waktu Proses</strong></td>
-                        <td>10 hari kerja</td>
-                        <td>30 hari kerja</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Biaya</strong></td>
-                        <td>Gratis (penyalinan berbayar)</td>
-                        <td>Gratis</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Langkah Selanjutnya</strong></td>
-                        <td>Keberatan (jika tidak puas)</td>
-                        <td>Sengketa Informasi</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="action-section">
-            <h3>📝 Ajukan Keberatan Sekarang</h3>
-            <p style="color: white;">Silakan ajukan keberatan atas layanan informasi publik melalui formulir online kami:</p>
-            <div class="action-buttons">
-                <a href="{{ url('/form-keberatan') }}" class="btn btn-action">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Formulir Keberatan
-                </a>
-                <a href="{{ url('/mekanisme-sengketa') }}" class="btn btn-action">
-                    <i class="fas fa-gavel"></i>
-                    Mekanisme Sengketa
-                </a>
-                <a href="{{ url('/periksa-keberatan') }}" class="btn btn-action">
-                    <i class="fas fa-search"></i>
-                    Cek Status
-                </a>
             </div>
         </div>
     </div>
 </div>
 
 <style>
+/* Page Header */
 .page-header {
-    background: linear-gradient(135deg, #0f2338 0%, #2c5282 35%, #1a3a5f 100%);
+    background: linear-gradient(135deg, #1a3a5f 0%, #2c5282 100%);
     color: white;
-    padding: 40px 0;
-    margin: 0 0 40px 0;
-    width: 100%;
+    padding: 60px 0;
+    position: relative;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
+    background: url('{{ asset("images/pattern.png") }}') repeat;
+    opacity: 0.1;
 }
 
 .page-header-content {
@@ -288,6 +212,7 @@
     text-decoration: underline;
 }
 
+/* Content Section */
 .content-section {
     width: 100%;
     padding: 0 20px;
@@ -306,81 +231,52 @@
     font-size: 28px;
     font-weight: 600;
     margin-bottom: 20px;
-    margin-top: 40px;
-}
-
-.content-full h2:first-child {
-    margin-top: 0;
 }
 
 .content-full p {
-    color: #333;
-    line-height: 1.8;
-    margin-bottom: 20px;
+    color: #64748b;
     font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 40px;
 }
 
-.infografis-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin: 30px auto;
-    padding: 20px;
-    background: transparent;
-    border-radius: 15px;
-    box-shadow: none;
-    border: none;
-    text-align: center;
-}
-
-.infografis-img {
-    max-width: 100%;
-    max-height: 600px;
-    width: auto;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-.infografis-img:hover {
-    transform: scale(1.02);
-}
-
+/* Procedure Flow */
 .procedure-flow {
-    margin: 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .flow-step {
     display: flex;
-    gap: 30px;
-    margin-bottom: 40px;
-    padding: 30px;
-    background: rgba(26, 58, 95, 0.02);
-    border: 1px solid rgba(26, 58, 95, 0.1);
-    border-radius: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
 }
 
 .flow-step:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .step-number {
-    flex-shrink: 0;
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     background: linear-gradient(135deg, #2c5282 0%, #1a3a5f 100%);
-    color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    color: white;
+    font-size: 18px;
     font-weight: 700;
+    flex-shrink: 0;
 }
 
 .step-content {
@@ -389,296 +285,183 @@
 
 .step-content h3 {
     color: #1a3a5f;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .step-content p {
-    margin-bottom: 15px;
+    color: #374151;
+    line-height: 1.6;
+    margin-bottom: 8px;
+    font-size: 16px;
 }
 
-.step-content ul {
-    margin-bottom: 20px;
-    padding-left: 20px;
+.step-content ul,
+.step-content ol {
+    margin: 8px 0;
+    padding-left: 22px;
 }
 
 .step-content li {
-    margin-bottom: 8px;
-    color: #333;
-    line-height: 1.6;
+    margin-bottom: 6px;
+    line-height: 1.5;
+    font-size: 16px;
 }
 
-.reason-options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin: 20px 0;
-}
-
-.reason-item {
-    background: white;
-    border: 1px solid #e1e5e9;
-    border-radius: 10px;
-    padding: 20px;
+/* Infografis Container */
+.infografis-container {
+    margin: 0 0 15px 0;
     text-align: center;
 }
 
-.reason-item h4 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #1a3a5f;
+.infografis-img {
+    max-width: 40%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
-.required-docs, .timeline-info, .note-box, .contact-info, .next-steps {
-    background: rgba(44, 82, 130, 0.05);
+/* Required Docs */
+.required-docs {
+    background: #f8fafc;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 8px 0;
     border-left: 4px solid #2c5282;
-    padding: 15px 20px;
-    margin: 20px 0;
-    border-radius: 0 8px 8px 0;
 }
 
-.required-docs h4, .timeline-info strong, .contact-info strong, .next-steps h4 {
+.required-docs h4 {
     color: #1a3a5f;
+    font-size: 14px;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 
+/* Timeline Info */
+.timeline-info {
+    background: white;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-top: 12px;
+    font-size: 15px;
+    color: #374151;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #2c5282;
+    transition: all 0.2s ease;
+}
+
+.timeline-info:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+/* Note Box */
+.note-box {
+    background: #fef3c7;
+    padding: 8px;
+    border-radius: 6px;
+    margin-top: 8px;
+    border-left: 4px solid #f59e0b;
+}
+
+/* Outcome Options */
 .outcome-options {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin: 20px 0;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
 }
 
 .outcome-item {
     background: white;
-    border: 1px solid #e1e5e9;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #2c5282;
+    transition: all 0.2s ease;
+}
+
+.outcome-item:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .outcome-item h4 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin: 40px 0;
-}
-
-.info-box {
-    background: rgba(26, 58, 95, 0.02);
-    border: 1px solid rgba(26, 58, 95, 0.1);
-    border-radius: 10px;
-    padding: 25px;
-}
-
-.info-box h3 {
     color: #1a3a5f;
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-.info-box ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.info-box li {
-    margin-bottom: 10px;
-    color: #333;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.info-box li strong {
-    color: #1a3a5f;
-}
-
-.comparison-table {
-    margin: 40px 0;
-}
-
-.comparison-table h3 {
-    color: #1a3a5f;
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.comparison {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.comparison th {
-    background: linear-gradient(135deg, #2c5282 0%, #1a3a5f 100%);
-    color: white;
-    padding: 15px;
-    text-align: left;
-    font-weight: 600;
-}
-
-.comparison td {
-    padding: 15px;
-    border-bottom: 1px solid #e1e5e9;
-}
-
-.comparison tr:last-child td {
-    border-bottom: none;
-}
-
-.comparison td:first-child {
-    font-weight: 600;
-    color: #1a3a5f;
-}
-
-.action-section {
-    background: linear-gradient(135deg, #2c5282 0%, #1a3a5f 100%);
-    color: white;
-    padding: 40px;
-    border-radius: 15px;
-    text-align: center;
-    margin: 40px 0;
-}
-
-.action-section h3 {
-    font-size: 24px;
-    margin-bottom: 15px;
-}
-
-.action-section p {
-    margin-bottom: 30px;
-    opacity: 0.9;
-}
-
-.action-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn {
-    padding: 12px 24px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-action {
-    background-color: white;
-    color: #1a3a5f;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
     font-size: 16px;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    min-width: 180px;
-    height: 50px;
+    font-weight: 600;
+    margin-bottom: 8px;
 }
 
-.btn-action:hover {
-    background-color: #f8f9fa;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+.outcome-item p {
+    color: #374151;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
 }
 
-.btn-primary {
-    background-color: white;
-    color: #1a3a5f;
+/* Form Group */
+.form-group {
+    margin-bottom: 15px;
 }
 
-.btn-primary:hover {
-    background-color: #f8f9fa;
-    transform: translateY(-1px);
-}
-
-.btn-outline {
-    background-color: transparent;
-    color: white;
-    border: 2px solid white;
-}
-
-.btn-outline:hover {
-    background-color: white;
-    color: #1a3a5f;
-    transform: translateY(-1px);
-}
-
+/* Responsive */
 @media (max-width: 768px) {
     .page-header-content {
         padding: 0 20px;
     }
     
     .content-full {
-        padding: 40px 20px;
+        padding: 30px 20px;
     }
     
     .flow-step {
         flex-direction: column;
-        gap: 20px;
-        padding: 20px;
+        gap: 12px;
+        padding: 16px;
     }
     
     .step-number {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-        align-self: center;
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
     }
     
-    .reason-options, .outcome-options {
+    .step-content h3 {
+        font-size: 18px;
+    }
+    
+    .step-content p {
+        font-size: 15px;
+    }
+    
+    .step-content li {
+        font-size: 15px;
+    }
+    
+    .outcome-options {
         grid-template-columns: 1fr;
+        gap: 10px;
     }
     
-    .comparison {
+    .outcome-item {
+        padding: 12px;
+    }
+    
+    .outcome-item h4 {
+        font-size: 15px;
+    }
+    
+    .outcome-item p {
         font-size: 14px;
     }
     
-    .comparison th, .comparison td {
-        padding: 10px;
-    }
-    
-    .action-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .btn {
-        width: 200px;
-        justify-content: center;
-    }
-    
-    .infografis-container {
-        padding: 10px;
-        margin: 30px auto;
-    }
-    
-    .infografis-img {
-        border-radius: 8px;
+    .timeline-info {
+        padding: 12px 14px;
+        font-size: 14px;
     }
 }
 </style>

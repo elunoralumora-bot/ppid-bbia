@@ -77,7 +77,7 @@
             </div>
             
             <div class="sidebar-widget">
-                <h3>Berita Terpopuler</h3>
+                <h3>Berita Terbaru</h3>
                 <div class="popular-news">
                     @php
                         $popularBerita = \App\Models\Berita::where('status', 'published')
@@ -102,38 +102,6 @@
                 </div>
             </div>
             
-            <div class="sidebar-widget">
-                <h3>Tags</h3>
-                <div class="tags-section">
-                    @php
-                        // Get all tags from berita
-                        $allTags = [];
-                        $beritasWithTags = \App\Models\Berita::where('status', 'published')->whereNotNull('tags')->get();
-                        foreach($beritasWithTags as $berita) {
-                            if($berita->tags) {
-                                $tags = explode(',', $berita->tags);
-                                foreach($tags as $tag) {
-                                    $allTags[] = trim($tag);
-                                }
-                            }
-                        }
-                        $allTags = array_unique($allTags);
-                        $allTags = array_slice($allTags, 0, 10); // Show max 10 tags
-                    @endphp
-                    @forelse($allTags as $tag)
-                        <a href="#" class="tag">{{ $tag }}</a>
-                    @empty
-                        <a href="#" class="tag">PPID BBIA</a>
-                        <a href="#" class="tag">Informasi Publik</a>
-                        <a href="#" class="tag">Layanan Digital</a>
-                    @endforelse
-                </div>
-            </div>
-        </div>
-        </div>
-    </div>
-</div>
-
 <style>
 .page-header {
     background: linear-gradient(135deg, #0f2338 0%, #2c5282 35%, #1a3a5f 100%);

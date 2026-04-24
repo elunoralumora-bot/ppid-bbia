@@ -3,339 +3,370 @@
 @section('title', 'Struktur Organisasi - PPID BBIA')
 @section('page-title', 'Struktur Organisasi')
 
-@push('styles')
+@section('content')
+<!-- Success Alert -->
+@if(session('success'))
+    <div class="alert alert-success">
+        <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+    </div>
+@endif
+
+<!-- Daftar Struktur Organisasi Section -->
+@if($profils->count() > 0)
+<div class="card">
+    <h2>Daftar Struktur Organisasi</h2>
+    
+    <div class="struktur-list">
+        @foreach($profils as $item)
+            <div class="struktur-item">
+                <div class="struktur-info">
+                    <div class="struktur-title">
+                        <i class="fas fa-sitemap"></i>
+                        {{ $item->judul }}
+                    </div>
+                    <div class="struktur-text">{{ Str::limit(strip_tags($item->konten), 80) }}</div>
+                </div>
+                <div class="struktur-meta">
+                    <span class="status {{ $item->is_active ? 'active' : 'inactive' }}">
+                        {{ $item->is_active ? 'Aktif' : 'Tidak Aktif' }}
+                    </span>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+@endif
+
+<!-- Edit Struktur Organisasi Section -->
+<div class="card">
+    <h2>Edit Struktur Organisasi</h2>
+
+    <form method="POST" action="{{ route('admin.struktur-organisasi.update') }}">
+        @csrf
+        @method('PUT')
+        
+        <div class="form-grid">
+            <!-- Kepala BBIA Field -->
+            <div class="form-group">
+                <label for="kepala_bbia">
+                    <i class="fas fa-user-tie me-1"></i>Kepala BBIA
+                </label>
+                <textarea 
+                    id="kepala_bbia" 
+                    name="kepala_bbia" 
+                    rows="3" 
+                    placeholder="Masukkan deskripsi Kepala BBIA..."
+                    required
+                >{{ old('kepala_bbia', $profils->where('judul', 'Kepala BBIA')->first()?->konten ?? '') }}</textarea>
+            </div>
+            
+            <!-- PPID Field -->
+            <div class="form-group">
+                <label for="ppid">
+                    <i class="fas fa-user-cog me-1"></i>Pejabat Pengelola Informasi dan Dokumentasi
+                </label>
+                <textarea 
+                    id="ppid" 
+                    name="ppid" 
+                    rows="3" 
+                    placeholder="Masukkan deskripsi PPID..."
+                    required
+                >{{ old('ppid', $profils->where('judul', 'Pejabat Pengelola Informasi dan Dokumentasi')->first()?->konten ?? '') }}</textarea>
+            </div>
+            
+            <!-- Koordinator Field -->
+            <div class="form-group">
+                <label for="koordinator">
+                    <i class="fas fa-users me-1"></i>Koordinator PPID
+                </label>
+                <textarea 
+                    id="koordinator" 
+                    name="koordinator" 
+                    rows="3" 
+                    placeholder="Masukkan deskripsi Koordinator PPID..."
+                    required
+                >{{ old('koordinator', $profils->where('judul', 'Koordinator PPID')->first()?->konten ?? '') }}</textarea>
+            </div>
+            
+            <!-- Staf Field -->
+            <div class="form-group">
+                <label for="staf">
+                    <i class="fas fa-user me-1"></i>Staf PPID
+                </label>
+                <textarea 
+                    id="staf" 
+                    name="staf" 
+                    rows="3" 
+                    placeholder="Masukkan deskripsi Staf PPID..."
+                    required
+                >{{ old('staf', $profils->where('judul', 'Staf PPID')->first()?->konten ?? '') }}</textarea>
+            </div>
+            
+            </div>
+        
+        <!-- Hidden fields untuk existing data -->
+        @foreach($profils as $profil)
+            <input type="hidden" name="existing_ids[]" value="{{ $profil->id }}">
+        @endforeach
+        
+        <div class="form-actions">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Batal</a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i>
+                Simpan Perubahan
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Unit Pelaksana PPID Section -->
+<div class="card">
+    <h2>Edit Unit Pelaksana PPID</h2>
+
+    <form method="POST" action="{{ route('admin.unit-pelaksana.update') }}">
+        @csrf
+        @method('PUT')
+        
+        @php
+            $unitProfils = \App\Models\Profil::where('is_active', true)
+                ->where('kategori', 'Unit Pelaksana')
+                ->orderBy('urutan')
+                ->get();
+        @endphp
+        
+        <div class="form-grid">
+            <!-- Unit Pelaksana Field -->
+            <div class="form-group">
+                <label for="unit_pelaksana">
+                    <i class="fas fa-cogs me-1"></i>Unit Pelaksana PPID
+                </label>
+                <textarea 
+                    id="unit_pelaksana" 
+                    name="unit_pelaksana" 
+                    rows="6" 
+                    placeholder="Masukkan deskripsi Unit Pelaksana PPID (pisahkan setiap unit dengan baris baru)..."
+                    required
+                >{{ old('unit_pelaksana', $unitProfils->where('judul', 'Unit Pelaksana PPID')->first()?->konten ?? '') }}</textarea>
+                <div class="help-text">Setiap baris baru akan menjadi unit terpisah</div>
+            </div>
+        </div>
+        
+        <!-- Hidden fields untuk existing data -->
+        @foreach($unitProfils as $profil)
+            <input type="hidden" name="existing_unit_ids[]" value="{{ $profil->id }}">
+        @endforeach
+        
+        <div class="form-actions">
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">Batal</a>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i>
+                Simpan Perubahan
+            </button>
+        </div>
+    </form>
+</div>
+@endsection
+
 <style>
-    .edit-container {
-        display: grid;
-        grid-template-columns: 1fr 400px;
-        gap: 2rem;
-    }
-    
-    .form-section {
-        background: white;
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-    
-    .preview-section {
-        background: white;
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        position: sticky;
-        top: 20px;
-        height: fit-content;
-        max-height: 80vh;
-        overflow-y: auto;
-    }
-    
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-    
-    .form-label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-        color: #374151;
-        font-size: 0.95rem;
-    }
-    
-    .form-control {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 2px solid #e5e7eb;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        font-family: 'Inter', sans-serif;
-    }
-    
-    .form-control:focus {
-        outline: none;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    }
-    
-    textarea.form-control {
-        resize: vertical;
-        min-height: 150px;
-        line-height: 1.6;
+/* Card */
+.card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.card h2 {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* Alert */
+.alert {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.alert-success {
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+}
+
+/* Struktur List */
+.struktur-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.struktur-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+}
+
+.struktur-info {
+    flex: 1;
+}
+
+.struktur-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 4px;
+}
+
+.struktur-title i {
+    color: #6b7280;
+    width: 16px;
+}
+
+.struktur-text {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.struktur-meta {
+    display: flex;
+    align-items: center;
+}
+
+.status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status.active {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status.inactive {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+/* Form */
+.form-grid {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.form-group label i {
+    color: #6b7280;
+    margin-right: 8px;
+    width: 16px;
+}
+
+.form-group textarea {
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.15s ease;
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.help-text {
+    font-size: 11px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+}
+
+.btn-secondary {
+    background-color: #6b7280;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #4b5563;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .struktur-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
     }
     
     .form-actions {
-        display: flex;
-        gap: 1rem;
-        padding-top: 2rem;
-        border-top: 2px solid #e5e7eb;
-        margin-top: 2rem;
+        flex-direction: column;
     }
     
-    .preview-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #1f2937;
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 2px solid #e5e7eb;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+    .btn {
+        width: 100%;
+        justify-content: center;
     }
-    
-    .preview-content {
-        color: #4b5563;
-        line-height: 1.6;
-        font-size: 0.9rem;
-    }
-    
-    .preview-content h2 {
-        color: #1a3a5f;
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        margin-top: 1.5rem;
-    }
-    
-    .preview-content h3 {
-        color: #1a3a5f;
-        font-size: 1rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        margin-top: 1rem;
-    }
-    
-    .preview-content ul {
-        margin: 0.5rem 0;
-        padding-left: 1.5rem;
-    }
-    
-    .preview-content li {
-        margin-bottom: 0.5rem;
-    }
-    
-    .org-box {
-        background: rgba(26, 82, 130, 0.1);
-        border: 1px solid rgba(26, 82, 130, 0.2);
-        border-radius: 10px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        text-align: center;
-    }
-    
-    .org-box h3 {
-        color: #1a3a5f;
-        font-size: 0.9rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-    
-    .org-box p {
-        color: #333;
-        font-size: 0.8rem;
-        line-height: 1.4;
-        margin: 0;
-    }
-    
-    .alert {
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-    
-    .alert-success {
-        background: #dcfce7;
-        color: #166534;
-        border-left: 4px solid #22c55e;
-    }
-    
-    .alert-error {
-        background: #fee2e2;
-        color: #991b1b;
-        border-left: 4px solid #ef4444;
-    }
-    
-    .section-header {
-        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
-        border-left: 4px solid #22c55e;
-    }
-    
-    .section-header h3 {
-        margin: 0;
-        color: #166534;
-        font-size: 1.2rem;
-        font-weight: 600;
-    }
-    
-    .struktur-item {
-        background: #f0fdf4;
-        border: 1px solid #dcfce7;
-        border-radius: 8px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-    }
-    
-    .struktur-item h4 {
-        margin: 0 0 0.5rem 0;
-        color: #166534;
-        font-size: 1rem;
-        font-weight: 600;
-    }
-    
-    .help-text {
-        font-size: 0.85rem;
-        color: #6b7280;
-        margin-top: 0.25rem;
-    }
-    
-    @media (max-width: 1024px) {
-        .edit-container {
-            grid-template-columns: 1fr;
-        }
-        
-        .preview-section {
-            position: static;
-        }
-    }
+}
 </style>
-@endpush
-
-@section('content')
-<div class="edit-container">
-    <!-- Form Section -->
-    <div class="form-section">
-        <div class="section-header">
-            <h3>🏢 Edit Halaman Struktur Organisasi PPID</h3>
-        </div>
-        
-        @if(session('success'))
-            <div class="alert alert-success">
-                <i class="fas fa-check-circle"></i>
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if($errors->any())
-            <div class="alert alert-error">
-                <i class="fas fa-exclamation-circle"></i>
-                <div>
-                    <strong>Terjadi kesalahan:</strong>
-                    <ul style="margin: 0.5rem 0 0 0; padding-left: 1.5rem;">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        @endif
-
-        <form action="{{ route('admin.struktur-organisasi.update') }}" method="POST" id="strukturForm">
-            @csrf
-            @method('PUT')
-            
-            @php
-                $profils = \App\Models\Profil::where('is_active', true)
-                    ->where('kategori', 'Struktur Organisasi')
-                    ->orderBy('urutan')
-                    ->get();
-            @endphp
-            
-            @forelse($profils as $profil)
-                <div class="struktur-item">
-                    <h4>{{ $profil->judul }}</h4>
-                    <div class="form-group">
-                        <label class="form-label" for="konten_{{ $profil->id }}">
-                            <i class="fas fa-edit"></i> Konten
-                        </label>
-                        <textarea name="konten_{{ $profil->id }}" id="konten_{{ $profil->id }}" 
-                                  class="form-control" rows="8">{{ $profil->konten }}</textarea>
-                        <div class="help-text">Detail konten untuk {{ $profil->judul }}</div>
-                    </div>
-                </div>
-            @empty
-                <div class="alert alert-error">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div>
-                        <strong>Belum ada data Struktur Organisasi</strong>
-                        <p style="margin: 0.5rem 0 0 0;">Silakan tambahkan data Struktur Organisasi terlebih dahulu melalui menu Profil.</p>
-                    </div>
-                </div>
-            @endforelse
-
-            @if($profils->count() > 0)
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Simpan Perubahan
-                    </button>
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-outline">
-                        <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
-                    </a>
-                </div>
-            @endif
-        </form>
-    </div>
-    
-    <!-- Preview Section -->
-    <div class="preview-section">
-        <div class="preview-title">
-            <i class="fas fa-eye"></i> Preview Tampilan Publik
-        </div>
-        <div class="preview-content" id="preview">
-            <h2>Struktur Organisasi PPID BBIA</h2>
-            <p>PPID BBIA merupakan bagian dari struktur organisasi Balai Besar Industri Agro yang bertanggung jawab langsung kepada Kepala BBIA.</p>
-            
-            <div style="display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-top: 1rem;">
-                @forelse($profils as $profil)
-                    <div class="org-box">
-                        <h3>{{ $profil->judul }}</h3>
-                        <div id="preview_{{ $profil->id }}">{!! nl2br(e(Str::limit($profil->konten, 100))) !!}</div>
-                    </div>
-                @empty
-                    <div class="org-box">
-                        <h3>Struktur Organisasi</h3>
-                        <p>Belum ada informasi struktur organisasi.</p>
-                    </div>
-                @endforelse
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-// Live preview functionality
-document.querySelectorAll('[id^="konten_"]').forEach(textarea => {
-    textarea.addEventListener('input', function() {
-        const previewId = 'preview_' + this.id.replace('konten_', '');
-        const previewElement = document.getElementById(previewId);
-        if (previewElement) {
-            previewElement.innerHTML = this.value.replace(/\n/g, '<br>') || 'Konten akan tampil di sini...';
-        }
-    });
-});
-
-// Form validation
-document.getElementById('strukturForm').addEventListener('submit', function(e) {
-    const textareas = document.querySelectorAll('[id^="konten_"]');
-    let hasContent = false;
-    
-    textareas.forEach(textarea => {
-        if (textarea.value.trim().length > 0) {
-            hasContent = true;
-        }
-    });
-    
-    if (!hasContent) {
-        e.preventDefault();
-        alert('Minimal satu konten harus diisi!');
-        return;
-    }
-});
-</script>
-@endsection

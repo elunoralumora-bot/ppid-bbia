@@ -11,45 +11,46 @@
 
 <div class="content-section">
     <div class="content-full">
-        <h2>Visi PPID BBIA</h2>
-        <div class="vision-box">
-            <p>Menjadi PPID yang terdepan dalam penyediaan layanan informasi publik yang transparan, akuntabel, dan berkualitas untuk mendukung good governance di lingkungan Balai Besar Industri Agro.</p>
-        </div>
+        @php
+            $profils = \App\Models\Profil::where('is_active', true)
+                ->where('kategori', 'Visi Misi')
+                ->orderBy('urutan')
+                ->get();
+        @endphp
         
-        <h2>Misi PPID BBIA</h2>
-        <div class="mission-grid">
-            <div class="mission-item">
-                <div class="mission-number">1</div>
-                <div class="mission-content">
-                    <h3>Transparansi</h3>
-                    <p>Menyediakan informasi publik yang mudah diakses, cepat, dan terbuka untuk seluruh masyarakat.</p>
+        @forelse($profils as $profil)
+            @if(strtolower($profil->judul) == 'visi')
+                <h2>Visi PPID BBIA</h2>
+                <div class="vision-box">
+                    <p>{!! nl2br(e($profil->konten)) !!}</p>
                 </div>
+            @elseif(strtolower($profil->judul) == 'misi')
+                <h2>Misi PPID BBIA</h2>
+                <div class="mission-grid">
+                    @php
+                        $misiItems = collect(explode("\n", trim($profil->konten)))->filter(function($line) {
+                            return !empty(trim($line));
+                        });
+                    @endphp
+                    
+                    @foreach($misiItems as $index => $misiItem)
+                        <div class="mission-item">
+                            <div class="mission-number">{{ $index + 1 }}</div>
+                            <div class="mission-content">
+                                <h3>Misi {{ $index + 1 }}</h3>
+                                <p>{{ $misiItem }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+        @empty
+            <div class="vision-box">
+                <p>Informasi visi dan misi sedang dalam pembaruan.</p>
             </div>
-            
-            <div class="mission-item">
-                <div class="mission-number">2</div>
-                    <div class="mission-content">
-                        <h3>Akuntabilitas</h3>
-                        <p>Memastikan setiap informasi yang disediakan akurat, terkini, dan dapat dipertanggungjawabkan.</p>
-                    </div>
-                </div>
-                
-                <div class="mission-item">
-                    <div class="mission-number">3</div>
-                    <div class="mission-content">
-                        <h3>Profesionalisme</h3>
-                        <p>Menyediakan layanan informasi publik yang profesional, ramah, dan sesuai standar yang berlaku.</p>
-                    </div>
-                </div>
-                
-                <div class="mission-item">
-                    <div class="mission-number">4</div>
-                    <div class="mission-content">
-                        <h3>Inovasi</h3>
-                        <p>Terus berinovasi dalam penyediaan layanan informasi publik untuk meningkatkan kualitas dan kemudahan akses.</p>
-                    </div>
-                </div>
-            </div>
+        @endforelse
+    </div>
+</div>
             
 <style>
 .page-header {

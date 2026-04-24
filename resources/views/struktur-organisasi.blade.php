@@ -11,32 +11,51 @@
 
 <div class="content-section">
     <div class="content-full">
+        @php
+            $profils = \App\Models\Profil::where('is_active', true)
+                ->where('kategori', 'Struktur Organisasi')
+                ->orderBy('urutan')
+                ->get();
+            
+            $unitPelaksana = \App\Models\Profil::where('is_active', true)
+                ->where('kategori', 'Unit Pelaksana')
+                ->where('judul', 'Unit Pelaksana PPID')
+                ->first();
+        @endphp
+        
         <h2>Struktur Organisasi PPID BBIA</h2>
         <p>PPID BBIA merupakan bagian dari struktur organisasi Balai Besar Industri Agro yang bertanggung jawab langsung kepada Kepala BBIA.</p>
         
         <h2>Struktur Kepemimpinan</h2>
         <div class="org-structure">
-            <div class="org-box">
-                <h3>Kepala BBIA</h3>
-                <p>Menetapkan PPID dan bertanggung jawab atas pelaksanaan tugas PPID</p>
-            </div>
-            
-            <div class="org-box">
-                <h3>Pejabat Pengelola Informasi dan Dokumentasi</h3>
-                <p>Merupakan pejabat yang ditetapkan untuk melaksanakan tugas PPID sehari-hari</p>
-            </div>
-            
-            <div class="org-box">
-                <h3>Koordinator PPID</h3>
-                    <p>Membantu PPID dalam koordinasi dan pelaksanaan tugas</p>
-                </div>
-                
+            @forelse($profils as $profil)
                 <div class="org-box">
-                    <h3>Staf PPID</h3>
-                    <p>Melaksanakan tugas teknis dan administratif layanan informasi</p>
+                    <h3>{{ $profil->judul }}</h3>
+                    <p>{!! nl2br(e($profil->konten)) !!}</p>
                 </div>
-            </div>
-            
+            @empty
+                <div class="org-box">
+                    <h3>Informasi Struktur</h3>
+                    <p>Informasi struktur organisasi sedang dalam pembaruan.</p>
+                </div>
+            @endforelse
+        </div>
+        
+        @if($unitPelaksana)
+            <h2>Unit Pelaksana PPID</h2>
+            <p>Dalam melaksanakan tugasnya, PPID BBIA didukung oleh:</p>
+            <ul>
+                @php
+                    $unitItems = collect(explode("\n", trim($unitPelaksana->konten)))->filter(function($line) {
+                        return !empty(trim($line));
+                    });
+                @endphp
+                
+                @foreach($unitItems as $unitItem)
+                    <li>{{ $unitItem }}</li>
+                @endforeach
+            </ul>
+        @else
             <h2>Unit Pelaksana PPID</h2>
             <p>Dalam melaksanakan tugasnya, PPID BBIA didukung oleh:</p>
             <ul>
@@ -45,17 +64,8 @@
                 <li><strong>Unit Verifikasi:</strong> Memverifikasi kebenaran informasi</li>
                 <li><strong>Unit Publikasi:</strong> Memublikasikan informasi berkala</li>
             </ul>
-            
-            <h2>Hubungan Kerja</h2>
-            <p>PPID BBIA menjalin hubungan kerja dengan:</p>
-            <ul>
-                <li>Unit kerja lain di lingkungan BBIA</li>
-                <li>PPID Kementerian Perindustrian</li>
-                <li>PPID Pelaksana UPT di bawah Kemenperin</li>
-                <li>Komisi Informasi Pusat</li>
-                <li>Lembaga terkait lainnya</li>
-            </ul>
-        </div>
+        @endif
+        
     </div>
 </div>
 

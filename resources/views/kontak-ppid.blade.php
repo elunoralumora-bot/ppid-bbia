@@ -15,33 +15,49 @@
         <p>PPID BBIA siap melayani kebutuhan informasi publik Anda. Silakan hubungi kami melalui berbagai kanal yang tersedia.</p>
         
         <div class="contact-grid">
-            <div class="contact-card">
-                <div class="contact-icon">
-                    <img src="{{ asset('images/phone.jpg') }}" alt="Phone">
+            @forelse($profils as $profil)
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        @if($profil->judul == 'Telepon')
+                            <img src="{{ asset('images/phone.jpg') }}" alt="Phone">
+                        @elseif($profil->judul == 'Email')
+                            <img src="{{ asset('images/email.jpg') }}" alt="Email">
+                        @else
+                            <img src="{{ asset('images/location.jpg') }}" alt="Location">
+                        @endif
+                    </div>
+                    <h3>{{ $profil->judul }}</h3>
+                    <div>{!! $profil->konten !!}</div>
                 </div>
-                <h3>Telepon</h3>
-                <p>(0251) 8324068</p>
-                <p>Senin - Jumat, 08:00 - 16:00 WIB</p>
-            </div>
-            
-            <div class="contact-card">
-                <div class="contact-icon">
-                    <img src="{{ asset('images/email.jpg') }}" alt="Email">
+            @empty
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <img src="{{ asset('images/phone.jpg') }}" alt="Phone">
+                    </div>
+                    <h3>Telepon</h3>
+                    <p>(0251) 8324068</p>
+                    <p>Senin - Jumat, 08:00 - 16:00 WIB</p>
                 </div>
-                <h3>Email</h3>
-                <p>cabi@bbia.go.id</p>
-                <p>ppid@bbia.go.id</p>
-            </div>
-            
-            <div class="contact-card">
-                <div class="contact-icon">
-                    <img src="{{ asset('images/location.jpg') }}" alt="Location">
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <img src="{{ asset('images/email.jpg') }}" alt="Email">
+                    </div>
+                    <h3>Email</h3>
+                    <p>cabi@bbia.go.id</p>
+                    <p>ppid@bbia.go.id</p>
                 </div>
-                <h3>Alamat</h3>
-                <p>Jl. Ir. H. Juanda No. 11</p>
-                <p>Bogor 16122</p>
-                <p>Jawa Barat, Indonesia</p>
-            </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <img src="{{ asset('images/location.jpg') }}" alt="Location">
+                    </div>
+                    <h3>Alamat</h3>
+                    <p>Jl. Ir. H. Juanda No. 11</p>
+                    <p>Bogor 16122</p>
+                    <p>Jawa Barat, Indonesia</p>
+                </div>
+            @endforelse
         </div>
     </div>
 </div>

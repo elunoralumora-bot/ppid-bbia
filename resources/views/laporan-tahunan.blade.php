@@ -40,11 +40,6 @@
                             <i class="fas fa-download me-2"></i>Download PDF
                         </a>
                     @endif
-                    @if($konten->meta_data['ringkasan'] ?? null)
-                        <a href="#" class="btn-link">
-                            <i class="fas fa-file-text me-2"></i>Ringkasan
-                        </a>
-                    @endif
                 </div>
             </div>
         @empty
@@ -74,7 +69,6 @@
                         </div>
                         <div class="report-actions">
                             <a href="#" class="btn-link">Download PDF</a>
-                            <a href="#" class="btn-link">Ringkasan</a>
                         </div>
                     </div>
                     
@@ -99,7 +93,6 @@
                         </div>
                         <div class="report-actions">
                             <a href="#" class="btn-link">Download PDF</a>
-                            <a href="#" class="btn-link">Ringkasan</a>
                         </div>
                     </div>
                     
@@ -124,7 +117,6 @@
                         </div>
                         <div class="report-actions">
                             <a href="#" class="btn-link">Download PDF</a>
-                            <a href="#" class="btn-link">Ringkasan</a>
                         </div>
                     </div>
                 </div>

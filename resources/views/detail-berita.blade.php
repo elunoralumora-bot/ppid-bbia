@@ -32,9 +32,7 @@
                 <h1>{{ $berita->judul }}</h1>
                 <div class="news-meta">
                     <span class="news-date">{{ $berita->tanggal_publikasi ? $berita->tanggal_publikasi->format('d F Y') : $berita->created_at->format('d F Y') }}</span>
-                    <span class="news-category">{{ $berita->kategori ?? 'Berita' }}</span>
-                    <span class="news-author">{{ $berita->penulis ?? 'Admin PPID' }}</span>
-                </div>
+                                                        </div>
             </div>
             
             <div class="news-image">
@@ -46,24 +44,28 @@
             </div>
             
             <div class="news-content">
-                {!! $berita->konten !!}
+                @php
+                    // Process content to ensure proper paragraph formatting
+                    $content = $berita->konten;
+                    
+                    // Convert double newlines to paragraph breaks
+                    $content = preg_replace('/\n\s*\n/', '</p><p>', $content);
+                    
+                    // Ensure content starts with <p> and ends with </p>
+                    if (!str_starts_with($content, '<p>')) {
+                        $content = '<p>' . $content;
+                    }
+                    if (!str_ends_with($content, '</p>')) {
+                        $content = $content . '</p>';
+                    }
+                    
+                    // Handle other HTML elements
+                    $content = str_replace(['<br>', '<br/>'], ['<br/>', '<br/>'], $content);
+                @endphp
+                {!! $content !!}
             </div>
             
             <div class="news-footer">
-                <div class="news-tags">
-                    @if($berita->tags)
-                        @php
-                            $tagArray = explode(',', $berita->tags);
-                        @endphp
-                        @foreach($tagArray as $tag)
-                            <span class="tag">{{ trim($tag) }}</span>
-                        @endforeach
-                    @else
-                        <span class="tag">PPID BBIA</span>
-                        <span class="tag">Informasi Publik</span>
-                        <span class="tag">Berita</span>
-                    @endif
-                </div>
                 
                 <div class="news-actions">
                     <a href="{{ url('/berita') }}" class="btn btn-outline">← Kembali ke Berita</a>
@@ -74,12 +76,14 @@
         
         <!-- Komentar Section -->
         <div class="comments-section">
-            <h2>Komentar ({{ $berita->comments ?? 0 }})</h2>
+            <h2>Komentar (<span id="commentCount">0</span>)</h2>
             
             <!-- Form Komentar -->
             <div class="comment-form">
                 <h3>Tinggalkan Komentar</h3>
-                <form class="comment-form-inner">
+                <form class="comment-form-inner" id="commentForm">
+                    @csrf
+                    <input type="hidden" id="berita_id" name="berita_id" value="{{ $berita->id }}">
                     <div class="form-group">
                         <label for="nama">Nama</label>
                         <input type="text" id="nama" name="nama" placeholder="Masukkan nama Anda" required>
@@ -94,60 +98,20 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Kirim Komentar</button>
                 </form>
+                <div id="commentMessage" class="comment-message" style="display: none;"></div>
             </div>
             
             <!-- Daftar Komentar -->
             <div class="comments-list">
                 <h3>Komentar Terbaru</h3>
-                @php
-                    // Sample comments - you should get these from database
-                    $comments = [
-                        [
-                            'nama' => 'Ahmad Wijaya',
-                            'tanggal' => '2 jam yang lalu',
-                            'komentar' => 'Informasi yang sangat bermanfaat, terima kasih PPID BBIA sudah transparan.',
-                            'avatar' => 'user1'
-                        ],
-                        [
-                            'nama' => 'Siti Nurhaliza',
-                            'tanggal' => '5 jam yang lalu',
-                            'komentar' => 'Semoga PPID BBIA terus meningkatkan layanan informasi publiknya.',
-                            'avatar' => 'user2'
-                        ],
-                        [
-                            'nama' => 'Budi Santoso',
-                            'tanggal' => '1 hari yang lalu',
-                            'komentar' => 'Berita yang sangat informatif dan mudah dipahami.',
-                            'avatar' => 'user3'
-                        ]
-                    ];
-                @endphp
-                
-                @forelse($comments as $comment)
-                <div class="comment-item">
-                    <div class="comment-avatar">
-                        <img src="{{ asset('images/' . $comment['avatar'] . '.jpg') }}" alt="{{ $comment['nama'] }}">
-                    </div>
-                    <div class="comment-content">
-                        <div class="comment-header">
-                            <span class="comment-name">{{ $comment['nama'] }}</span>
-                            <span class="comment-date">{{ $comment['tanggal'] }}</span>
-                        </div>
-                        <p class="comment-text">{{ $comment['komentar'] }}</p>
-                        <div class="comment-actions">
-                            <a href="#" class="comment-reply">Balas</a>
-                            <a href="#" class="comment-like">Suka</a>
-                        </div>
+                <div id="commentsContainer">
+                    <div class="loading-comments" style="text-align: center; padding: 20px;">
+                        <p>Memuat komentar...</p>
                     </div>
                 </div>
-                @empty
-                <div class="no-comments">
-                    <p>Belum ada komentar. Jadilah yang pertama berkomentar!</p>
-                </div>
-                @endforelse
             </div>
         </div>
-        
+                
         <!-- Berita Terkait -->
         <div class="related-news">
             <h2>Berita Terkait</h2>
@@ -185,6 +149,157 @@
 </div>
 
 <style>
+@media print {
+    /* Hide all elements except what we want to print */
+    body * {
+        visibility: hidden;
+    }
+    
+    /* Show only the news content we want to print */
+    .news-detail, .news-detail * {
+        visibility: visible;
+    }
+    
+    /* Hide specific elements within news-detail */
+    .news-actions,
+    .news-footer,
+    .comments-section,
+    .related-news {
+        display: none !important;
+    }
+    
+    /* Print-specific styling */
+    body {
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        font-size: 12pt;
+        line-height: 1.4;
+        color: #000;
+        background: white;
+    }
+    
+    .news-detail {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: white;
+        box-shadow: none;
+    }
+    
+    .news-header {
+        margin-bottom: 20px;
+    }
+    
+    .news-header h1 {
+        font-size: 18pt;
+        color: #000;
+        margin-bottom: 10px;
+    }
+    
+    .news-meta {
+        margin-bottom: 20px;
+    }
+    
+    .news-date {
+        font-size: 10pt;
+        color: #666;
+    }
+    
+    .news-image {
+        margin: 0 0 20px 0;
+        max-width: 100%;
+        page-break-inside: avoid;
+    }
+    
+    .news-image img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+    
+    .news-content {
+        margin: 0;
+        padding: 0;
+        background: white;
+        box-shadow: none;
+        border-radius: 0;
+        font-size: 12pt;
+        line-height: 1.4;
+        text-align: justify;
+    }
+    
+    .news-content * {
+        max-width: 100%;
+    }
+    
+    .news-content p {
+        margin: 0 0 12pt 0;
+        text-align: justify;
+    }
+    
+    .news-content h2 {
+        font-size: 14pt;
+        margin: 16pt 0 8pt 0;
+        page-break-after: avoid;
+    }
+    
+    .news-content h3 {
+        font-size: 12pt;
+        margin: 12pt 0 6pt 0;
+        page-break-after: avoid;
+    }
+    
+    .news-content ul, .news-content ol {
+        margin: 0 0 12pt 0;
+        padding-left: 20pt;
+    }
+    
+    .news-content li {
+        margin: 0 0 6pt 0;
+    }
+    
+    .news-content blockquote {
+        margin: 12pt 0;
+        padding: 8pt 12pt;
+        border-left: 2pt solid #ccc;
+        background: #f5f5f5;
+        font-style: italic;
+    }
+    
+    .news-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12pt 0;
+        font-size: 10pt;
+    }
+    
+    .news-content th, .news-content td {
+        padding: 6pt;
+        border: 1pt solid #ccc;
+        text-align: left;
+    }
+    
+    .news-content th {
+        background: #f0f0f0;
+        font-weight: bold;
+    }
+    
+    /* Ensure images don't break across pages */
+    img {
+        page-break-inside: avoid;
+        max-width: 100%;
+    }
+    
+    /* Avoid breaking headings */
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+        page-break-inside: avoid;
+    }
+}
 .page-header {
     background: linear-gradient(135deg, #0f2338 0%, #2c5282 35%, #1a3a5f 100%);
     color: white;
@@ -273,32 +388,60 @@
 }
 
 .news-image {
-    width: 100%;
-    margin-bottom: 30px;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin: 0 auto 60px auto;
+    display: block;
+    clear: both;
+    text-align: center;
+    overflow: visible;
+    position: relative;
+    z-index: 1;
 }
 
 .news-image img {
-    width: 100%;
+    width: auto;
     height: auto;
-    max-height: 500px;
-    object-fit: cover;
+    max-width: 100%;
+    display: inline-block;
+    border-radius: 15px;
 }
 
 .news-content {
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+    padding: 20px 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     font-size: 18px;
     line-height: 1.8;
     color: #333;
-    margin-bottom: 40px;
+    text-align: justify;
+    word-wrap: break-word;
+    word-break: break-word;
+    position: relative;
+    z-index: 2;
+    clear: both;
+}
+
+.news-content * {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.news-content p {
+    margin: 0 0 20px 0;
+    text-align: justify;
+    line-height: 1.8;
 }
 
 .news-content h2 {
     color: #1a3a5f;
     font-size: 24px;
     font-weight: 600;
-    margin: 30px 0 15px 0;
+    margin: 0 0 20px 0;
+    line-height: 1.4;
 }
 
 .news-content h3 {
@@ -306,19 +449,51 @@
     font-size: 20px;
     font-weight: 600;
     margin: 25px 0 10px 0;
-}
-
-.news-content p {
-    margin-bottom: 20px;
+    line-height: 1.4;
 }
 
 .news-content ul, .news-content ol {
     margin-bottom: 20px;
     padding-left: 30px;
+    text-align: justify;
 }
 
 .news-content li {
     margin-bottom: 10px;
+    text-align: justify;
+}
+
+.news-content blockquote {
+    border-left: 4px solid #2c5282;
+    padding-left: 20px;
+    margin: 20px 0;
+    font-style: italic;
+    color: #666;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.news-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.news-content th, .news-content td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e1e5e9;
+}
+
+.news-content th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #1a3a5f;
 }
 
 .news-footer {
@@ -476,24 +651,6 @@
     margin-bottom: 10px;
 }
 
-.comment-actions {
-    display: flex;
-    gap: 15px;
-}
-
-.comment-reply,
-.comment-like {
-    color: #2c5282;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
-
-.comment-reply:hover,
-.comment-like:hover {
-    color: #1a3a5f;
-}
 
 .no-comments {
     text-align: center;
@@ -671,5 +828,131 @@
         text-align: center;
     }
 }
+
+.comment-message {
+    margin-top: 15px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.comment-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.comment-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.loading-comments {
+    color: #666;
+    font-style: italic;
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const commentForm = document.getElementById('commentForm');
+    const commentsContainer = document.getElementById('commentsContainer');
+    const commentCount = document.getElementById('commentCount');
+    const commentMessage = document.getElementById('commentMessage');
+    const beritaId = document.getElementById('berita_id').value;
+    
+    // Load comments when page loads
+    loadComments();
+    
+    // Handle form submission
+    commentForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(commentForm);
+        
+        fetch('/komentar-berita', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name=\"csrf-token\"]')?.getAttribute('content') || document.querySelector('[name=\"_token\"]')?.value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showMessage(data.message, 'success');
+                commentForm.reset();
+                // Reload comments to show new one immediately
+                loadComments(); 
+            } else {
+                showMessage(data.message || 'Terjadi kesalahan', 'error');
+                if (data.errors) {
+                    const errorMessages = Object.values(data.errors).flat().join(', ');
+                    showMessage(errorMessages, 'error');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Terjadi kesalahan saat mengirim komentar', 'error');
+        });
+    });
+    
+    function loadComments() {
+        fetch(`/komentar-berita/${beritaId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    renderComments(data.data);
+                    commentCount.textContent = data.total;
+                } else {
+                    commentsContainer.innerHTML = '<div class=\"no-comments\"><p>Gagal memuat komentar</p></div>';
+                    commentCount.textContent = '0';
+                }
+            })
+            .catch(error => {
+                console.error('Error loading comments:', error);
+                commentsContainer.innerHTML = '<div class=\"no-comments\"><p>Gagal memuat komentar</p></div>';
+                commentCount.textContent = '0';
+            });
+    }
+    
+    function renderComments(comments) {
+        if (comments.length === 0) {
+            commentsContainer.innerHTML = '<div class=\"no-comments\"><p>Belum ada komentar. Jadilah yang pertama berkomentar!</p></div>';
+            return;
+        }
+        
+        const commentsHtml = comments.map(comment => `
+            <div class=\"comment-item\">
+                <div class=\"comment-avatar\">
+                    <img src=\"{{ asset('images/email.jpg') }}\" alt=\"${comment.nama}\">
+                </div>
+                <div class=\"comment-content\">
+                    <div class=\"comment-header\">
+                        <span class=\"comment-name\">${comment.nama}</span>
+                        <span class=\"comment-date\">${comment.tanggal}</span>
+                    </div>
+                    <p class=\"comment-text\">${comment.komentar}</p>
+                </div>
+            </div>
+        `).join('');
+        
+        commentsContainer.innerHTML = commentsHtml;
+    }
+    
+    function showMessage(message, type) {
+        commentMessage.textContent = message;
+        commentMessage.className = `comment-message ${type}`;
+        commentMessage.style.display = 'block';
+        
+        // Hide message after 5 seconds
+        setTimeout(() => {
+            commentMessage.style.display = 'none';
+        }, 5000);
+    }
+});
+</script>
 @endsection

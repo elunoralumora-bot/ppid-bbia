@@ -12,6 +12,7 @@ class KontenWeb extends Model
         'judul',
         'konten',
         'meta_data',
+        'gambar',
         'is_active',
     ];
 
