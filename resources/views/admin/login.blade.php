@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Login Admin - PPID BBIA</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <style>
         * {
