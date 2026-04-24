@@ -17,10 +17,11 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'nama_lengkap' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Commented out User factory to avoid fake() error in production
+        // User::factory()->create([
+        //     'nama_lengkap' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
 
         $this->call([
             AdminSeeder::class,
