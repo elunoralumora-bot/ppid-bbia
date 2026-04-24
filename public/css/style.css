@@ -1667,11 +1667,13 @@ body {
         overflow: hidden;
         transition: max-height 0.3s ease;
         z-index: 9999;
+        opacity: 0;
     }
 
     .nav-menu.active {
-        max-height: 500px;
+        max-height: 1000px;
         overflow-y: auto;
+        opacity: 1;
     }
 
     .nav-item {
@@ -1699,24 +1701,40 @@ body {
         border-radius: 0;
         margin: 0;
         display: block;
+        padding-left: 0;
     }
 
     .dropdown-menu.active {
-        max-height: 300px;
+        max-height: 500px;
         overflow-y: auto;
     }
 
     .dropdown-menu li {
         border-bottom: 1px solid #e9ecef;
+        list-style: none;
     }
 
     .dropdown-menu a {
         padding: 12px 30px;
         font-size: 13px;
+        display: block;
+        color: #1a3a5f;
+        text-decoration: none;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: #e9ecef;
     }
 
     .dropdown-toggle::after {
+        content: ' ▼';
         float: right;
+        font-size: 10px;
+        transition: transform 0.3s ease;
+    }
+
+    .dropdown-toggle.active::after {
+        transform: rotate(180deg);
     }
 
     .hero-content {

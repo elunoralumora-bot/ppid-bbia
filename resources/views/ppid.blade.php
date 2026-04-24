@@ -258,7 +258,7 @@
                     e.preventDefault();
                     const dropdown = this.nextElementSibling;
                     const parent = this.parentElement;
-                    
+
                     // For mobile, use class-based toggle
                     if (window.innerWidth <= 768) {
                         // Close other dropdowns
@@ -267,9 +267,15 @@
                                 menu.classList.remove('active');
                             }
                         });
-                        
+                        document.querySelectorAll('.dropdown-toggle').forEach(t => {
+                            if (t !== this) {
+                                t.classList.remove('active');
+                            }
+                        });
+
                         // Toggle current dropdown
                         dropdown.classList.toggle('active');
+                        this.classList.toggle('active');
                     } else {
                         // Desktop behavior
                         // Close other dropdowns
@@ -278,7 +284,7 @@
                                 menu.style.display = 'none';
                             }
                         });
-                        
+
                         // Toggle current dropdown
                         if (dropdown.style.display === 'block') {
                             dropdown.style.display = 'none';
