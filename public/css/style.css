@@ -156,15 +156,15 @@ body {
 }
 
 /* Special positioning for dropdowns that might get cut off */
-.nav-item:nth-child(3) .dropdown-menu,
-.nav-item:last-child .dropdown-menu {
+.nav-item:nth-child(4) .dropdown-menu,
+.nav-item:nth-child(5) .dropdown-menu {
     right: 0;
     left: auto;
 }
 
-/* For first two dropdowns, keep left alignment */
-.nav-item:nth-child(1) .dropdown-menu,
-.nav-item:nth-child(2) .dropdown-menu {
+/* For first three dropdowns, keep left alignment */
+.nav-item:nth-child(2) .dropdown-menu,
+.nav-item:nth-child(3) .dropdown-menu {
     left: 0;
     right: auto;
 }

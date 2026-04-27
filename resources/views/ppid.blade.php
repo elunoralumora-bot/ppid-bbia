@@ -29,6 +29,9 @@
                     <span></span>
                 </button>
                 <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="{{ url('/ppid') }}" class="nav-link">Beranda</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle">Profil</a>
                         <ul class="dropdown-menu">
