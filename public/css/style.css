@@ -1597,13 +1597,13 @@ body {
 @media (max-width: 1200px) {
     .nav-content {
         flex-wrap: nowrap;
-        overflow-x: auto;
+        overflow: visible;
     }
-    
+
     .nav-menu {
         flex-shrink: 0;
     }
-    
+
     .nav-link {
         padding: 15px 15px;
         font-size: 14px;
