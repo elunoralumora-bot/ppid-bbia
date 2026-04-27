@@ -641,6 +641,7 @@
         @media (max-width: 768px) {
             .sidebar {
                 left: -275px;
+                transition: left 0.3s ease;
             }
 
             .sidebar.show {
@@ -658,6 +659,63 @@
 
             .top-bar {
                 left: 0;
+            }
+
+            /* Mobile Menu Toggle */
+            .mobile-menu-toggle {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 24px;
+                height: 18px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                z-index: 1000;
+            }
+
+            .mobile-menu-toggle span {
+                display: block;
+                width: 100%;
+                height: 2px;
+                background-color: #0f2338;
+                border-radius: 2px;
+                transition: all 0.3s ease;
+            }
+
+            .mobile-menu-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(4px, 4px);
+            }
+
+            .mobile-menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-menu-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(4px, -4px);
+            }
+
+            /* Overlay */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 99;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-toggle {
+                display: none;
             }
         }
     </style>
@@ -956,12 +1014,22 @@
         </div>
         <!-- ===================== END SIDEBAR ===================== -->
 
+        <!-- Sidebar Overlay for Mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
         <!-- Main Content -->
         <div class="main-content">
 
             <!-- Top Bar -->
             <div class="top-bar">
-                <h1>@yield('page-title', 'Dashboard')</h1>
+                <div style="display:flex; align-items:center; gap:1rem;">
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <h1>@yield('page-title', 'Dashboard')</h1>
+                </div>
                 <div style="display:flex; align-items:center; gap:1rem;">
                     @yield('top-bar-actions')
                 </div>
@@ -1000,6 +1068,31 @@
 
     <!-- ===================== JAVASCRIPT ===================== -->
     <script>
+        /**
+         * Mobile menu toggle
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+            if (mobileMenuToggle && sidebar && sidebarOverlay) {
+                // Toggle sidebar when burger button is clicked
+                mobileMenuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('show');
+                    sidebarOverlay.classList.toggle('show');
+                    this.classList.toggle('active');
+                });
+
+                // Close sidebar when overlay is clicked
+                sidebarOverlay.addEventListener('click', function() {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                    mobileMenuToggle.classList.remove('active');
+                });
+            }
+        });
+
         /**
          * Generic dropdown toggle untuk sidebar
          */
