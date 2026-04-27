@@ -16,6 +16,7 @@ body {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative;
 }
 
 /* Navigation */
@@ -1617,6 +1618,7 @@ body {
         right: 15px;
         top: 50%;
         transform: translateY(-50%);
+        z-index: 10004;
     }
 
     .nav-content {
@@ -1666,7 +1668,7 @@ body {
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease;
-        z-index: 9999;
+        z-index: 10003;
         opacity: 0;
     }
 
